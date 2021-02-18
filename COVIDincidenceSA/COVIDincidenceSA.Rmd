@@ -27,7 +27,6 @@ output: rticles::plos_article
 csl: plos.csl
 ---
 
-_Text based on plos sample manuscript, see <https://journals.plos.org/ploscompbiol/s/latex>_
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -42,9 +41,38 @@ Here are two sample references: @Feynman1963118 [@Dirac1953888].
 
 ## Data 
 
-A daily record of newly diagnosed COVID-19 cases were extracted for the period 5 March 2020 to 15 Feburary 2021, at national and provincial level from a publicly available data repository [ref]. Data from the first 335 days were used to fit the models. 
+We downloaded data from Coronavirus COVID-19 (2019-nCoV) Data Repository for South Africa maintained by Data Science for Social Impact research group at the University of Pretoria [ref]. The data repository captures the daily number of new cases, number of tests, number of deaths and recoveries. Our primary outcome of interest was the daily number of newly diagnosed COVID-19 cases and the unit of time used in modelling was a day. We used the daily case reports from March 12, 2020, until February 15, 2021, in our analysis.
+
 
 ## Statistical analysis 
+We considered two widely used temporal models to model the daily number of newly diagnosed COVID-19 cases. We let $Y(t)$ denote the daily number of newly diagnosed COVID-19 cases at time $t$ and $\mu(t)$ represent the expected number of cases at time $t$. We considered a Negative binomial distribution for $Y(t)$ to account for possible overdispersion. That is, $Y(t) \sim NB(\mu(t), \delta)$, where $\delta$ is the overdispersion parameter. We considered two temporal models to capture the trend over time: a random walk of order one ($RW(1)$) and an autoregressive model of order one ($AR(1)$) [ref]. The two models were chosen becuse 
+
+The $AR(1)$ model [ref] is given by, 
+
+$$
+\begin{aligned}
+ Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
+ log(\mu(t)) &= \alpha+u_t, \\
+ u_1 &\sim N(0, \tau_u(1-\rho^2)^{-1}),  \\
+  u_t &=\rho u_{t-1} +\epsilon_t, \ \ t=2, \dots, n,  \\
+  \epsilon_t & \sim N(0, \tau_{\epsilon}),
+\end{aligned}
+$$
+where,  $\alpha$ is an intercept,  $\rho$ a temporal correlation term (with  $|\rho|<1$) and  $\epsilon_t$ is a Gaussian error term with zero mean and precision  $\tau_u$.
+
+Similarly, the $RW(1)$ model [ref] is given by, 
+$$
+\begin{aligned}
+ Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
+ log(\mu(t)) &= \alpha+u_t, \\
+ u_t-u_{t-1} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
+\end{aligned}
+$$
+where $\alpha$ is the intercept term as before and $\tau_u$ is the precison parameter. 
+
+The two models were fitted within the Bayesian framework using *inla* [ref]. To complete the specification of both models, we assume the following priors. For the $AR(1)$ model, we denote $\theta_1=log(\tau_u(1-\rho^2))$ where $\Gamma(10,100)$ prior is specified for $\theta_1$, and we denote $\theta_2=log\frac{1+\rho}{1-\rho}$ and assume a $N(0, 0.15)$ prior for $\theta$. Similarly, we represent the precison parameter of $RW(1)$, $\tau_u$, as $\theta=log(\tau_u)$ and assume a $\Gamma (10,100)$ prior for $\theta$. To assess the models' accuracy in predicting cases, we present the forecast period's actual observed values and the predicted values.Additionally, the model fits were evaluated by using DIC (Deviance information criteria). The computer code that we used for our analyses is avaliable at https://github.com/belayb/COVIDincidenceSA.
+
+
 
 # Results 
 
@@ -78,7 +106,6 @@ variable_keep_test<-c("date2","cumulative_tests")
 variable_keep_cases<-c("date2","total")
 
 sa_cov_dat<-left_join(cases_sa[,variable_keep_cases], tests_sa[,variable_keep_test], by="date2")
-dim(sa_cov_dat[is.na(sa_cov_dat$cumulative_tests),])# There are unknown number of tests in the first 4 days 05,08,09,10-03-2020 
 # sa_cov_dat[18:35,] also unknown number of tests on 25-03, and 07-04 
 sa_cov_dat<-sa_cov_dat[sa_cov_dat$date2>'2020-03-09'&!is.na(sa_cov_dat$cumulative_tests),]
 
@@ -89,8 +116,13 @@ sa_cov_dat<-sa_cov_dat%>%mutate(Dialy_cases=-1*(lag(total)-total), Daily_tests=-
 sa_cov_dat<-sa_cov_dat[-1, ]
 
 ```
+The daily number of reported COVID-19 cases from 5 March 2020 to 15 February 2021 is presented in Fig. 1.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The growth of COVID-19 in South Africa appears to be rapid until 27 March 2020 where a total of 243 daily new cases were observed, followed by a decline in the rate of new cases. From the 28 March 2020 to 11 April 2020 the daily increase in cases was consistently below 100. From May 2020 onwards a consistent increase more than 1000 cases per day were observed with larger increments in June.
 
-```{r ,out.width = "90%",fig.cap = "Observed data - cummulative cases, daily cases, and cummulative tests."}
+The daily number of new reported COVID-19 cases and tests performed are presented in Fig. 2. To date, a
+total of 1,353,176 tests have been conducted, corresponding to a testing rate of 22.816 per 1000 population. There was a significant correlation between the number of cases detected and the number of tests performed daily (Rho = 0.7759, p-value< 0.001). The cumulative COVID-19 cases are depicted separately for each of South Africa’s nine provinces in Fig. 3, where a high degree of interprovincial heterogeneity is observed. As at 22 June 2020 the province with the highest number of cases is the Western Cape with 52554 cases, followed by Gauteng and Eastern Cape with 22341 and 16895 cases respectively.
+
+
+```{r ,out.width = "99%",fig.cap = "Observed data - cummulative cases, daily cases, and cummulative tests."}
 
 p1<-ggplot(sa_cov_dat, aes(x=date2, y=Dialy_cases,group=1))+geom_point()+xlab("Date")+ylab("Daily cases")+theme_bw()
 
@@ -144,7 +176,7 @@ newdata_rw1<-cbind(sa_cov_dat[,c("date2","Dialy_cases")],nb.rw1$summary.fitted.v
 newdata_rw1 <- reshape:::rename(newdata_rw1, c("0.025quant"="lower", "0.975quant"="upper"))
 ```
 
-```{r ,out.width = "90%",fig.cap = "Fitted and observed data"}
+```{r ,out.width = "99%",fig.cap = "Fitted and observed data"}
 p_rw1_inc<-ggplot(newdata_rw1, aes(y=mean, x=date2)) +
   geom_blank()+
   geom_point(aes(y=Dialy_cases, x=date2)) +
@@ -268,7 +300,7 @@ Day3_pred<-Day3_pred%>%
          Cum_pred_rw1=cumsum(RW1_mean),Cum_pred_rw1_lower=cumsum(RW1_lower),Cum_pred_rw1_upper=cumsum(RW1_upper))
 ```
 
-```{r,out.width = "90%", fig.cap = "Fitted and observed data"}
+```{r,out.width = "99%", fig.cap = "Fitted and observed data"}
 forcast_cum<-Day7_pred%>%
   ggplot(aes(y=total, x=date2)) +
   geom_blank()+

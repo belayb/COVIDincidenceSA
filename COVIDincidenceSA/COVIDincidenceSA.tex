@@ -237,9 +237,6 @@ To be updated.
 \linenumbers
 
 % Use "Eq" instead of "Equation" for equation citations.
-\emph{Text based on plos sample manuscript, see
-\url{https://journals.plos.org/ploscompbiol/s/latex}}
-
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
@@ -251,34 +248,105 @@ To be updated Here are two sample references: {[}1,2{]}.
 \hypertarget{data}{%
 \subsection{Data}\label{data}}
 
-A daily record of newly diagnosed COVID-19 cases were extracted for the
-period 5 March 2020 to 15 Feburary 2021, at national and provincial
-level from a publicly available data repository {[}ref{]}. Data from the
-first 335 days were used to fit the models.
+We downloaded data from Coronavirus COVID-19 (2019-nCoV) Data Repository
+for South Africa maintained by Data Science for Social Impact research
+group at the University of Pretoria {[}ref{]}. The data repository
+captures the daily number of new cases, number of tests, number of
+deaths and recoveries. Our primary outcome of interest was the daily
+number of newly diagnosed COVID-19 cases and the unit of time used in
+modelling was a day. We used the daily case reports from March 12, 2020,
+until February 15, 2021, in our analysis.
 
 \hypertarget{statistical-analysis}{%
 \subsection{Statistical analysis}\label{statistical-analysis}}
 
+We considered two widely used temporal models to model the daily number
+of newly diagnosed COVID-19 cases. We let \(Y(t)\) denote the daily
+number of newly diagnosed COVID-19 cases at time \(t\) and \(\mu(t)\)
+represent the expected number of cases at time \(t\). We considered a
+Negative binomial distribution for \(Y(t)\) to account for possible
+overdispersion. That is, \(Y(t) \sim NB(\mu(t), \delta)\), where
+\(\delta\) is the overdispersion parameter. We considered two temporal
+models to capture the trend over time: a random walk of order one
+(\(RW(1)\)) and an autoregressive model of order one (\(AR(1)\))
+{[}ref{]}. The two models were chosen becuse
+
+The \(AR(1)\) model {[}ref{]} is given by,
+
+\[
+\begin{aligned}
+ Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
+ log(\mu(t)) &= \alpha+u_t, \\
+ u_1 &\sim N(0, \tau_u(1-\rho^2)^{-1}),  \\
+  u_t &=\rho u_{t-1} +\epsilon_t, \ \ t=2, \dots, n,  \\
+  \epsilon_t & \sim N(0, \tau_{\epsilon}),
+\end{aligned}
+\] where, \(\alpha\) is an intercept, \(\rho\) a temporal correlation
+term (with \(|\rho|<1\)) and \(\epsilon_t\) is a Gaussian error term
+with zero mean and precision \(\tau_u\).
+
+Similarly, the \(RW(1)\) model {[}ref{]} is given by, \[
+\begin{aligned}
+ Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
+ log(\mu(t)) &= \alpha+u_t, \\
+ u_t-u_{t-1} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
+\end{aligned}
+\] where \(\alpha\) is the intercept term as before and \(\tau_u\) is
+the precison parameter.
+
+The two models were fitted within the Bayesian framework using
+\emph{inla} {[}ref{]}. To complete the specification of both models, we
+assume the following priors. For the \(AR(1)\) model, we denote
+\(\theta_1=log(\tau_u(1-\rho^2))\) where \(\Gamma(10,100)\) prior is
+specified for \(\theta_1\), and we denote
+\(\theta_2=log\frac{1+\rho}{1-\rho}\) and assume a \(N(0, 0.15)\) prior
+for \(\theta\). Similarly, we represent the precison parameter of
+\(RW(1)\), \(\tau_u\), as \(\theta=log(\tau_u)\) and assume a
+\(\Gamma (10,100)\) prior for \(\theta\). To assess the models' accuracy
+in predicting cases, we present the forecast period's actual observed
+values and the predicted values.Additionally, the model fits were
+evaluated by using DIC (Deviance information criteria). The computer
+code that we used for our analyses is avaliable at
+https://github.com/belayb/COVIDincidenceSA.
+
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-\begin{verbatim}
-## [1] 11  3
-\end{verbatim}
+The daily number of reported COVID-19 cases from 5 March 2020 to 15
+February 2021 is presented in Fig. 1. Similar to elsewhere in the world,
+South Africa pass through a two-wave pandemic. The growth of COVID-19 in
+South Africa appears to be rapid until 27 March 2020 where a total of
+243 daily new cases were observed, followed by a decline in the rate of
+new cases. From the 28 March 2020 to 11 April 2020 the daily increase in
+cases was consistently below 100. From May 2020 onwards a consistent
+increase more than 1000 cases per day were observed with larger
+increments in June.
+
+The daily number of new reported COVID-19 cases and tests performed are
+presented in Fig. 2. To date, a total of 1,353,176 tests have been
+conducted, corresponding to a testing rate of 22.816 per 1000
+population. There was a significant correlation between the number of
+cases detected and the number of tests performed daily (Rho = 0.7759,
+p-value\textless{} 0.001). The cumulative COVID-19 cases are depicted
+separately for each of South Africa's nine provinces in Fig. 3, where a
+high degree of interprovincial heterogeneity is observed. As at 22 June
+2020 the province with the highest number of cases is the Western Cape
+with 52554 cases, followed by Gauteng and Eastern Cape with 22341 and
+16895 cases respectively.
 
 \begin{figure}
-\includegraphics[width=0.9\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-4-1} \caption{Observed data - cummulative cases, daily cases, and cummulative tests.}\label{fig:unnamed-chunk-4}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-4-1} \caption{Observed data - cummulative cases, daily cases, and cummulative tests.}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=0.9\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-6-1}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-6-1}
 \end{figure}
 \begin{figure}
-\includegraphics[width=0.9\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-2} \caption{Fitted and observed data}\label{fig:unnamed-chunk-6-2}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-2} \caption{Fitted and observed data}\label{fig:unnamed-chunk-6-2}
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=0.9\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-8-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-8}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-8-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-8}
 \end{figure}
 
 \begin{table}
@@ -289,19 +357,21 @@ first 335 days were used to fit the models.
 \hline
   & Date & Total & Prediction & Prediction Interval\\
 \hline
-329 & 2021-02-11 & 1484900 & 1485426 & (1172950.47-1870542.61)\\
+329 & 2021-02-11 & 1484900 & 1485428 & (1172842.09-1870720.62)\\
 \hline
-330 & 2021-02-12 & 1487681 & 1488626 & (1174186.41-1877494.66)\\
+330 & 2021-02-12 & 1487681 & 1488627 & (1174078.09-1877670.74)\\
 \hline
-331 & 2021-02-13 & 1490063 & 1491973 & (1175219.44-1885824.67)\\
+331 & 2021-02-13 & 1490063 & 1491974 & (1175111.23-1885997.96)\\
 \hline
-332 & 2021-02-14 & 1491807 & 1495474 & (1176106.15-1895538.68)\\
+332 & 2021-02-14 & 1491807 & 1495474 & (1175998.07-1895708.26)\\
 \hline
-333 & 2021-02-15 & 1492909 & 1499135 & (1176880.67-1906668.9)\\
+333 & 2021-02-15 & 1492909 & 1499135 & (1176772.74-1906833.8)\\
 \hline
-334 & 2021-02-16 & 1494119 & 1502966 & (1177565.81-1919261.41)\\
+334 & 2021-02-16 & 1494119 & 1502964 & (1177458.02-1919420.56)\\
 \hline
-335 & 2021-02-17 & 1496439 & 1506973 & (1178177.51-1933370.81)\\
+335 & 2021-02-17 & 1496439 & 1506970 & (1178069.88-1933523.08)\\
+\hline
+336 & 2021-02-18 & 1498766 & 1511161 & (1178620.26-1949202.45)\\
 \hline
 \end{tabular}
 \end{table}
@@ -314,19 +384,21 @@ first 335 days were used to fit the models.
 \hline
   & Date & Total & Prediction & Prediction Interval\\
 \hline
-329 & 2021-02-11 & 1484900 & 1486316 & (1107317.92-1978328.98)\\
+329 & 2021-02-11 & 1484900 & 1486313 & (1107420.06-1978167.1)\\
 \hline
-330 & 2021-02-12 & 1487681 & 1489176 & (1108536.68-1984144.68)\\
+330 & 2021-02-12 & 1487681 & 1489174 & (1108638.8-1983985.58)\\
 \hline
-331 & 2021-02-13 & 1490063 & 1492104 & (1109578.88-1990818.58)\\
+331 & 2021-02-13 & 1490063 & 1492103 & (1109680.89-1990664.01)\\
 \hline
-332 & 2021-02-14 & 1491807 & 1495100 & (1110489.52-1998314.17)\\
+332 & 2021-02-14 & 1491807 & 1495101 & (1110591.41-1998165.79)\\
 \hline
-333 & 2021-02-15 & 1492909 & 1498166 & (1111296.59-2006610.93)\\
+333 & 2021-02-15 & 1492909 & 1498168 & (1111398.33-2006470.45)\\
 \hline
-334 & 2021-02-16 & 1494119 & 1501301 & (1112019.71-2015697.68)\\
+334 & 2021-02-16 & 1494119 & 1501306 & (1112121.28-2015567.08)\\
 \hline
-335 & 2021-02-17 & 1496439 & 1504508 & (1112673.2-2025567.73)\\
+335 & 2021-02-17 & 1496439 & 1504514 & (1112774.55-2025449.16)\\
+\hline
+336 & 2021-02-18 & 1498766 & 1507795 & (1113368.94-2036113.49)\\
 \hline
 \end{tabular}
 \end{table}
