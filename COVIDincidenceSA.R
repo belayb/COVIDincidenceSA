@@ -41,6 +41,14 @@ sa_cov_dat<-sa_cov_dat[-1, ]
 
 p1<-ggplot(sa_cov_dat, aes(x=date2, y=Dialy_cases,group=1))+geom_point()+xlab("Date")+ylab("Daily cases")+theme_bw()
 
+
+dataa<-gather(sa_cov_dat[,c("date2", "total", "cumulative_tests")], Outcome, count, total:cumulative_tests, factor_key=TRUE)
+
+  p2<-ggplot(dataa,aes(x=date2, y=count,group=Outcome))+
+  geom_line(aes(color=Outcome))+
+  xlab("Date")+ylab("Cummulative cases")+
+theme_bw()
+
 p2<-ggplot(sa_cov_dat, aes(x=date2, y=total,group=1))+geom_line(size = 1.5)+xlab("Date")+ylab("Cummulative cases")+theme_bw()
 
 
