@@ -172,6 +172,7 @@
 
 % Pandoc citation processing
 
+\usepackage{float} \floatplacement{figure}{H}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -198,7 +199,7 @@
 \setcounter{secnumdepth}{0}
 
 \newcommand{\getAff}[1]{
-  \getIndex{#1}{Some Institute of Technology,Another University}
+  \getIndex{#1}{}
 }
 
 \providecommand{\tightlist}{%
@@ -210,19 +211,20 @@
 % Title must be 250 characters or less.
 \begin{flushleft}
 {\Large
-\textbf\newline{Short-term real-time prediction of total number of reported COVID-19
-cases in South Africa - A Bayesian Temporal Modeling Approch} % Please use "sentence case" for title and headings (capitalize only the first word in a title (or heading), the first word in a subtitle (or subheading), and any proper nouns).
+\textbf\newline{Short-term forecasting of total Number of reported COVID-19 cases in
+South Africa - A Bayesian temporal modeling approch} % Please use "sentence case" for title and headings (capitalize only the first word in a title (or heading), the first word in a subtitle (or subheading), and any proper nouns).
 }
 \newline
 % Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
 \\
-Belay Birlie Yimer\textsuperscript{\getAff{University of Manchester, Uk;}, \getAff{Hasselt University, Belgium.}}\textsuperscript{*},
-Ziv Shkedy\textsuperscript{\getAff{Hasselt University}}\\
+Belay Birlie Yimer\textsuperscript{\getAff{Arthritis Research UK Centre for Epidemiology, Division of
+Musculoskeletal and Dermatological Sciences, The University of
+Manchester, Manchester;}, \getAff{Interuniversity Institute for Biostatistics and statistical
+Bioinformatics (I-BioStat), Hasselt University, Diepenbeek, Belgium.}},
+Ziv Shkedy\textsuperscript{\getAff{Interuniversity Institute for Biostatistics and statistical
+Bioinformatics (I-BioStat), Hasselt University, Diepenbeek, Belgium.}}\\
 \bigskip
-\textbf{\getAff{Some Institute of Technology}}Department 1, Street, City, State, Zip\\
-\textbf{\getAff{Another University}}Department 2, Street, City, State, Zip\\
 \bigskip
-* Corresponding author: belaybirlie.yimer@manchester.ac.uk\\
 \end{flushleft}
 % Please keep the abstract below 300 words
 \section*{Abstract}
@@ -240,7 +242,7 @@ To be updated.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-To be updated Here are two sample references: {[}1,2{]}.
+To be updated
 
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
@@ -271,7 +273,7 @@ models to capture the trend over time: a random walk of order one
 (\(RW(1)\)) and an autoregressive model of order one (\(AR(1)\))
 {[}ref{]}. The two models were chosen becuse
 
-The \(AR(1)\) model {[}ref{]} is given by,
+The \(AR(1)\) model {[}1{]} is given by,
 
 \[
 \begin{aligned}
@@ -285,7 +287,7 @@ The \(AR(1)\) model {[}ref{]} is given by,
 term (with \(|\rho|<1\)) and \(\epsilon_t\) is a Gaussian error term
 with zero mean and precision \(\tau_u\).
 
-Similarly, the \(RW(1)\) model {[}ref{]} is given by, \[
+Similarly, the \(RW(1)\) model {[}1{]} is given by, \[
 \begin{aligned}
  Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
  log(\mu(t)) &= \alpha+u_t, \\
@@ -295,7 +297,7 @@ Similarly, the \(RW(1)\) model {[}ref{]} is given by, \[
 the precison parameter.
 
 The two models were fitted within the Bayesian framework using
-\emph{inla} {[}ref{]}. To complete the specification of both models, we
+\emph{inla} {[}2{]}. To complete the specification of both models, we
 assume the following priors. For the \(AR(1)\) model, we denote
 \(\theta_1=log(\tau_u(1-\rho^2))\) where \(\Gamma(10,100)\) prior is
 specified for \(\theta_1\), and we denote
@@ -307,28 +309,26 @@ in predicting cases, we present the forecast period's actual observed
 values and the predicted values.Additionally, the model fits were
 evaluated by using DIC (Deviance information criteria). The computer
 code that we used for our analyses is avaliable at
-https://github.com/belayb/COVIDincidenceSA.
+https://github.com/belayb/COVIDincidenceSA/tree/master/COVIDincidenceSA.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-Figure 1 (Top panel) presents the daily number of reported COVID-19
-cases from 5 March 2020 to 15 February 2021. Similar to elsewhere in the
-world, South Africa pass through a two-wave pandemic. The first peak of
-the epidemic was on ----, followed by a second peak in January 2021.
-Figure 1 (Bottom Panel) presents the cumulative number of new reported
-COVID-19 cases and tests performed. To date, 1,353,176 tests have been
-conducted, corresponding to a testing rate of 22.816 per 1000
-population. There was a significant correlation between the number of
-cases detected and the number of tests performed daily (Rho = 0.7759,
-p-value\textless{} 0.001).
+Figure 1 presents the daily number of reported COVID-19 cases from 12
+March 2020 to 19 February 2021. Similar to elsewhere in the world, South
+Africa pass through a two-wave pandemic. The pandemic's first peak was
+on 07 July 2020, where up to 13944 new COVID-19 cases reported, followed
+by a second peak in January 2021, where more than 21,000 daily cases
+reported. Figure 2 presents the cumulative number of new reported
+COVID-19 cases and tests performed. To date, 8,838,937 tests have been
+conducted, and a total of 1,500,677 cases reported.
 
-\begin{figure}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-4-1} \caption{Daily new COVID-19 cases.}\label{fig:unnamed-chunk-4}
+\begin{figure}[H]
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/daily-cases-1} \caption{Daily number of COVID-19 cases in South Africa from 12/03/2020-19/02/2021.}\label{fig:daily-cases}
 \end{figure}
 
-\begin{figure}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1} \caption{cummulative cases and cummulative tests.}\label{fig:unnamed-chunk-5}
+\begin{figure}[H]
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/cummulative-1} \caption{The cummulative number of COVID-19 cases and Cummulative number of tests in South Africa from 12/03/2020-19/02/2021. Red-line denote the number of cases and blue-line denotes the number of tests.}\label{fig:cummulative}
 \end{figure}
 
 \hypertarget{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}{%
@@ -336,74 +336,78 @@ p-value\textless{} 0.001).
 COVID-19
 cases}\label{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}}
 
-The models described in the previous section were all considered for
-modeling cumulative cases.The parameter estimates for the different
-models are presented in Supplementary Table 1. As mentioned in the
-previous section, our main interest is to produce a short term forecast
-for the number of reported cases and deaths. As depicted from the
-short-term forecasts for the three models fitted to cases (see Fig. 5,
-Table 2), all three models appear to fit the observed data (within the
-estimation period) well with the 3 parameter and 4 parameter logistic
-models providing very similar predictions over the 30-day ahead period.
+We fit the two models described in the previous section to the daily
+reported new COVID-19 cases. The parameter estimates for the two models
+are presented in Supplementary Table 1. As depicted in Figure 3, two
+models fitted to the data appear to fit the observed data (within the
+estimation period) well with a narrow confidence interval obtained for
+the RW(1) model. The RW(1) and AR(1) models also provide very similar
+predictions over the 9-day ahead period.
 
-\begin{figure}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-9-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-9}
-\end{figure}
+\textbackslash begin\{figure\}{[}H{]}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/prediction-1}
+\textbackslash caption\{Predicted cummulative COVID-19 cases in South
+Africa under the RW(1) and AR(1) model. Estimation period
+12/03/2020-10/02/2021. The black dots are the observed cummulative
+cases. The red dashed lines are for RW(1) and the blue line for
+AR(1).The shaded bands are the 95\% prediction intervals for the
+predictions with the two models.\}\label{fig:prediction}
+\textbackslash end\{figure\}
 
-\begin{table}
+\begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 05/03/2020-08/02/2021}
+\caption{\label{tab:unnamed-chunk-7}Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 12/03/2020-10/02/2021}
 \centering
-\begin{tabular}[t]{l|l|r|r|l}
+\begin{tabular}[t]{l|r|r|l|r}
 \hline
-  & Date & Total & Prediction & Prediction Interval\\
+Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
-329 & 2021-02-11 & 1484900 & 1485425 & (1172933.36-1870556.26)\\
+2021-02-11 & 1484900 & 1485429 & (1172894.86-1870619.43) & -528.5228\\
 \hline
-330 & 2021-02-12 & 1487681 & 1488625 & (1174169.39-1877507.47)\\
+2021-02-12 & 1487681 & 1488629 & (1174130.71-1877572.01) & -947.5700\\
 \hline
-331 & 2021-02-13 & 1490063 & 1491972 & (1175202.53-1885836.24)\\
+2021-02-13 & 1490063 & 1491976 & (1175163.66-1885902.75) & -1912.5901\\
 \hline
-332 & 2021-02-14 & 1491807 & 1495472 & (1176089.35-1895548.55)\\
+2021-02-14 & 1491807 & 1495476 & (1176050.29-1895617.69) & -3669.3800\\
 \hline
-333 & 2021-02-15 & 1492909 & 1499134 & (1176864-1906676.65)\\
+2021-02-15 & 1492909 & 1499138 & (1176824.75-1906749.13) & -6229.1891\\
 \hline
-334 & 2021-02-16 & 1494119 & 1502964 & (1177549.26-1919266.52)\\
+2021-02-16 & 1494119 & 1502969 & (1177509.82-1919343.11) & -8849.6675\\
 \hline
-335 & 2021-02-17 & 1496439 & 1506970 & (1178161.06-1933372.71)\\
+2021-02-17 & 1496439 & 1506976 & (1178121.45-1933454.25) & -10536.8634\\
 \hline
-336 & 2021-02-18 & 1498766 & 1511162 & (1178711.39-1949056.38)\\
+2021-02-18 & 1498766 & 1511168 & (1178671.6-1949143.78) & -12402.2333\\
 \hline
-337 & 2021-02-19 & 1500677 & 1515548 & (1179209.55-1966383.94)\\
+2021-02-19 & 1500677 & 1515555 & (1179169.59-1966478.16) & -14877.6590\\
 \hline
 \end{tabular}
 \end{table}
 
-\begin{table}
+\begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 05/03/2020-08/02/2021}
+\caption{\label{tab:unnamed-chunk-7}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-10/02/2021}
 \centering
-\begin{tabular}[t]{l|l|r|r|l}
+\begin{tabular}[t]{l|r|r|l|r}
 \hline
-  & Date & Total & Prediction & Prediction Interval\\
+Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
-329 & 2021-02-11 & 1484900 & 1486312 & (1107420.98-1978162.82)\\
+2021-02-11 & 1484900 & 1486312 & (1107420.98-1978162.82) & -1412.194\\
 \hline
-330 & 2021-02-12 & 1487681 & 1489173 & (1108639.61-1983981.29)\\
+2021-02-12 & 1487681 & 1489173 & (1108639.61-1983981.29) & -1491.764\\
 \hline
-331 & 2021-02-13 & 1490063 & 1492102 & (1109681.58-1990659.34)\\
+2021-02-13 & 1490063 & 1492102 & (1109681.58-1990659.34) & -2038.527\\
 \hline
-332 & 2021-02-14 & 1491807 & 1495099 & (1110591.96-1998160.29)\\
+2021-02-14 & 1491807 & 1495099 & (1110591.96-1998160.29) & -3291.921\\
 \hline
-333 & 2021-02-15 & 1492909 & 1498166 & (1111398.75-2006463.55)\\
+2021-02-15 & 1492909 & 1498166 & (1111398.75-2006463.55) & -5256.654\\
 \hline
-334 & 2021-02-16 & 1494119 & 1501303 & (1112121.57-2015558.08)\\
+2021-02-16 & 1494119 & 1501303 & (1112121.57-2015558.08) & -7183.538\\
 \hline
-335 & 2021-02-17 & 1496439 & 1504510 & (1112774.74-2025437.2)\\
+2021-02-17 & 1496439 & 1504510 & (1112774.74-2025437.2) & -8071.444\\
 \hline
-336 & 2021-02-18 & 1498766 & 1507790 & (1113369.03-2036097.59)\\
+2021-02-18 & 1498766 & 1507790 & (1113369.03-2036097.59) & -9024.272\\
 \hline
-337 & 2021-02-19 & 1500677 & 1511143 & (1113912.84-2047538.12)\\
+2021-02-19 & 1500677 & 1511143 & (1113912.84-2047538.12) & -10465.946\\
 \hline
 \end{tabular}
 \end{table}
@@ -413,16 +417,13 @@ models providing very similar predictions over the 30-day ahead period.
 \addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
-\leavevmode\hypertarget{ref-Feynman1963118}{}%
-1. Feynman RP, Vernon Jr. FL. The theory of a general quantum system
-interacting with a linear dissipative system. Annals of Physics.
-1963;24: 118--173.
-doi:\href{https://doi.org/10.1016/0003-4916(63)90068-X}{10.1016/0003-4916(63)90068-X}
+\leavevmode\hypertarget{ref-gomez2020bayesian}{}%
+1. Gómez-Rubio V. Bayesian inference with inla. CRC Press; 2020.
 
-\leavevmode\hypertarget{ref-Dirac1953888}{}%
-2. Dirac PA. The lorentz transformation and absolute time. Physica.
-1953;19: 888--896.
-doi:\href{https://doi.org/10.1016/S0031-8914(53)80099-6}{10.1016/S0031-8914(53)80099-6}
+\leavevmode\hypertarget{ref-martins2013bayesian}{}%
+2. Martins TG, Simpson D, Lindgren F, Rue H. Bayesian computing with
+inla: New features. Computational Statistics \& Data Analysis. Elsevier;
+2013;67: 68--83.
 
 \nolinenumbers
 

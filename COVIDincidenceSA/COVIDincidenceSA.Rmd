@@ -1,21 +1,15 @@
 ---
-title: Short-term real-time prediction of total number of reported COVID-19 cases in South Africa - A Bayesian  Temporal Modeling Approch
+title: Short-term forecasting of total Number of reported COVID-19 cases in South Africa - A Bayesian temporal modeling approch
 author:
   - name: Belay Birlie Yimer
     email: belaybirlie.yimer@manchester.ac.uk
     affiliation: 
-    - University of Manchester, Uk; 
-    - Hasselt University, Belgium.
-    corresponding: belaybirlie.yimer@manchester.ac.uk
+    - Arthritis Research UK Centre for Epidemiology, Division of Musculoskeletal and Dermatological Sciences, The University of Manchester, Manchester; 
+    - Interuniversity Institute for Biostatistics and statistical Bioinformatics (I-BioStat), Hasselt University, Diepenbeek, Belgium.
   - name: Ziv Shkedy
     email: ziv.shkedy@uhasselt.be
     affiliation: 
-      - Hasselt University
-address:
-  - code: Some Institute of Technology
-    address: Department 1, Street, City, State, Zip
-  - code: Another University
-    address: Department 2, Street, City, State, Zip
+      - Interuniversity Institute for Biostatistics and statistical Bioinformatics (I-BioStat), Hasselt University, Diepenbeek, Belgium.
 abstract: |
   To be updated.
   
@@ -25,17 +19,19 @@ author_summary: |
 bibliography: mybibfile.bib
 output: rticles::plos_article
 csl: plos.csl
+header-includes:
+ \usepackage{float}
+ \floatplacement{figure}{H}
+
 ---
 
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,fig.pos = 'H', tab.pos = 'H')
 ```
 
 # Introduction
 
 To be updated
-Here are two sample references: @Feynman1963118 [@Dirac1953888].
 
 # Methods 
 
@@ -47,7 +43,7 @@ We downloaded data from Coronavirus COVID-19 (2019-nCoV) Data Repository for Sou
 ## Statistical analysis 
 We considered two widely used temporal models to model the daily number of newly diagnosed COVID-19 cases. We let $Y(t)$ denote the daily number of newly diagnosed COVID-19 cases at time $t$ and $\mu(t)$ represent the expected number of cases at time $t$. We considered a Negative binomial distribution for $Y(t)$ to account for possible overdispersion. That is, $Y(t) \sim NB(\mu(t), \delta)$, where $\delta$ is the overdispersion parameter. We considered two temporal models to capture the trend over time: a random walk of order one ($RW(1)$) and an autoregressive model of order one ($AR(1)$) [ref]. The two models were chosen becuse 
 
-The $AR(1)$ model [ref] is given by, 
+The $AR(1)$ model [@gomez2020bayesian] is given by, 
 
 $$
 \begin{aligned}
@@ -60,7 +56,7 @@ $$
 $$
 where,  $\alpha$ is an intercept,  $\rho$ a temporal correlation term (with  $|\rho|<1$) and  $\epsilon_t$ is a Gaussian error term with zero mean and precision  $\tau_u$.
 
-Similarly, the $RW(1)$ model [ref] is given by, 
+Similarly, the $RW(1)$ model [@gomez2020bayesian] is given by, 
 $$
 \begin{aligned}
  Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
@@ -70,7 +66,7 @@ $$
 $$
 where $\alpha$ is the intercept term as before and $\tau_u$ is the precison parameter. 
 
-The two models were fitted within the Bayesian framework using *inla* [ref]. To complete the specification of both models, we assume the following priors. For the $AR(1)$ model, we denote $\theta_1=log(\tau_u(1-\rho^2))$ where $\Gamma(10,100)$ prior is specified for $\theta_1$, and we denote $\theta_2=log\frac{1+\rho}{1-\rho}$ and assume a $N(0, 0.15)$ prior for $\theta$. Similarly, we represent the precison parameter of $RW(1)$, $\tau_u$, as $\theta=log(\tau_u)$ and assume a $\Gamma (10,100)$ prior for $\theta$. To assess the models' accuracy in predicting cases, we present the forecast period's actual observed values and the predicted values.Additionally, the model fits were evaluated by using DIC (Deviance information criteria). The computer code that we used for our analyses is avaliable at https://github.com/belayb/COVIDincidenceSA.
+The two models were fitted within the Bayesian framework using *inla* [@martins2013bayesian]. To complete the specification of both models, we assume the following priors. For the $AR(1)$ model, we denote $\theta_1=log(\tau_u(1-\rho^2))$ where $\Gamma(10,100)$ prior is specified for $\theta_1$, and we denote $\theta_2=log\frac{1+\rho}{1-\rho}$ and assume a $N(0, 0.15)$ prior for $\theta$. Similarly, we represent the precison parameter of $RW(1)$, $\tau_u$, as $\theta=log(\tau_u)$ and assume a $\Gamma (10,100)$ prior for $\theta$. To assess the models' accuracy in predicting cases, we present the forecast period's actual observed values and the predicted values.Additionally, the model fits were evaluated by using DIC (Deviance information criteria). The computer code that we used for our analyses is avaliable at https://github.com/belayb/COVIDincidenceSA/tree/master/COVIDincidenceSA.
 
 
 
@@ -116,19 +112,18 @@ sa_cov_dat<-sa_cov_dat%>%mutate(Dialy_cases=-1*(lag(total)-total), Daily_tests=-
 sa_cov_dat<-sa_cov_dat[-1, ]
 
 ```
-Figure 1 (Top panel) presents the daily number of reported COVID-19 cases from 5 March 2020 to 15 February 2021.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The first peak of the epidemic was on ----, followed by a second peak in January 2021. 
-Figure 1 (Bottom Panel) presents the cumulative number of new reported COVID-19 cases and tests performed. To date, 1,353,176 tests have been conducted, corresponding to a testing rate of 22.816 per 1000 population. There was a significant correlation between the number of cases detected and the number of tests performed daily (Rho = 0.7759, p-value< 0.001). 
+Figure 1 presents the daily number of reported COVID-19 cases from 12 March 2020 to 19 February 2021.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The pandemic's first peak was on 07 July 2020, where up to 13944 new COVID-19 cases reported, followed by a second peak in January 2021, where more than 21,000 daily cases reported. 
+Figure 2 presents the cumulative number of new reported COVID-19 cases and tests performed. To date, 8,838,937 tests have been conducted, and a total of 1,500,677 cases reported.
 
 
 
-
-```{r ,out.width = "99%",fig.cap = "Daily new COVID-19 cases."}
+```{r daily-cases,out.width = "99%",fig.cap = "Daily number of COVID-19 cases in South Africa from 12/03/2020-19/02/2021."}
 
 p1<-ggplot(sa_cov_dat, aes(x=date2, y=Dialy_cases,group=1))+geom_point()+xlab("Date")+ylab("Daily cases")+theme_bw()
 p1
 ```
 
-```{r ,out.width = "99%",fig.cap = "cummulative cases and cummulative tests."}
+```{r cummulative,out.width = "99%",fig.cap = "The cummulative number of COVID-19 cases and Cummulative number of tests in South Africa from 12/03/2020-19/02/2021. Red-line denote the number of cases and blue-line denotes the number of tests."}
 
 dataa<-gather(sa_cov_dat[,c("date2", "total", "cumulative_tests")], Outcome, count, total:cumulative_tests, factor_key=TRUE)
 dataa<-dataa %>% 
@@ -139,7 +134,7 @@ dataa<-dataa %>%
 p2<-ggplot(dataa,aes(x=date2, y=count,group=Type))+
   geom_line(aes(color=Type))+
   xlab("Date")+ylab("Cumulative count")+
-theme_bw()
+theme_bw()+theme(legend.position="none")
 
 p2
 #p2<-ggplot(sa_cov_dat, aes(x=date2, y=total,group=1))+geom_line(size = 1.5)+xlab("Date")+ylab("Cummulative cases")+theme_bw()
@@ -318,25 +313,24 @@ Day3_pred<-Day3_pred%>%
 ```
 
 ## Short-term prediction of the total number of reported COVID-19 cases
-The models described in the previous section were all considered for modeling cumulative cases.The parameter estimates
-for the different models are presented in Supplementary Table 1. As mentioned in the previous section, our main interest is to produce a short term forecast for the number of reported cases and deaths. As depicted
-from the short-term forecasts for the three models fitted to cases (see Fig. 5, Table 2), all three models appear to fit
-the observed data (within the estimation period) well with the 3 parameter and 4 parameter logistic models providing very similar predictions over the 30-day ahead period.
+We fit the two models described in the previous section to the daily reported new COVID-19 cases. The parameter estimates for the two models are presented in Supplementary Table 1. As depicted in Figure 3, two models fitted to the data appear to fit the observed data (within the estimation period) well with a narrow confidence interval obtained for the RW(1) model.  The RW(1) and AR(1) models also provide very similar predictions over the 9-day ahead period.
 
-```{r,out.width = "99%", fig.cap = "Fitted and observed data"}
+```{r prediction,out.width = "99%", fig.cap = "Predicted cummulative COVID-19 cases in South Africa under the RW(1) and AR(1) model. Estimation period 12/03/2020-10/02/2021. The black dots are the observed cummulative cases. The red dashed lines are for RW(1) and the blue line for AR(1).The shaded bands are the 95% prediction intervals for the predictions with the two models."}
 forcast_cum<-Day7_pred%>%
   ggplot(aes(y=total, x=date2)) +
   geom_blank()+
   geom_point(aes(y=total, x=date2)) +
   geom_line(aes(y=Cum_pred_rw1, x=date2),linetype = "dashed", color="red") +
   geom_line(aes(y=Cum_pred_ar1, x=date2),color="blue") +
+    geom_ribbon(aes(ymin=Cum_pred_rw1_lower, ymax=Cum_pred_rw1_upper), fill="#FF00007F", alpha=0.4) +
+    geom_ribbon(aes(ymin=Cum_pred_ar1_lower, ymax=Cum_pred_ar1_upper), fill='#0000FF7F', alpha=0.4) +
   xlab("Date")+
   ylab("Cummulative observed and fitted cases")+
-  labs(title = "Negative-Binomial model - 7 days a head forcasting")+
+  #labs(title = "Negative-Binomial model - 7 days a head forcasting")+
   theme_bw()
 
 forcast_cum<-forcast_cum+annotate("segment", x = as.Date("2020-10-06","%Y-%m-%d"), xend = as.Date("2021-02-06","%Y-%m-%d"), y = 1500000, yend = 1500000,
-         colour = "blue", size = 1, arrow = arrow())
+         colour = "black", size = 1, arrow = arrow())
 
 forcast_cum_zoom<-Day7_pred[Day7_pred$time>324,]%>%
   ggplot(aes(y=total, x=date2)) +
@@ -367,12 +361,18 @@ names(F2)<-c("Date","Total","Prediction","Prediction Interval")
 
 
 F1%>%
-kable(caption = "Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 05/03/2020-08/02/2021") %>%
-kable_classic_2(full_width = F)
+   mutate(Prediction_error=Total-Prediction)%>%
+  rename("Total - Prediction"=Prediction_error)%>%
+kable(caption = "Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 12/03/2020-10/02/2021") %>%
+kable_classic_2(full_width = F)%>%
+  kableExtra::kable_styling(latex_options = "hold_position")
 
 F2%>%
-kable(caption = "Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 05/03/2020-08/02/2021") %>%
-kable_classic_2(full_width = F)
+  mutate(Prediction_error=Total-Prediction)%>%
+  rename("Total - Prediction"=Prediction_error)%>%
+kable(caption = "Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-10/02/2021") %>%
+kable_classic_2(full_width = F)%>%
+  kableExtra::kable_styling(latex_options = "hold_position")
 
 ```
 
