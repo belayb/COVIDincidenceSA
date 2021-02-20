@@ -116,24 +116,41 @@ sa_cov_dat<-sa_cov_dat%>%mutate(Dialy_cases=-1*(lag(total)-total), Daily_tests=-
 sa_cov_dat<-sa_cov_dat[-1, ]
 
 ```
-The daily number of reported COVID-19 cases from 5 March 2020 to 15 February 2021 is presented in Fig. 1.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The growth of COVID-19 in South Africa appears to be rapid until 27 March 2020 where a total of 243 daily new cases were observed, followed by a decline in the rate of new cases. From the 28 March 2020 to 11 April 2020 the daily increase in cases was consistently below 100. From May 2020 onwards a consistent increase more than 1000 cases per day were observed with larger increments in June.
-
-The daily number of new reported COVID-19 cases and tests performed are presented in Fig. 2. To date, a
-total of 1,353,176 tests have been conducted, corresponding to a testing rate of 22.816 per 1000 population. There was a significant correlation between the number of cases detected and the number of tests performed daily (Rho = 0.7759, p-value< 0.001). The cumulative COVID-19 cases are depicted separately for each of South Africa’s nine provinces in Fig. 3, where a high degree of interprovincial heterogeneity is observed. As at 22 June 2020 the province with the highest number of cases is the Western Cape with 52554 cases, followed by Gauteng and Eastern Cape with 22341 and 16895 cases respectively.
+Figure 1 (Top panel) presents the daily number of reported COVID-19 cases from 5 March 2020 to 15 February 2021.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The first peak of the epidemic was on ----, followed by a second peak in January 2021. 
+Figure 1 (Bottom Panel) presents the cumulative number of new reported COVID-19 cases and tests performed. To date, 1,353,176 tests have been conducted, corresponding to a testing rate of 22.816 per 1000 population. There was a significant correlation between the number of cases detected and the number of tests performed daily (Rho = 0.7759, p-value< 0.001). 
 
 
-```{r ,out.width = "99%",fig.cap = "Observed data - cummulative cases, daily cases, and cummulative tests."}
+
+
+```{r ,out.width = "99%",fig.cap = "Daily new COVID-19 cases."}
 
 p1<-ggplot(sa_cov_dat, aes(x=date2, y=Dialy_cases,group=1))+geom_point()+xlab("Date")+ylab("Daily cases")+theme_bw()
+p1
+```
 
-p2<-ggplot(sa_cov_dat, aes(x=date2, y=total,group=1))+geom_line(size = 1.5)+xlab("Date")+ylab("Cummulative cases")+theme_bw()
+```{r ,out.width = "99%",fig.cap = "cummulative cases and cummulative tests."}
+
+dataa<-gather(sa_cov_dat[,c("date2", "total", "cumulative_tests")], Outcome, count, total:cumulative_tests, factor_key=TRUE)
+dataa<-dataa %>% 
+  mutate(Type = case_when(
+    Outcome=="cumulative_tests" ~ 'Tests',
+    TRUE ~ 'Cases') )
+
+p2<-ggplot(dataa,aes(x=date2, y=count,group=Type))+
+  geom_line(aes(color=Type))+
+  xlab("Date")+ylab("Cumulative count")+
+theme_bw()
+
+p2
+#p2<-ggplot(sa_cov_dat, aes(x=date2, y=total,group=1))+geom_line(size = 1.5)+xlab("Date")+ylab("Cummulative cases")+theme_bw()
 
 
-p3<-ggplot(sa_cov_dat, aes(x=date2, y=cumulative_tests,group=1))+geom_line(size = 1.5)+xlab("Date")+ylab("Cummulative tests")+theme_bw()
+#p3<-ggplot(sa_cov_dat, aes(x=date2, y=cumulative_tests,group=1))+geom_line(size = 1.5)+xlab("Date")+ylab("Cummulative tests")+theme_bw()
 
-p1_3<-p1/p2/p3
+#p1_3<-p1/p2
 
-p1_3
+#p1_3
+
 
 ```
 
@@ -209,10 +226,10 @@ p_rw1_cum<-newdata_rw1%>%
   theme_bw()
 
 #plot of incidence over time 
-p_ar1_inc/p_rw1_inc
+#p_ar1_inc/p_rw1_inc
 
 # plot of cummulative overtime
-p_ar1_cum/p_rw1_cum
+#p_ar1_cum/p_rw1_cum
 ```
 
 ```{r message = FALSE, warning = FALSE}
@@ -299,6 +316,12 @@ Day3_pred<-Day3_pred%>%
   mutate(Cum_pred_ar1=cumsum(AR1_mean),Cum_pred_ar1_lower=cumsum(AR1_lower),Cum_pred_ar1_upper=cumsum(AR1_upper),
          Cum_pred_rw1=cumsum(RW1_mean),Cum_pred_rw1_lower=cumsum(RW1_lower),Cum_pred_rw1_upper=cumsum(RW1_upper))
 ```
+
+## Short-term prediction of the total number of reported COVID-19 cases
+The models described in the previous section were all considered for modeling cumulative cases.The parameter estimates
+for the different models are presented in Supplementary Table 1. As mentioned in the previous section, our main interest is to produce a short term forecast for the number of reported cases and deaths. As depicted
+from the short-term forecasts for the three models fitted to cases (see Fig. 5, Table 2), all three models appear to fit
+the observed data (within the estimation period) well with the 3 parameter and 4 parameter logistic models providing very similar predictions over the 30-day ahead period.
 
 ```{r,out.width = "99%", fig.cap = "Fitted and observed data"}
 forcast_cum<-Day7_pred%>%

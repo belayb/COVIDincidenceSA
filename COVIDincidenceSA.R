@@ -46,7 +46,7 @@ p2<-ggplot(sa_cov_dat, aes(x=date2, y=total,group=1))+geom_line(size = 1.5)+xlab
 
 p3<-ggplot(sa_cov_dat, aes(x=date2, y=cumulative_tests,group=1))+geom_line(size = 1.5)+xlab("Date")+ylab("Cummulative tests")+theme_bw()
 
-p1_3<-p1/p2/p3
+p1_3<-p1/p2
 
 
 # Modeling Daily Cases - Negaive Binomial - AR1 and RW1 model - INLA

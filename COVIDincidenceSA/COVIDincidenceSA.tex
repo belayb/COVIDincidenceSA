@@ -312,93 +312,98 @@ https://github.com/belayb/COVIDincidenceSA.
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-The daily number of reported COVID-19 cases from 5 March 2020 to 15
-February 2021 is presented in Fig. 1. Similar to elsewhere in the world,
-South Africa pass through a two-wave pandemic. The growth of COVID-19 in
-South Africa appears to be rapid until 27 March 2020 where a total of
-243 daily new cases were observed, followed by a decline in the rate of
-new cases. From the 28 March 2020 to 11 April 2020 the daily increase in
-cases was consistently below 100. From May 2020 onwards a consistent
-increase more than 1000 cases per day were observed with larger
-increments in June.
-
-The daily number of new reported COVID-19 cases and tests performed are
-presented in Fig. 2. To date, a total of 1,353,176 tests have been
+Figure 1 (Top panel) presents the daily number of reported COVID-19
+cases from 5 March 2020 to 15 February 2021. Similar to elsewhere in the
+world, South Africa pass through a two-wave pandemic. The first peak of
+the epidemic was on ----, followed by a second peak in January 2021.
+Figure 1 (Bottom Panel) presents the cumulative number of new reported
+COVID-19 cases and tests performed. To date, 1,353,176 tests have been
 conducted, corresponding to a testing rate of 22.816 per 1000
 population. There was a significant correlation between the number of
 cases detected and the number of tests performed daily (Rho = 0.7759,
-p-value\textless{} 0.001). The cumulative COVID-19 cases are depicted
-separately for each of South Africa's nine provinces in Fig. 3, where a
-high degree of interprovincial heterogeneity is observed. As at 22 June
-2020 the province with the highest number of cases is the Western Cape
-with 52554 cases, followed by Gauteng and Eastern Cape with 22341 and
-16895 cases respectively.
+p-value\textless{} 0.001).
 
 \begin{figure}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-4-1} \caption{Observed data - cummulative cases, daily cases, and cummulative tests.}\label{fig:unnamed-chunk-4}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-4-1} \caption{Daily new COVID-19 cases.}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-6-1}
-\end{figure}
-\begin{figure}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-2} \caption{Fitted and observed data}\label{fig:unnamed-chunk-6-2}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1} \caption{cummulative cases and cummulative tests.}\label{fig:unnamed-chunk-5}
 \end{figure}
 
+\hypertarget{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}{%
+\subsection{Short-term prediction of the total number of reported
+COVID-19
+cases}\label{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}}
+
+The models described in the previous section were all considered for
+modeling cumulative cases.The parameter estimates for the different
+models are presented in Supplementary Table 1. As mentioned in the
+previous section, our main interest is to produce a short term forecast
+for the number of reported cases and deaths. As depicted from the
+short-term forecasts for the three models fitted to cases (see Fig. 5,
+Table 2), all three models appear to fit the observed data (within the
+estimation period) well with the 3 parameter and 4 parameter logistic
+models providing very similar predictions over the 30-day ahead period.
+
 \begin{figure}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-8-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-8}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-9-1} \caption{Fitted and observed data}\label{fig:unnamed-chunk-9}
 \end{figure}
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-9}Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 05/03/2020-08/02/2021}
+\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 05/03/2020-08/02/2021}
 \centering
 \begin{tabular}[t]{l|l|r|r|l}
 \hline
   & Date & Total & Prediction & Prediction Interval\\
 \hline
-329 & 2021-02-11 & 1484900 & 1485428 & (1172842.09-1870720.62)\\
+329 & 2021-02-11 & 1484900 & 1485425 & (1172933.36-1870556.26)\\
 \hline
-330 & 2021-02-12 & 1487681 & 1488627 & (1174078.09-1877670.74)\\
+330 & 2021-02-12 & 1487681 & 1488625 & (1174169.39-1877507.47)\\
 \hline
-331 & 2021-02-13 & 1490063 & 1491974 & (1175111.23-1885997.96)\\
+331 & 2021-02-13 & 1490063 & 1491972 & (1175202.53-1885836.24)\\
 \hline
-332 & 2021-02-14 & 1491807 & 1495474 & (1175998.07-1895708.26)\\
+332 & 2021-02-14 & 1491807 & 1495472 & (1176089.35-1895548.55)\\
 \hline
-333 & 2021-02-15 & 1492909 & 1499135 & (1176772.74-1906833.8)\\
+333 & 2021-02-15 & 1492909 & 1499134 & (1176864-1906676.65)\\
 \hline
-334 & 2021-02-16 & 1494119 & 1502964 & (1177458.02-1919420.56)\\
+334 & 2021-02-16 & 1494119 & 1502964 & (1177549.26-1919266.52)\\
 \hline
-335 & 2021-02-17 & 1496439 & 1506970 & (1178069.88-1933523.08)\\
+335 & 2021-02-17 & 1496439 & 1506970 & (1178161.06-1933372.71)\\
 \hline
-336 & 2021-02-18 & 1498766 & 1511161 & (1178620.26-1949202.45)\\
+336 & 2021-02-18 & 1498766 & 1511162 & (1178711.39-1949056.38)\\
+\hline
+337 & 2021-02-19 & 1500677 & 1515548 & (1179209.55-1966383.94)\\
 \hline
 \end{tabular}
 \end{table}
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-9}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 05/03/2020-08/02/2021}
+\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 05/03/2020-08/02/2021}
 \centering
 \begin{tabular}[t]{l|l|r|r|l}
 \hline
   & Date & Total & Prediction & Prediction Interval\\
 \hline
-329 & 2021-02-11 & 1484900 & 1486313 & (1107420.06-1978167.1)\\
+329 & 2021-02-11 & 1484900 & 1486312 & (1107420.98-1978162.82)\\
 \hline
-330 & 2021-02-12 & 1487681 & 1489174 & (1108638.8-1983985.58)\\
+330 & 2021-02-12 & 1487681 & 1489173 & (1108639.61-1983981.29)\\
 \hline
-331 & 2021-02-13 & 1490063 & 1492103 & (1109680.89-1990664.01)\\
+331 & 2021-02-13 & 1490063 & 1492102 & (1109681.58-1990659.34)\\
 \hline
-332 & 2021-02-14 & 1491807 & 1495101 & (1110591.41-1998165.79)\\
+332 & 2021-02-14 & 1491807 & 1495099 & (1110591.96-1998160.29)\\
 \hline
-333 & 2021-02-15 & 1492909 & 1498168 & (1111398.33-2006470.45)\\
+333 & 2021-02-15 & 1492909 & 1498166 & (1111398.75-2006463.55)\\
 \hline
-334 & 2021-02-16 & 1494119 & 1501306 & (1112121.28-2015567.08)\\
+334 & 2021-02-16 & 1494119 & 1501303 & (1112121.57-2015558.08)\\
 \hline
-335 & 2021-02-17 & 1496439 & 1504514 & (1112774.55-2025449.16)\\
+335 & 2021-02-17 & 1496439 & 1504510 & (1112774.74-2025437.2)\\
 \hline
-336 & 2021-02-18 & 1498766 & 1507795 & (1113368.94-2036113.49)\\
+336 & 2021-02-18 & 1498766 & 1507790 & (1113369.03-2036097.59)\\
+\hline
+337 & 2021-02-19 & 1500677 & 1511143 & (1113912.84-2047538.12)\\
 \hline
 \end{tabular}
 \end{table}
