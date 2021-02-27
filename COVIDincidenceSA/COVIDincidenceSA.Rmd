@@ -6,6 +6,7 @@ author:
     affiliation: 
     - Arthritis Research UK Centre for Epidemiology, Division of Musculoskeletal and Dermatological Sciences, The University of Manchester, Manchester; 
     - Interuniversity Institute for Biostatistics and statistical Bioinformatics (I-BioStat), Hasselt University, Diepenbeek, Belgium.
+    
   - name: Ziv Shkedy
     email: ziv.shkedy@uhasselt.be
     affiliation: 
@@ -37,11 +38,11 @@ To be updated
 
 ## Data 
 
-We downloaded data from Coronavirus COVID-19 (2019-nCoV) Data Repository for South Africa maintained by Data Science for Social Impact research group at the University of Pretoria [ref]. The data repository captures the daily number of new cases, number of tests, number of deaths and recoveries. Our primary outcome of interest was the daily number of newly diagnosed COVID-19 cases and the unit of time used in modelling was a day. We used the daily case reports from March 12, 2020, until February 15, 2021, in our analysis.
+We downloaded data from Coronavirus COVID-19 (2019-nCoV) Data Repository for South Africa maintained by Data Science for Social Impact research group at the University of Pretoria [ref]. The data repository captures the daily number of new cases, number of tests, number of deaths and recoveries. Our primary outcome of interest was the daily number of newly diagnosed COVID-19 cases and the unit of time used in modelling was a day. We used the daily case reports from March 12, 2020, until February 27, 2021, in our analysis.
 
 
 ## Statistical analysis 
-We considered two widely used temporal models to model the daily number of newly diagnosed COVID-19 cases. We let $Y(t)$ denote the daily number of newly diagnosed COVID-19 cases at time $t$ and $\mu(t)$ represent the expected number of cases at time $t$. We considered a Negative binomial distribution for $Y(t)$ to account for possible overdispersion. That is, $Y(t) \sim NB(\mu(t), \delta)$, where $\delta$ is the overdispersion parameter. We considered two temporal models to capture the trend over time: a random walk of order one ($RW(1)$) and an autoregressive model of order one ($AR(1)$) [ref]. The two models were chosen becuse 
+We considered two widely used temporal models to model the daily number of newly diagnosed COVID-19 cases. We let $Y(t)$ denote the daily number of newly diagnosed COVID-19 cases at time $t$ and $\mu(t)$ represent the expected number of cases at time $t$. We considered a Negative binomial distribution for $Y(t)$ to account for possible overdispersion. That is, $Y(t) \sim NB(\mu(t), \delta)$, where $\delta$ is the overdispersion parameter. We considered two temporal models to capture the trend over time: a random walk of order two ($RW(2)$) and an autoregressive model of order one ($AR(1)$) [@gomez2020bayesian]. We also considerd a $RW(1)$ model,  but the model overfits the data (see Sece 2 in the supplemntary appendix). Similarly, we considerd an $AR$ model order $p=2$ but the result is similar to $AR1$ model and we prefer the simpler $AR1$ model. 
 
 The $AR(1)$ model [@gomez2020bayesian] is given by, 
 
@@ -54,14 +55,14 @@ $$
   \epsilon_t & \sim N(0, \tau_{\epsilon}),
 \end{aligned}
 $$
-where,  $\alpha$ is an intercept,  $\rho$ a temporal correlation term (with  $|\rho|<1$) and  $\epsilon_t$ is a Gaussian error term with zero mean and precision  $\tau_u$.
+where,  $\alpha$ is an intercept,  $\rho$ a temporal correlation term (with  $|\rho|<1$) and  $\epsilon_t$ is a Gaussian error term with zero mean and precision  $\tau_{\epsilon}$.
 
-Similarly, the $RW(1)$ model [@gomez2020bayesian] is given by, 
+Similarly, the $RW(2)$ model [@gomez2020bayesian] is given by, 
 $$
 \begin{aligned}
  Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
  log(\mu(t)) &= \alpha+u_t, \\
- u_t-u_{t-1} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
+ u_t-2u_{t+1}+u_{t+2} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
 \end{aligned}
 $$
 where $\alpha$ is the intercept term as before and $\tau_u$ is the precison parameter. 
@@ -88,6 +89,7 @@ library(patchwork)
 library(lubridate)
 library(kableExtra)
 library(data.table)
+library(inlabru)
 ```
 
 ```{r message = FALSE, warning = FALSE}
@@ -112,18 +114,20 @@ sa_cov_dat<-sa_cov_dat%>%mutate(Dialy_cases=-1*(lag(total)-total), Daily_tests=-
 sa_cov_dat<-sa_cov_dat[-1, ]
 
 ```
-Figure 1 presents the daily number of reported COVID-19 cases from 12 March 2020 to 19 February 2021.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The pandemic's first peak was on 07 July 2020, where up to 13944 new COVID-19 cases reported, followed by a second peak in January 2021, where more than 21,000 daily cases reported. 
+Figure 1 presents the daily number of reported COVID-19 cases from 12 March 2020 to 27 February 2021.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The pandemic's first peak was on 07 July 2020, where up to 13944 new COVID-19 cases reported, followed by a second peak in January 2021, where more than 21,000 daily cases reported. 
 Figure 2 presents the cumulative number of new reported COVID-19 cases and tests performed. To date, 8,838,937 tests have been conducted, and a total of 1,500,677 cases reported.
 
 
 
-```{r daily-cases,out.width = "99%",fig.cap = "Daily number of COVID-19 cases in South Africa from 12/03/2020-19/02/2021."}
+```{r daily-cases,out.width = "99%",fig.cap = "Daily number of COVID-19 cases in South Africa from 12/03/2020-27/02/2021."}
 
 p1<-ggplot(sa_cov_dat, aes(x=date2, y=Dialy_cases,group=1))+geom_point()+xlab("Date")+ylab("Daily cases")+theme_bw()
 p1
+
 ```
 
-```{r cummulative,out.width = "99%",fig.cap = "The cummulative number of COVID-19 cases and Cummulative number of tests in South Africa from 12/03/2020-19/02/2021. Red-line denote the number of cases and blue-line denotes the number of tests."}
+
+```{r cummulative,out.width = "99%",fig.cap = "The cummulative number of COVID-19 cases and Cummulative number of tests in South Africa from 12/03/2020-27/02/2021. Red-line denote the number of cases and blue-line denotes the number of tests."}
 
 dataa<-gather(sa_cov_dat[,c("date2", "total", "cumulative_tests")], Outcome, count, total:cumulative_tests, factor_key=TRUE)
 dataa<-dataa %>% 
@@ -149,15 +153,27 @@ p2
 
 ```
 
+
+
 ```{r message = FALSE, warning = FALSE}
-# Modeling Daily Cases - Negaive Binomial - AR1 and RW1 model - INLA
+# Modeling Daily Cases - Negaive Binomial - AR1 and rw2 model - INLA
 # crate a new process time column from date2
 
 sa_cov_dat<-sa_cov_dat%>%mutate(time=cumsum(c(0,diff.Date(date2))))
+delta<-1
+sa_cov_dat<-sa_cov_dat%>%mutate(time_deriv=time+delta)
+
+U <- 0.5#1
+
+hyper.prec <- list(theta = list(prior = "pc.prec", param = c(U, 0.75)))#0.01
 
 fomula_ar1<-Dialy_cases ~ 1 + f(time, model = "ar1",
                                hyper = list(prec = list(param = c(0.1, 0.1))))
-fomula_rw1<-Dialy_cases ~ 1 + f(time, model = "rw1",
+fomula_rw2<-Dialy_cases ~ 1 + f(time, model = "rw2", scale.model = TRUE, 
+                              hyper = hyper.prec)
+fomula_rw2_deriv1<-Dialy_cases ~ 1 + f(time_deriv, model = "rw2", scale.model = TRUE, 
+                              hyper = hyper.prec)
+fomula_ar1_deriv1<-Dialy_cases ~ 1 + f(time_deriv, model = "ar1",
                                hyper = list(prec = list(param = c(0.1, 0.1))))
 
 nb.ar1 <- inla(fomula_ar1,                   
@@ -165,7 +181,7 @@ nb.ar1 <- inla(fomula_ar1,
                family = "nbinomial",
                control.predictor = list(compute = TRUE),
                control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
-nb.rw1 <- inla(fomula_rw1,                   
+nb.rw2 <- inla(fomula_rw2,                   
                data = sa_cov_dat,
                family = "nbinomial",
                control.predictor = list(compute = TRUE),
@@ -175,26 +191,64 @@ nb.rw1 <- inla(fomula_rw1,
 
 newdata_ar1<-cbind(sa_cov_dat[,c("date2","Dialy_cases")],nb.ar1$summary.fitted.values)
 newdata_ar1 <- reshape:::rename(newdata_ar1, c("0.025quant"="lower", "0.975quant"="upper"))
+
+newdata_rw2<-cbind(sa_cov_dat[,c("date2","Dialy_cases")],nb.rw2$summary.fitted.values)
+newdata_rw2 <- reshape:::rename(newdata_rw2, c("0.025quant"="lower", "0.975quant"="upper"))
+
+nb.rw2_deriv <- inla(fomula_rw2_deriv1,                   
+               data = sa_cov_dat,
+               family = "nbinomial",
+               control.predictor = list(compute = TRUE),
+               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+
+nb.ar1_deriv <- inla(fomula_ar1_deriv1,                   
+               data = sa_cov_dat,
+               family = "nbinomial",
+               control.predictor = list(compute = TRUE),
+               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+
+
+f1_rw2<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.rw2$summary.fitted.values)
+f1_rw2 <- reshape:::rename(f1_rw2, c("0.025quant"="lower", "0.975quant"="upper"))
+
+f2_rw2<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.rw2_deriv$summary.fitted.values)
+f2_rw2 <- reshape:::rename(f2_rw2, c("0.025quant"="lower", "0.975quant"="upper"))
+
+f21_rw2<-sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")]
+f21_rw2$deriv<-(f2_rw2$mean-f1_rw2$mean)/delta
+f21_rw2$L_deriv<-(f2_rw2$lower-f1_rw2$lower)/delta
+f21_rw2$U_deriv<-(f2_rw2$upper-f1_rw2$upper)/delta
+
+f1_ar1<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.ar1$summary.fitted.values)
+f1_ar1 <- reshape:::rename(f1_ar1, c("0.025quant"="lower", "0.975quant"="upper"))
+
+f2_ar1<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.ar1_deriv$summary.fitted.values)
+f2_ar1 <- reshape:::rename(f2_ar1, c("0.025quant"="lower", "0.975quant"="upper"))
+
+f21_ar1<-sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")]
+f21_ar1$deriv<-(f2_ar1$mean-f1_ar1$mean)/delta
+f21_ar1$L_deriv<-(f2_ar1$lower-f1_ar1$lower)/delta
+f21_ar1$U_deriv<-(f2_ar1$upper-f1_ar1$upper)/delta
+
+
+```
+
+
+```{r ,out.width = "99%",fig.cap = "Fitted and observed data AR1 model"}
 p_ar1_inc<-ggplot(newdata_ar1, 
                   aes(y=mean, x=date2)) +geom_blank()+geom_point(aes(y=Dialy_cases, x=date2)) +
                   geom_ribbon(aes(ymin=lower, ymax=upper), fill='blue', alpha=0.6) +
                   geom_line(aes(y=mean, x=date2)) +xlab("Date")+
-                  ylab("Daily observed and fitted cases")+
+                  ylab("Observed and fitted cases")+
                   labs(title = "Negative-Binomial with AR(1) model" )+
                   theme_bw()
 
-
-newdata_rw1<-cbind(sa_cov_dat[,c("date2","Dialy_cases")],nb.rw1$summary.fitted.values)
-newdata_rw1 <- reshape:::rename(newdata_rw1, c("0.025quant"="lower", "0.975quant"="upper"))
-```
-
-```{r ,out.width = "99%",fig.cap = "Fitted and observed data"}
-p_rw1_inc<-ggplot(newdata_rw1, aes(y=mean, x=date2)) +
+p_rw2_inc<-ggplot(newdata_rw2, aes(y=mean, x=date2)) +
   geom_blank()+
   geom_point(aes(y=Dialy_cases, x=date2)) +
   geom_ribbon(aes(ymin=lower, ymax=upper), fill='blue', alpha=0.6) +
-  geom_line(aes(y=mean, x=date2)) +xlab("Date")+ylab("Daily observed and fitted cases")+
-  labs(title = "Negative-Binomial with RW(1) model" )+
+  geom_line(aes(y=mean, x=date2)) +xlab("Date")+ylab("Observed and fitted cases")+
+  labs(title = "Negative-Binomial with RW(2) model" )+
   theme_bw()
 
 p_ar1_cum<-newdata_ar1%>%
@@ -208,7 +262,7 @@ p_ar1_cum<-newdata_ar1%>%
   ylab("cummulative observed and fitted cases")+
   labs(title = "Negative-Binomial with AR(1) model" )+
   theme_bw()
-p_rw1_cum<-newdata_rw1%>%
+p_rw2_cum<-newdata_rw2%>%
   mutate(Cumm_fitted=cumsum(mean), Cumm_fitted_lower=cumsum(lower),
          Cumm_fitted_upper=cumsum(upper),Cumm_observed=cumsum(Dialy_cases))%>%
   ggplot(aes(y=Cumm_fitted, x=date2)) +
@@ -217,15 +271,33 @@ p_rw1_cum<-newdata_rw1%>%
   geom_ribbon(aes(ymin=Cumm_fitted_lower, ymax=Cumm_fitted_upper), fill='blue', alpha=0.6) +
   geom_line(aes(y=Cumm_fitted, x=date2)) +xlab("Date")+
   ylab("cummulative observed and fitted cases")+
-  labs(title = "Negative-Binomial with RW(1) model" )+
+  labs(title = "Negative-Binomial with RW(2) model" )+
   theme_bw()
-
+p_rw2_inc_deriv<-ggplot(f21_rw2, aes(y=deriv, x=date2)) +
+  geom_blank()+
+  #geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
+  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
+  labs(title = "Derivative of the smooth Curve" )+
+  theme_bw()
+p_ar1_inc_deriv<-ggplot(f21_ar1, aes(y=deriv, x=date2)) +
+  geom_blank()+
+  #geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
+  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
+  labs(title = "Derivative of the smooth Curve" )+
+  theme_bw()
 #plot of incidence over time 
-#p_ar1_inc/p_rw1_inc
+p_ar1_inc/p_ar1_inc_deriv
+
+```
+
+
+```{r ,out.width = "99%",fig.cap = "Fitted and observed data RW2 model"}
+p_rw2_inc/p_rw2_inc_deriv
 
 # plot of cummulative overtime
-#p_ar1_cum/p_rw1_cum
+#p_ar1_cum/p_rw2_cum
 ```
+
 
 ```{r message = FALSE, warning = FALSE}
 # Do Forcasting 
@@ -235,94 +307,99 @@ sa_cov_dat$Dialy_cases7<-sa_cov_dat$Dialy_cases
 
 sa_cov_dat$Dialy_cases3[sa_cov_dat$time>339]<-NA
 sa_cov_dat$Dialy_cases5[sa_cov_dat$time>337]<-NA
-sa_cov_dat$Dialy_cases7[sa_cov_dat$time>335]<-NA
+sa_cov_dat$Dialy_cases7[sa_cov_dat$time>345]<-NA
 
 fomula_ar1_3<-Dialy_cases3 ~ 1 + f(time, model = "ar1",
                                 hyper = list(prec = list(param = c(0.1, 0.1))))
-fomula_rw1_3<-Dialy_cases3 ~ 1 + f(time, model = "rw1",
+fomula_rw2_3<-Dialy_cases3 ~ 1 + f(time, model = "rw2",
                                 hyper = list(prec = list(param = c(0.1, 0.1))))
 fomula_ar1_5<-Dialy_cases5 ~ 1 + f(time, model = "ar1",
                                  hyper = list(prec = list(param = c(0.1, 0.1))))
-fomula_rw1_5<-Dialy_cases5 ~ 1 + f(time, model = "rw1",
+fomula_rw2_5<-Dialy_cases5 ~ 1 + f(time, model = "rw2",
                                  hyper = list(prec = list(param = c(0.1, 0.1))))
 fomula_ar1_7<-Dialy_cases7 ~ 1 + f(time, model = "ar1",
                                  hyper = list(prec = list(param = c(0.1, 0.1))))
-fomula_rw1_7<-Dialy_cases7 ~ 1 + f(time, model = "rw1",
-                                 hyper = list(prec = list(param = c(0.1, 0.1))))
+fomula_rw2_7<-Dialy_cases7 ~ 1 + f(time, model = "rw2", scale.model = TRUE, 
+                              hyper = hyper.prec)
 
-nb.ar1_3 <- inla(fomula_ar1_3,                   
-               data = sa_cov_dat,
-               family = "nbinomial",
-               control.predictor = list(compute = TRUE, link = 1),
-               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
-nb.rw1_3 <- inla(fomula_rw1_3,                   
-               data = sa_cov_dat,
-               family = "nbinomial",
-               control.predictor = list(compute = TRUE, link = 1),
-               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
-nb.ar1_5 <- inla(fomula_ar1_5,                   
-                 data = sa_cov_dat,
-                 family = "nbinomial",
-                 control.predictor = list(compute = TRUE, link = 1),
-                 control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
-nb.rw1_5 <- inla(fomula_rw1_5,                   
-                 data = sa_cov_dat,
-                 family = "nbinomial",
-                 control.predictor = list(compute = TRUE, link = 1),
-                 control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+# #nb.ar1_3 <- inla(fomula_ar1_3,                   
+#                data = sa_cov_dat,
+#                family = "nbinomial",
+#                control.predictor = list(compute = TRUE, link = 1),
+#                control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+# nb.rw2_3 <- inla(fomula_rw2_3,                   
+#                data = sa_cov_dat,
+#                family = "nbinomial",
+#                control.predictor = list(compute = TRUE, link = 1),
+#                control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+# nb.ar1_5 <- inla(fomula_ar1_5,                   
+#                  data = sa_cov_dat,
+#                  family = "nbinomial",
+#                  control.predictor = list(compute = TRUE, link = 1),
+#                  control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+# nb.rw2_5 <- inla(fomula_rw2_5,                   
+#                  data = sa_cov_dat,
+#                  family = "nbinomial",
+#                  control.predictor = list(compute = TRUE, link = 1),
+#                  control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
 nb.ar1_7 <- inla(fomula_ar1_7,                   
                  data = sa_cov_dat,
                  family = "nbinomial",
                  control.predictor = list(compute = TRUE, link = 1),
                  control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
-nb.rw1_7 <- inla(fomula_rw1_7,                   
+nb.rw2_7 <- inla(fomula_rw2_7,                   
                  data = sa_cov_dat,
                  family = "nbinomial",
                  control.predictor = list(compute = TRUE, link = 1),
                  control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
 
-nb.rw1_3_pred<-nb.rw1_3$summary.fitted.values[,c(1,3,5)]
-nb.rw1_5_pred<-nb.rw1_5$summary.fitted.values[,c(1,3,5)]
-nb.rw1_7_pred<-nb.rw1_7$summary.fitted.values[,c(1,3,5)]
-nb.ar1_3_pred<-nb.ar1_3$summary.fitted.values[,c(1,3,5)]
-nb.ar1_5_pred<-nb.ar1_5$summary.fitted.values[,c(1,3,5)]
+# # nb.rw2_3_pred<-nb.rw2_3$summary.fitted.values[,c(1,3,5)]
+# nb.rw2_5_pred<-nb.rw2_5$summary.fitted.values[,c(1,3,5)]
+nb.rw2_7_pred<-nb.rw2_7$summary.fitted.values[,c(1,3,5)]
+# nb.ar1_3_pred<-nb.ar1_3$summary.fitted.values[,c(1,3,5)]
+# nb.ar1_5_pred<-nb.ar1_5$summary.fitted.values[,c(1,3,5)]
 nb.ar1_7_pred<-nb.ar1_7$summary.fitted.values[,c(1,3,5)]
 
-nb.rw1_3_pred <- reshape:::rename(nb.rw1_3_pred, c("0.025quant"="RW1_lower", "0.975quant"="RW1_upper","mean"="RW1_mean"))
-nb.ar1_3_pred <- reshape:::rename(nb.ar1_3_pred, c("0.025quant"="AR1_lower", "0.975quant"="AR1_upper","mean"="AR1_mean"))
-Day3_pred<-cbind(sa_cov_dat,nb.rw1_3_pred,nb.ar1_3_pred)
+# nb.rw2_3_pred <- reshape:::rename(nb.rw2_3_pred, c("0.025quant"="rw2_lower", "0.975quant"="rw2_upper","mean"="rw2_mean"))
+# nb.ar1_3_pred <- reshape:::rename(nb.ar1_3_pred, c("0.025quant"="AR1_lower", "0.975quant"="AR1_upper","mean"="AR1_mean"))
+# Day3_pred<-cbind(sa_cov_dat,nb.rw2_3_pred,nb.ar1_3_pred)
+# 
+# nb.rw2_5_pred <- reshape:::rename(nb.rw2_5_pred, c("0.025quant"="rw2_lower", "0.975quant"="rw2_upper","mean"="rw2_mean"))
+# nb.ar1_5_pred <- reshape:::rename(nb.ar1_5_pred, c("0.025quant"="AR1_lower", "0.975quant"="AR1_upper","mean"="AR1_mean"))
+# Day5_pred<-cbind(sa_cov_dat,nb.rw2_5_pred,nb.ar1_5_pred)
 
-nb.rw1_5_pred <- reshape:::rename(nb.rw1_5_pred, c("0.025quant"="RW1_lower", "0.975quant"="RW1_upper","mean"="RW1_mean"))
-nb.ar1_5_pred <- reshape:::rename(nb.ar1_5_pred, c("0.025quant"="AR1_lower", "0.975quant"="AR1_upper","mean"="AR1_mean"))
-Day5_pred<-cbind(sa_cov_dat,nb.rw1_5_pred,nb.ar1_5_pred)
-
-nb.rw1_7_pred <- reshape:::rename(nb.rw1_7_pred, c("0.025quant"="RW1_lower", "0.975quant"="RW1_upper","mean"="RW1_mean"))
+nb.rw2_7_pred <- reshape:::rename(nb.rw2_7_pred, c("0.025quant"="rw2_lower", "0.975quant"="rw2_upper","mean"="rw2_mean"))
 nb.ar1_7_pred <- reshape:::rename(nb.ar1_7_pred, c("0.025quant"="AR1_lower", "0.975quant"="AR1_upper","mean"="AR1_mean"))
-Day7_pred<-cbind(sa_cov_dat,nb.rw1_7_pred,nb.ar1_7_pred)
+Day7_pred<-cbind(sa_cov_dat,nb.rw2_7_pred,nb.ar1_7_pred)
 
 #----Present the result as a table as well as plot 
 Day7_pred<-Day7_pred%>%
   mutate(Cum_pred_ar1=cumsum(AR1_mean),Cum_pred_ar1_lower=cumsum(AR1_lower),Cum_pred_ar1_upper=cumsum(AR1_upper),
-         Cum_pred_rw1=cumsum(RW1_mean),Cum_pred_rw1_lower=cumsum(RW1_lower),Cum_pred_rw1_upper=cumsum(RW1_upper))
-Day5_pred<-Day5_pred%>%
-  mutate(Cum_pred_ar1=cumsum(AR1_mean),Cum_pred_ar1_lower=cumsum(AR1_lower),Cum_pred_ar1_upper=cumsum(AR1_upper),
-         Cum_pred_rw1=cumsum(RW1_mean),Cum_pred_rw1_lower=cumsum(RW1_lower),Cum_pred_rw1_upper=cumsum(RW1_upper))
-Day3_pred<-Day3_pred%>%
-  mutate(Cum_pred_ar1=cumsum(AR1_mean),Cum_pred_ar1_lower=cumsum(AR1_lower),Cum_pred_ar1_upper=cumsum(AR1_upper),
-         Cum_pred_rw1=cumsum(RW1_mean),Cum_pred_rw1_lower=cumsum(RW1_lower),Cum_pred_rw1_upper=cumsum(RW1_upper))
+         Cum_pred_rw2=cumsum(rw2_mean),Cum_pred_rw2_lower=cumsum(rw2_lower),Cum_pred_rw2_upper=cumsum(rw2_upper))
+# Day5_pred<-Day5_pred%>%
+#   mutate(Cum_pred_ar1=cumsum(AR1_mean),Cum_pred_ar1_lower=cumsum(AR1_lower),Cum_pred_ar1_upper=cumsum(AR1_upper),
+#          Cum_pred_rw2=cumsum(rw2_mean),Cum_pred_rw2_lower=cumsum(rw2_lower),Cum_pred_rw2_upper=cumsum(rw2_upper))
+# Day3_pred<-Day3_pred%>%
+#   mutate(Cum_pred_ar1=cumsum(AR1_mean),Cum_pred_ar1_lower=cumsum(AR1_lower),Cum_pred_ar1_upper=cumsum(AR1_upper),
+#          Cum_pred_rw2=cumsum(rw2_mean),Cum_pred_rw2_lower=cumsum(rw2_lower),Cum_pred_rw2_upper=cumsum(rw2_upper))
 ```
 
-## Short-term prediction of the total number of reported COVID-19 cases
-We fit the two models described in the previous section to the daily reported new COVID-19 cases. The parameter estimates for the two models are presented in Supplementary Table 1. As depicted in Figure 3, two models fitted to the data appear to fit the observed data (within the estimation period) well with a narrow confidence interval obtained for the RW(1) model.  The RW(1) and AR(1) models also provide very similar predictions over the 9-day ahead period.
 
-```{r prediction,out.width = "99%", fig.cap = "Predicted cummulative COVID-19 cases in South Africa under the RW(1) and AR(1) model. Estimation period 12/03/2020-10/02/2021. The black dots are the observed cummulative cases. The red dashed lines are for RW(1) and the blue line for AR(1).The shaded bands are the 95% prediction intervals for the predictions with the two models."}
+
+## Short-term prediction of the total number of reported COVID-19 cases
+
+We fit the two models described in the previous section to the daily reported new COVID-19 cases. The parameter estimates for the two models are presented in Supplementary Table 1. As depicted in Figure 3, two models fitted to the data appear to fit the observed data (within the estimation period) well with a narrow confidence interval obtained for the $RW(2)$ model.  The two models provides similar predictions over the 7-day ahead period.
+
+
+
+```{r message = FALSE, warning = FALSE}
 forcast_cum<-Day7_pred%>%
   ggplot(aes(y=total, x=date2)) +
   geom_blank()+
   geom_point(aes(y=total, x=date2)) +
-  geom_line(aes(y=Cum_pred_rw1, x=date2),linetype = "dashed", color="red") +
+  geom_line(aes(y=Cum_pred_rw2, x=date2),linetype = "dashed", color="red") +
   geom_line(aes(y=Cum_pred_ar1, x=date2),color="blue") +
-    geom_ribbon(aes(ymin=Cum_pred_rw1_lower, ymax=Cum_pred_rw1_upper), fill="#FF00007F", alpha=0.4) +
+    geom_ribbon(aes(ymin=Cum_pred_rw2_lower, ymax=Cum_pred_rw2_upper), fill="#FF00007F", alpha=0.4) +
     geom_ribbon(aes(ymin=Cum_pred_ar1_lower, ymax=Cum_pred_ar1_upper), fill='#0000FF7F', alpha=0.4) +
   xlab("Date")+
   ylab("Cummulative observed and fitted cases")+
@@ -336,25 +413,32 @@ forcast_cum_zoom<-Day7_pred[Day7_pred$time>324,]%>%
   ggplot(aes(y=total, x=date2)) +
   geom_blank()+
   geom_point(aes(y=total, x=date2)) +
-  geom_line(aes(y=Cum_pred_rw1, x=date2),linetype = "dashed", color="red") +
+  geom_line(aes(y=Cum_pred_rw2, x=date2),linetype = "dashed", color="red") +
   geom_line(aes(y=Cum_pred_ar1, x=date2),color="blue") +
   ylab(" ")+
   xlab("Date")+
   theme_bw()
 
-forcast_cum_all<-forcast_cum + inset_element(forcast_cum_zoom, left =0.3, right =0.7, bottom = 0.5, top =0.99)
-forcast_cum_all
+forcast_cum_all<-forcast_cum + inset_element(forcast_cum_zoom, left =0.1, right =0.7, bottom = 0.5, top =0.99)
+
 ```
+
+```{r predd,out.width = "99%", fig.cap = "Predicted cummulative COVID-19 cases in South Africa under the RW(1) and AR(1) model. Estimation period 12/03/2020-20/02/2021. The black dots are the observed cummulative cases. The red dashed lines are for RW(2) and the blue line for AR(1).The shaded bands are the prediction intervals. "}
+
+forcast_cum_all
+
+```
+
 
 ```{r message = FALSE, warning = FALSE}
 # table 
-Frocasting7<-Day7_pred[Day7_pred$time>335,c("date2","total","Cum_pred_rw1", "Cum_pred_rw1_lower", "Cum_pred_rw1_upper"
+Frocasting7<-Day7_pred[Day7_pred$time>345,c("date2","total","Cum_pred_rw2", "Cum_pred_rw2_lower", "Cum_pred_rw2_upper"
                                             ,"Cum_pred_ar1", "Cum_pred_ar1_lower", "Cum_pred_ar1_upper")]
 
-Frocasting7$Pred_Int_rw1<-paste0("(",round(Frocasting7$Cum_pred_rw1_lower,digits=2), "-", round(Frocasting7$Cum_pred_rw1_upper,digits=2),")")
+Frocasting7$Pred_Int_rw2<-paste0("(",round(Frocasting7$Cum_pred_rw2_lower,digits=2), "-", round(Frocasting7$Cum_pred_rw2_upper,digits=2),")")
 Frocasting7$Pred_Int_ar1<-paste0("(",round(Frocasting7$Cum_pred_ar1_lower,digits=2), "-", round(Frocasting7$Cum_pred_ar1_upper,digits=2),")")
 
-F1<-Frocasting7[,c("date2","total","Cum_pred_rw1","Pred_Int_rw1")]
+F1<-Frocasting7[,c("date2","total","Cum_pred_rw2","Pred_Int_rw2")]
 F2<-Frocasting7[,c("date2","total","Cum_pred_ar1","Pred_Int_ar1")]
 names(F1)<-c("Date","Total","Prediction","Prediction Interval")
 names(F2)<-c("Date","Total","Prediction","Prediction Interval")
@@ -363,21 +447,50 @@ names(F2)<-c("Date","Total","Prediction","Prediction Interval")
 F1%>%
    mutate(Prediction_error=Total-Prediction)%>%
   rename("Total - Prediction"=Prediction_error)%>%
-kable(caption = "Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 12/03/2020-10/02/2021") %>%
+kable(caption = "Short-term predictions of total number of reported cases at the national level under the rw2 model. Estimation period 12/03/2020-20/02/2021") %>%
 kable_classic_2(full_width = F)%>%
   kableExtra::kable_styling(latex_options = "hold_position")
 
 F2%>%
   mutate(Prediction_error=Total-Prediction)%>%
   rename("Total - Prediction"=Prediction_error)%>%
-kable(caption = "Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-10/02/2021") %>%
+kable(caption = "Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-20/02/2021") %>%
 kable_classic_2(full_width = F)%>%
   kableExtra::kable_styling(latex_options = "hold_position")
 
 ```
 
 
+```{r message = FALSE, warning = FALSE}
+# table 
+Summary_ar1<-round(rbind(nb.ar1$summary.fixed[,c(1,2,3,5)],nb.ar1$summary.hyperpar[,c(1,2,3,5)]),digits=3)
+row.names(Summary_ar1)[2]<-"Size"
+Summary_ar1%>%
+kable(caption = "Parameter estimates AR1 model") %>%
+kable_classic_2(full_width = F)%>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+
+Summary_rw2<-round(rbind(nb.rw2$summary.fixed[,c(1,2,3,5)],nb.rw2$summary.hyperpar[,c(1,2,3,5)]),digits=3)
+row.names(Summary_rw2)[2]<-"Size"
+Summary_rw2%>%
+kable(caption = "Parameter estimates RW2 model") %>%
+kable_classic_2(full_width = F)%>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+
+IC<-rbind(cbind(nb.ar1$dic$dic, nb.ar1$waic$waic),
+cbind(nb.rw2$dic$dic, nb.rw2$waic$waic))
+IC<-data.frame(IC)
+row.names(IC)<-c("AR1","RW1")
+colnames(IC)<-c("DIC","WAIC")
+
+#rownames(IC)<-("AR1","RW2")
+
+IC%>%
+kable(caption = "Information Creteria for AR1 and RW2 models") %>%
+kable_classic_2(full_width = F)%>%
+  kableExtra::kable_styling(latex_options = "hold_position")
 
 
+```
 
 # References {#references .unnumbered}

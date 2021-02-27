@@ -257,7 +257,7 @@ captures the daily number of new cases, number of tests, number of
 deaths and recoveries. Our primary outcome of interest was the daily
 number of newly diagnosed COVID-19 cases and the unit of time used in
 modelling was a day. We used the daily case reports from March 12, 2020,
-until February 15, 2021, in our analysis.
+until February 27, 2021, in our analysis.
 
 \hypertarget{statistical-analysis}{%
 \subsection{Statistical analysis}\label{statistical-analysis}}
@@ -269,9 +269,12 @@ represent the expected number of cases at time \(t\). We considered a
 Negative binomial distribution for \(Y(t)\) to account for possible
 overdispersion. That is, \(Y(t) \sim NB(\mu(t), \delta)\), where
 \(\delta\) is the overdispersion parameter. We considered two temporal
-models to capture the trend over time: a random walk of order one
-(\(RW(1)\)) and an autoregressive model of order one (\(AR(1)\))
-{[}ref{]}. The two models were chosen becuse
+models to capture the trend over time: a random walk of order two
+(\(RW(2)\)) and an autoregressive model of order one (\(AR(1)\))
+{[}1{]}. We also considerd a \(RW(1)\) model, but the model overfits the
+data (see Sece 2 in the supplemntary appendix). Similarly, we considerd
+an \(AR\) model order \(p=2\) but the result is similar to \(AR1\) model
+and we prefer the simpler \(AR1\) model.
 
 The \(AR(1)\) model {[}1{]} is given by,
 
@@ -285,13 +288,13 @@ The \(AR(1)\) model {[}1{]} is given by,
 \end{aligned}
 \] where, \(\alpha\) is an intercept, \(\rho\) a temporal correlation
 term (with \(|\rho|<1\)) and \(\epsilon_t\) is a Gaussian error term
-with zero mean and precision \(\tau_u\).
+with zero mean and precision \(\tau_{\epsilon}\).
 
-Similarly, the \(RW(1)\) model {[}1{]} is given by, \[
+Similarly, the \(RW(2)\) model {[}1{]} is given by, \[
 \begin{aligned}
  Y(t) &\sim NB(\mu(t), \delta) \ \ t=1, \dots, n,\\
  log(\mu(t)) &= \alpha+u_t, \\
- u_t-u_{t-1} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
+ u_t-2u_{t+1}+u_{t+2} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
 \end{aligned}
 \] where \(\alpha\) is the intercept term as before and \(\tau_u\) is
 the precison parameter.
@@ -315,7 +318,7 @@ https://github.com/belayb/COVIDincidenceSA/tree/master/COVIDincidenceSA.
 \section{Results}\label{results}}
 
 Figure 1 presents the daily number of reported COVID-19 cases from 12
-March 2020 to 19 February 2021. Similar to elsewhere in the world, South
+March 2020 to 27 February 2021. Similar to elsewhere in the world, South
 Africa pass through a two-wave pandemic. The pandemic's first peak was
 on 07 July 2020, where up to 13944 new COVID-19 cases reported, followed
 by a second peak in January 2021, where more than 21,000 daily cases
@@ -324,11 +327,19 @@ COVID-19 cases and tests performed. To date, 8,838,937 tests have been
 conducted, and a total of 1,500,677 cases reported.
 
 \begin{figure}[H]
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/daily-cases-1} \caption{Daily number of COVID-19 cases in South Africa from 12/03/2020-19/02/2021.}\label{fig:daily-cases}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/daily-cases-1} \caption{Daily number of COVID-19 cases in South Africa from 12/03/2020-27/02/2021.}\label{fig:daily-cases}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/cummulative-1} \caption{The cummulative number of COVID-19 cases and Cummulative number of tests in South Africa from 12/03/2020-19/02/2021. Red-line denote the number of cases and blue-line denotes the number of tests.}\label{fig:cummulative}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/cummulative-1} \caption{The cummulative number of COVID-19 cases and Cummulative number of tests in South Africa from 12/03/2020-27/02/2021. Red-line denote the number of cases and blue-line denotes the number of tests.}\label{fig:cummulative}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1} \caption{Fitted and observed data AR1 model}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{Fitted and observed data RW2 model}\label{fig:unnamed-chunk-6}
 \end{figure}
 
 \hypertarget{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}{%
@@ -341,73 +352,110 @@ reported new COVID-19 cases. The parameter estimates for the two models
 are presented in Supplementary Table 1. As depicted in Figure 3, two
 models fitted to the data appear to fit the observed data (within the
 estimation period) well with a narrow confidence interval obtained for
-the RW(1) model. The RW(1) and AR(1) models also provide very similar
-predictions over the 9-day ahead period.
+the \(RW(2)\) model. The two models provides similar predictions over
+the 7-day ahead period.
 
-\textbackslash begin\{figure\}{[}H{]}
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/prediction-1}
-\textbackslash caption\{Predicted cummulative COVID-19 cases in South
-Africa under the RW(1) and AR(1) model. Estimation period
-12/03/2020-10/02/2021. The black dots are the observed cummulative
-cases. The red dashed lines are for RW(1) and the blue line for
-AR(1).The shaded bands are the 95\% prediction intervals for the
-predictions with the two models.\}\label{fig:prediction}
-\textbackslash end\{figure\}
+\begin{figure}[H]
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/predd-1} \caption{Predicted cummulative COVID-19 cases in South Africa under the RW(1) and AR(1) model. Estimation period 12/03/2020-20/02/2021. The black dots are the observed cummulative cases. The red dashed lines are for RW(2) and the blue line for AR(1).The shaded bands are the prediction intervals. }\label{fig:predd}
+\end{figure}
 
 \begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-7}Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 12/03/2020-10/02/2021}
+\caption{\label{tab:unnamed-chunk-9}Short-term predictions of total number of reported cases at the national level under the rw2 model. Estimation period 12/03/2020-20/02/2021}
 \centering
 \begin{tabular}[t]{l|r|r|l|r}
 \hline
 Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
-2021-02-11 & 1484900 & 1485429 & (1172894.86-1870619.43) & -528.5228\\
+2021-02-21 & 1503796 & 1507570 & (1248627.65-1814984.21) & -3774.401\\
 \hline
-2021-02-12 & 1487681 & 1488629 & (1174130.71-1877572.01) & -947.5700\\
+2021-02-22 & 1504588 & 1509293 & (1249675.11-1817724.58) & -4704.601\\
 \hline
-2021-02-13 & 1490063 & 1491976 & (1175163.66-1885902.75) & -1912.5901\\
+2021-02-23 & 1505586 & 1511001 & (1250614.7-1820668.01) & -5415.458\\
 \hline
-2021-02-14 & 1491807 & 1495476 & (1176050.29-1895617.69) & -3669.3800\\
+2021-02-24 & 1507448 & 1512703 & (1251450.3-1823856.88) & -5255.313\\
 \hline
-2021-02-15 & 1492909 & 1499138 & (1176824.75-1906749.13) & -6229.1891\\
+2021-02-25 & 1509124 & 1514405 & (1252187.66-1827338.07) & -5281.195\\
 \hline
-2021-02-16 & 1494119 & 1502969 & (1177509.82-1919343.11) & -8849.6675\\
+2021-02-26 & 1510778 & 1516115 & (1252833.83-1831165.19) & -5336.956\\
 \hline
-2021-02-17 & 1496439 & 1506976 & (1178121.45-1933454.25) & -10536.8634\\
-\hline
-2021-02-18 & 1498766 & 1511168 & (1178671.6-1949143.78) & -12402.2333\\
-\hline
-2021-02-19 & 1500677 & 1515555 & (1179169.59-1966478.16) & -14877.6590\\
+2021-02-27 & 1512225 & 1517841 & (1253396.9-1835399.56) & -5616.430\\
 \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-7}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-10/02/2021}
+\caption{\label{tab:unnamed-chunk-9}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-20/02/2021}
 \centering
 \begin{tabular}[t]{l|r|r|l|r}
 \hline
 Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
-2021-02-11 & 1484900 & 1486312 & (1107420.98-1978162.82) & -1412.194\\
+2021-02-21 & 1503796 & 1505071 & (1124486.84-1998035.3) & -1274.995\\
 \hline
-2021-02-12 & 1487681 & 1489173 & (1108639.61-1983981.29) & -1491.764\\
+2021-02-22 & 1504588 & 1506982 & (1125286.9-2001911.8) & -2393.764\\
 \hline
-2021-02-13 & 1490063 & 1492102 & (1109681.58-1990659.34) & -2038.527\\
+2021-02-23 & 1505586 & 1508942 & (1125972.18-2006363.99) & -3356.174\\
 \hline
-2021-02-14 & 1491807 & 1495099 & (1110591.96-1998160.29) & -3291.921\\
+2021-02-24 & 1507448 & 1510953 & (1126572.19-2011372.04) & -3504.598\\
 \hline
-2021-02-15 & 1492909 & 1498166 & (1111398.75-2006463.55) & -5256.654\\
+2021-02-25 & 1509124 & 1513014 & (1127105.33-2016924.89) & -3889.609\\
 \hline
-2021-02-16 & 1494119 & 1501303 & (1112121.57-2015558.08) & -7183.538\\
+2021-02-26 & 1510778 & 1515126 & (1127584.21-2023016.99) & -4347.854\\
 \hline
-2021-02-17 & 1496439 & 1504510 & (1112774.74-2025437.2) & -8071.444\\
+2021-02-27 & 1512225 & 1517290 & (1128017.98-2029646.04) & -5065.020\\
 \hline
-2021-02-18 & 1498766 & 1507790 & (1113369.03-2036097.59) & -9024.272\\
+\end{tabular}
+\end{table}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-10}Parameter estimates AR1 model}
+\centering
+\begin{tabular}[t]{l|r|r|r|r}
 \hline
-2021-02-19 & 1500677 & 1511143 & (1113912.84-2047538.12) & -10465.946\\
+  & mean & sd & 0.025quant & 0.975quant\\
+\hline
+(Intercept) & 6.109 & 2.441 & 0.145 & 10.569\\
+\hline
+Size & 28.955 & 8.389 & 16.805 & 49.397\\
+\hline
+Precision for time & 0.158 & 0.112 & 0.023 & 0.438\\
+\hline
+Rho for time & 0.995 & 0.004 & 0.985 & 0.999\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-10}Parameter estimates RW2 model}
+\centering
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+  & mean & sd & 0.025quant & 0.975quant\\
+\hline
+(Intercept) & 7.603 & 0.017 & 7.570 & 7.637\\
+\hline
+Size & 10.422 & 0.911 & 8.734 & 12.319\\
+\hline
+Precision for time & 0.036 & 0.014 & 0.016 & 0.070\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-10}Information Creteria for AR1 and RW2 models}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & DIC & WAIC\\
+\hline
+AR1 & 5278.871 & 5286.902\\
+\hline
+RW1 & 5447.397 & 5460.805\\
 \hline
 \end{tabular}
 \end{table}
