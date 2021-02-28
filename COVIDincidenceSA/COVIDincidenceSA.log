@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.4.25)  27 FEB 2021 21:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.4.25)  28 FEB 2021 18:55
 entering extended mode
 **./COVIDincidenceSA.tex
 (COVIDincidenceSA.tex
@@ -619,13 +619,13 @@ File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 \l__pdf_internal_box=\box66
 ) (COVIDincidenceSA.aux
 
-LaTeX Warning: Label `tab:unnamed-chunk-9' multiply defined.
-
-
 LaTeX Warning: Label `tab:unnamed-chunk-10' multiply defined.
 
 
-LaTeX Warning: Label `tab:unnamed-chunk-10' multiply defined.
+LaTeX Warning: Label `tab:unnamed-chunk-11' multiply defined.
+
+
+LaTeX Warning: Label `tab:unnamed-chunk-11' multiply defined.
 
 )
 \openout1 = `COVIDincidenceSA.aux'.
@@ -781,26 +781,26 @@ pdf)
 Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/cummulative-1.pdf 
  used on input line 334.
 (pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
-<COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1.pdf, id=62, 469.755pt x 
-325.215pt>
-File: COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (t
-ype pdf)
-<use COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1.pdf>
-Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1.
-pdf  used on input line 338.
-(pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
-[3 <./COVIDincidenceSA_files/figure-latex/daily-cases-1.pdf> <./COVIDincidenceS
-A_files/figure-latex/cummulative-1.pdf>]
-<COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf, id=81, 469.755pt x 
+<COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf, id=62, 469.755pt x 
 325.215pt>
 File: COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (t
 ype pdf)
 <use COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.
+pdf  used on input line 338.
+(pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
+[3 <./COVIDincidenceSA_files/figure-latex/daily-cases-1.pdf> <./COVIDincidenceS
+A_files/figure-latex/cummulative-1.pdf>]
+<COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf, id=81, 469.755pt x 
+325.215pt>
+File: COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (t
+ype pdf)
+<use COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf>
+Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.
 pdf  used on input line 342.
 (pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
-[4 <./COVIDincidenceSA_files/figure-latex/unnamed-chunk-5-1.pdf> <./COVIDincide
-nceSA_files/figure-latex/unnamed-chunk-6-1.pdf>]
+[4 <./COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf> <./COVIDincide
+nceSA_files/figure-latex/unnamed-chunk-7-1.pdf>]
 <COVIDincidenceSA_files/figure-latex/predd-1.pdf, id=106, 469.755pt x 325.215pt
 >
 File: COVIDincidenceSA_files/figure-latex/predd-1.pdf Graphic file (type pdf)
@@ -839,8 +839,8 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 479.
  ) 
 Here is how much of TeX's memory you used:
  13326 strings out of 480930
- 206114 string characters out of 2900230
- 532549 words of memory out of 3000000
+ 206115 string characters out of 2900230
+ 532553 words of memory out of 3000000
  28869 multiletter control sequences out of 15000+200000
  536978 words of font info for 51 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -858,7 +858,7 @@ cm/cmss8.pfb><C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
 c/amsfonts/cm/cmsy10.pfb><C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/fonts
 /type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/user/AppData/Local/Programs/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on COVIDincidenceSA.pdf (6 pages, 276209 bytes).
+Output written on COVIDincidenceSA.pdf (6 pages, 282985 bytes).
 PDF statistics:
  177 PDF objects out of 1000 (max. 8388607)
  36 named destinations out of 1000 (max. 500000)

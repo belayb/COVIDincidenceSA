@@ -89,7 +89,7 @@ library(patchwork)
 library(lubridate)
 library(kableExtra)
 library(data.table)
-library(inlabru)
+library(sfsmisc)
 ```
 
 ```{r message = FALSE, warning = FALSE}
@@ -160,9 +160,6 @@ p2
 # crate a new process time column from date2
 
 sa_cov_dat<-sa_cov_dat%>%mutate(time=cumsum(c(0,diff.Date(date2))))
-delta<-1
-sa_cov_dat<-sa_cov_dat%>%mutate(time_deriv=time+delta)
-
 U <- 0.5#1
 
 hyper.prec <- list(theta = list(prior = "pc.prec", param = c(U, 0.75)))#0.01
@@ -171,10 +168,6 @@ fomula_ar1<-Dialy_cases ~ 1 + f(time, model = "ar1",
                                hyper = list(prec = list(param = c(0.1, 0.1))))
 fomula_rw2<-Dialy_cases ~ 1 + f(time, model = "rw2", scale.model = TRUE, 
                               hyper = hyper.prec)
-fomula_rw2_deriv1<-Dialy_cases ~ 1 + f(time_deriv, model = "rw2", scale.model = TRUE, 
-                              hyper = hyper.prec)
-fomula_ar1_deriv1<-Dialy_cases ~ 1 + f(time_deriv, model = "ar1",
-                               hyper = list(prec = list(param = c(0.1, 0.1))))
 
 nb.ar1 <- inla(fomula_ar1,                   
                data = sa_cov_dat,
@@ -189,47 +182,11 @@ nb.rw2 <- inla(fomula_rw2,
 
 
 
-newdata_ar1<-cbind(sa_cov_dat[,c("date2","Dialy_cases")],nb.ar1$summary.fitted.values)
+newdata_ar1<-cbind(sa_cov_dat[,c("date2","Dialy_cases","time")],nb.ar1$summary.fitted.values)
 newdata_ar1 <- reshape:::rename(newdata_ar1, c("0.025quant"="lower", "0.975quant"="upper"))
 
-newdata_rw2<-cbind(sa_cov_dat[,c("date2","Dialy_cases")],nb.rw2$summary.fitted.values)
+newdata_rw2<-cbind(sa_cov_dat[,c("date2","Dialy_cases","time")],nb.rw2$summary.fitted.values)
 newdata_rw2 <- reshape:::rename(newdata_rw2, c("0.025quant"="lower", "0.975quant"="upper"))
-
-nb.rw2_deriv <- inla(fomula_rw2_deriv1,                   
-               data = sa_cov_dat,
-               family = "nbinomial",
-               control.predictor = list(compute = TRUE),
-               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
-
-nb.ar1_deriv <- inla(fomula_ar1_deriv1,                   
-               data = sa_cov_dat,
-               family = "nbinomial",
-               control.predictor = list(compute = TRUE),
-               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
-
-
-f1_rw2<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.rw2$summary.fitted.values)
-f1_rw2 <- reshape:::rename(f1_rw2, c("0.025quant"="lower", "0.975quant"="upper"))
-
-f2_rw2<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.rw2_deriv$summary.fitted.values)
-f2_rw2 <- reshape:::rename(f2_rw2, c("0.025quant"="lower", "0.975quant"="upper"))
-
-f21_rw2<-sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")]
-f21_rw2$deriv<-(f2_rw2$mean-f1_rw2$mean)/delta
-f21_rw2$L_deriv<-(f2_rw2$lower-f1_rw2$lower)/delta
-f21_rw2$U_deriv<-(f2_rw2$upper-f1_rw2$upper)/delta
-
-f1_ar1<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.ar1$summary.fitted.values)
-f1_ar1 <- reshape:::rename(f1_ar1, c("0.025quant"="lower", "0.975quant"="upper"))
-
-f2_ar1<-cbind(sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")],nb.ar1_deriv$summary.fitted.values)
-f2_ar1 <- reshape:::rename(f2_ar1, c("0.025quant"="lower", "0.975quant"="upper"))
-
-f21_ar1<-sa_cov_dat[,c("date2","time","time_deriv","Dialy_cases")]
-f21_ar1$deriv<-(f2_ar1$mean-f1_ar1$mean)/delta
-f21_ar1$L_deriv<-(f2_ar1$lower-f1_ar1$lower)/delta
-f21_ar1$U_deriv<-(f2_ar1$upper-f1_ar1$upper)/delta
-
 
 ```
 
@@ -273,32 +230,48 @@ p_rw2_cum<-newdata_rw2%>%
   ylab("cummulative observed and fitted cases")+
   labs(title = "Negative-Binomial with RW(2) model" )+
   theme_bw()
-p_rw2_inc_deriv<-ggplot(f21_rw2, aes(y=deriv, x=date2)) +
-  geom_blank()+
-  #geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
-  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
-  labs(title = "Derivative of the smooth Curve" )+
-  theme_bw()
-p_ar1_inc_deriv<-ggplot(f21_ar1, aes(y=deriv, x=date2)) +
-  geom_blank()+
-  #geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
-  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
-  labs(title = "Derivative of the smooth Curve" )+
-  theme_bw()
-#plot of incidence over time 
-p_ar1_inc/p_ar1_inc_deriv
 
 ```
 
 
-```{r ,out.width = "99%",fig.cap = "Fitted and observed data RW2 model"}
-p_rw2_inc/p_rw2_inc_deriv
+
+```{r ,out.width = "99%",fig.cap = "Fitted and observed data AR(1) model"}
+newdata_ar1$deriv<-D1ss(x=newdata_ar1$time,y=newdata_ar1$mean, spar.off=0.0)
+newdata_ar1$L_deriv<-D1ss(x=newdata_ar1$time,y=newdata_ar1$lower, spar.off=0.0)
+newdata_ar1$U_deriv<-D1ss(x=newdata_ar1$time,y=newdata_ar1$upper, spar.off=0.0)
+
+p_ar1_inc_deriv_new<-ggplot(newdata_ar1, aes(y=deriv, x=date2)) +
+  geom_blank()+
+  geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
+  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
+  labs(title = "Derivative of the smooth Curve" )+
+  geom_hline(yintercept = 0)+
+  theme_bw()
+
+p_ar1_inc/p_ar1_inc_deriv_new
 
 # plot of cummulative overtime
 #p_ar1_cum/p_rw2_cum
 ```
 
+```{r ,out.width = "99%",fig.cap = "Fitted and observed data RW(2) model"}
+newdata_rw2$deriv<-D1ss(x=newdata_rw2$time,y=newdata_rw2$mean, spar.off=0.0)
+newdata_rw2$L_deriv<-D1ss(x=newdata_rw2$time,y=newdata_rw2$lower, spar.off=0.0)
+newdata_rw2$U_deriv<-D1ss(x=newdata_rw2$time,y=newdata_rw2$upper, spar.off=0.0)
 
+p_rw2_inc_deriv_new<-ggplot(newdata_rw2, aes(y=deriv, x=date2)) +
+  geom_blank()+
+  geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
+  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
+  labs(title = "Derivative of the smooth Curve" )+
+  geom_hline(yintercept = 0)+
+  theme_bw()
+
+p_rw2_inc/p_rw2_inc_deriv_new
+
+# plot of cummulative overtime
+#p_ar1_cum/p_rw2_cum
+```
 ```{r message = FALSE, warning = FALSE}
 # Do Forcasting 
 sa_cov_dat$Dialy_cases3<-sa_cov_dat$Dialy_cases
