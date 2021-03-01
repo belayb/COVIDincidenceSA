@@ -23,7 +23,11 @@ csl: plos.csl
 header-includes:
  \usepackage{float}
  \floatplacement{figure}{H}
-
+ \usepackage{float} \floatplacement{figure}{H} 
+ \newcommand{\beginsupplement}{\setcounter{table}{0}  
+ \renewcommand{\thetable}{S\arabic{table}}     
+ \setcounter{figure}{0} 
+ \renewcommand{\thefigure}{S\arabic{figure}}}
 ---
 
 ```{r setup, include=FALSE}
@@ -42,7 +46,7 @@ We downloaded data from Coronavirus COVID-19 (2019-nCoV) Data Repository for Sou
 
 
 ## Statistical analysis 
-We considered two widely used temporal models to model the daily number of newly diagnosed COVID-19 cases. We let $Y(t)$ denote the daily number of newly diagnosed COVID-19 cases at time $t$ and $\mu(t)$ represent the expected number of cases at time $t$. We considered a Negative binomial distribution for $Y(t)$ to account for possible overdispersion. That is, $Y(t) \sim NB(\mu(t), \delta)$, where $\delta$ is the overdispersion parameter. We considered two temporal models to capture the trend over time: a random walk of order two ($RW(2)$) and an autoregressive model of order one ($AR(1)$) [@gomez2020bayesian]. We also considerd a $RW(1)$ model,  but the model overfits the data (see Sece 2 in the supplemntary appendix). Similarly, we considerd an $AR$ model order $p=2$ but the result is similar to $AR1$ model and we prefer the simpler $AR1$ model. 
+We considered two widely used temporal models to model the daily number of newly diagnosed COVID-19 cases. We let $Y(t)$ denote the daily number of newly diagnosed COVID-19 cases at time $t$ and $\mu(t)$ represent the expected number of cases at time $t$. We considered a Negative binomial distribution for $Y(t)$ to account for possible overdispersion. That is, $Y(t) \sim NB(\mu(t), \delta)$, where $\delta$ is the overdispersion parameter. We considered two temporal models to capture the trend over time: a random walk of order two ($RW(2)$) and an autoregressive model of order one ($AR(1)$) [@gomez2020bayesian]. We also considerd a $RW(1)$ model,  but the model overfits the data (See the supplemntary appendix). Similarly, we considerd an $AR$ model order $p=2$ but the result is similar to $AR1$ model and we prefer the simpler $AR1$ model. 
 
 The $AR(1)$ model [@gomez2020bayesian] is given by, 
 
@@ -106,12 +110,14 @@ variable_keep_cases<-c("date2","total")
 sa_cov_dat<-left_join(cases_sa[,variable_keep_cases], tests_sa[,variable_keep_test], by="date2")
 # sa_cov_dat[18:35,] also unknown number of tests on 25-03, and 07-04 
 sa_cov_dat<-sa_cov_dat[sa_cov_dat$date2>'2020-03-09'&!is.na(sa_cov_dat$cumulative_tests),]
+sa_cov_dat<-sa_cov_dat[sa_cov_dat$date2<'2021-02-28',]#temp
 
 
 # You need to start from 2020-03-12 in order to properly calaculate daily cases and tests
 # Compute daily cases and tests 
 sa_cov_dat<-sa_cov_dat%>%mutate(Dialy_cases=-1*(lag(total)-total), Daily_tests=-1*(lag(cumulative_tests)-cumulative_tests))
 sa_cov_dat<-sa_cov_dat[-1, ]
+
 
 ```
 Figure 1 presents the daily number of reported COVID-19 cases from 12 March 2020 to 27 February 2021.  Similar to elsewhere in the world,  South Africa pass through a two-wave pandemic. The pandemic's first peak was on 07 July 2020, where up to 13944 new COVID-19 cases reported, followed by a second peak in January 2021, where more than 21,000 daily cases reported. 
@@ -166,6 +172,10 @@ hyper.prec <- list(theta = list(prior = "pc.prec", param = c(U, 0.75)))#0.01
 
 fomula_ar1<-Dialy_cases ~ 1 + f(time, model = "ar1",
                                hyper = list(prec = list(param = c(0.1, 0.1))))
+fomula_ar2<-Dialy_cases ~ 1 + f(time, model = "ar",order=2)
+
+fomula_rw1<-Dialy_cases ~ 1 + f(time, model = "rw1", scale.model = TRUE, 
+                              hyper = hyper.prec)
 fomula_rw2<-Dialy_cases ~ 1 + f(time, model = "rw2", scale.model = TRUE, 
                               hyper = hyper.prec)
 
@@ -174,6 +184,17 @@ nb.ar1 <- inla(fomula_ar1,
                family = "nbinomial",
                control.predictor = list(compute = TRUE),
                control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+nb.ar2 <- inla(fomula_ar2,                   
+               data = sa_cov_dat,
+               family = "nbinomial",
+               control.predictor = list(compute = TRUE),
+               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+nb.rw1 <- inla(fomula_rw1,                   
+               data = sa_cov_dat,
+               family = "nbinomial",
+               control.predictor = list(compute = TRUE),
+               control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+
 nb.rw2 <- inla(fomula_rw2,                   
                data = sa_cov_dat,
                family = "nbinomial",
@@ -184,6 +205,12 @@ nb.rw2 <- inla(fomula_rw2,
 
 newdata_ar1<-cbind(sa_cov_dat[,c("date2","Dialy_cases","time")],nb.ar1$summary.fitted.values)
 newdata_ar1 <- reshape:::rename(newdata_ar1, c("0.025quant"="lower", "0.975quant"="upper"))
+
+newdata_ar2<-cbind(sa_cov_dat[,c("date2","Dialy_cases","time")],nb.ar2$summary.fitted.values)
+newdata_ar2 <- reshape:::rename(newdata_ar2, c("0.025quant"="lower", "0.975quant"="upper"))
+
+newdata_rw1<-cbind(sa_cov_dat[,c("date2","Dialy_cases","time")],nb.rw1$summary.fitted.values)
+newdata_rw1 <- reshape:::rename(newdata_rw1, c("0.025quant"="lower", "0.975quant"="upper"))
 
 newdata_rw2<-cbind(sa_cov_dat[,c("date2","Dialy_cases","time")],nb.rw2$summary.fitted.values)
 newdata_rw2 <- reshape:::rename(newdata_rw2, c("0.025quant"="lower", "0.975quant"="upper"))
@@ -199,6 +226,22 @@ p_ar1_inc<-ggplot(newdata_ar1,
                   ylab("Observed and fitted cases")+
                   labs(title = "Negative-Binomial with AR(1) model" )+
                   theme_bw()
+
+p_ar2_inc<-ggplot(newdata_ar2, 
+                  aes(y=mean, x=date2)) +geom_blank()+geom_point(aes(y=Dialy_cases, x=date2)) +
+                  geom_ribbon(aes(ymin=lower, ymax=upper), fill='blue', alpha=0.6) +
+                  geom_line(aes(y=mean, x=date2)) +xlab("Date")+
+                  ylab("Observed and fitted cases")+
+                  labs(title = "Negative-Binomial with AR(1) model" )+
+                  theme_bw()
+
+p_rw1_inc<-ggplot(newdata_rw1, aes(y=mean, x=date2)) +
+  geom_blank()+
+  geom_point(aes(y=Dialy_cases, x=date2)) +
+  geom_ribbon(aes(ymin=lower, ymax=upper), fill='blue', alpha=0.6) +
+  geom_line(aes(y=mean, x=date2)) +xlab("Date")+ylab("Observed and fitted cases")+
+  labs(title = "Negative-Binomial with RW(2) model" )+
+  theme_bw()
 
 p_rw2_inc<-ggplot(newdata_rw2, aes(y=mean, x=date2)) +
   geom_blank()+
@@ -464,6 +507,49 @@ kable_classic_2(full_width = F)%>%
   kableExtra::kable_styling(latex_options = "hold_position")
 
 
+```
+
+\newpage
+
+# Appendix 
+\beginsupplement
+
+```{r ,out.width = "99%",fig.cap = "Fitted and observed data AR(2) model"}
+newdata_ar2$deriv<-D1ss(x=newdata_ar2$time,y=newdata_ar2$mean, spar.off=0.0)
+newdata_ar2$L_deriv<-D1ss(x=newdata_ar2$time,y=newdata_ar2$lower, spar.off=0.0)
+newdata_ar2$U_deriv<-D1ss(x=newdata_ar2$time,y=newdata_ar2$upper, spar.off=0.0)
+
+p_ar2_inc_deriv_new<-ggplot(newdata_ar2, aes(y=deriv, x=date2)) +
+  geom_blank()+
+  geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
+  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
+  labs(title = "Derivative of the smooth Curve" )+
+  geom_hline(yintercept = 0)+
+  theme_bw()
+
+p_ar2_inc/p_ar2_inc_deriv_new
+
+# plot of cummulative overtime
+#p_ar1_cum/p_rw2_cum
+```
+
+```{r ,out.width = "99%",fig.cap = "Fitted and observed data RW(1) model"}
+newdata_rw1$deriv<-D1ss(x=newdata_rw1$time,y=newdata_rw1$mean, spar.off=0.0)
+newdata_rw1$L_deriv<-D1ss(x=newdata_rw1$time,y=newdata_rw1$lower, spar.off=0.0)
+newdata_rw1$U_deriv<-D1ss(x=newdata_rw1$time,y=newdata_rw1$upper, spar.off=0.0)
+
+p_rw1_inc_deriv_new<-ggplot(newdata_rw1, aes(y=deriv, x=date2)) +
+  geom_blank()+
+  geom_ribbon(aes(ymin=L_deriv, ymax=U_deriv), fill='blue', alpha=0.6) +
+  geom_line(aes(y=deriv, x=date2)) +xlab("Date")+ylab("Derivative")+
+  labs(title = "Derivative of the smooth Curve" )+
+  geom_hline(yintercept = 0)+
+  theme_bw()
+
+p_rw1_inc/p_rw1_inc_deriv_new
+
+# plot of cummulative overtime
+#p_ar1_cum/p_rw2_cum
 ```
 
 # References {#references .unnumbered}

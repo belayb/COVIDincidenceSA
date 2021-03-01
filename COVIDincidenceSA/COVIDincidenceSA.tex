@@ -172,7 +172,7 @@
 
 % Pandoc citation processing
 
-\usepackage{float} \floatplacement{figure}{H}
+\usepackage{float} \floatplacement{figure}{H} \usepackage{float} \floatplacement{figure}{H} \newcommand{\beginsupplement}{\setcounter{table}{0} \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -272,9 +272,9 @@ overdispersion. That is, \(Y(t) \sim NB(\mu(t), \delta)\), where
 models to capture the trend over time: a random walk of order two
 (\(RW(2)\)) and an autoregressive model of order one (\(AR(1)\))
 {[}1{]}. We also considerd a \(RW(1)\) model, but the model overfits the
-data (see Sece 2 in the supplemntary appendix). Similarly, we considerd
-an \(AR\) model order \(p=2\) but the result is similar to \(AR1\) model
-and we prefer the simpler \(AR1\) model.
+data (See the supplemntary appendix). Similarly, we considerd an \(AR\)
+model order \(p=2\) but the result is similar to \(AR1\) model and we
+prefer the simpler \(AR1\) model.
 
 The \(AR(1)\) model {[}1{]} is given by,
 
@@ -367,19 +367,19 @@ the 7-day ahead period.
 \hline
 Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
-2021-02-21 & 1503796 & 1507570 & (1248627.79-1814984.17) & -3774.485\\
+2021-02-21 & 1503796 & 1507571 & (1248627.89-1814985.06) & -3774.615\\
 \hline
-2021-02-22 & 1504588 & 1509293 & (1249675.25-1817724.54) & -4704.686\\
+2021-02-22 & 1504588 & 1509293 & (1249675.34-1817725.43) & -4704.813\\
 \hline
-2021-02-23 & 1505586 & 1511002 & (1250614.84-1820667.96) & -5415.544\\
+2021-02-23 & 1505586 & 1511002 & (1250614.94-1820668.85) & -5415.668\\
 \hline
-2021-02-24 & 1507448 & 1512703 & (1251450.44-1823856.82) & -5255.399\\
+2021-02-24 & 1507448 & 1512704 & (1251450.53-1823857.7) & -5255.520\\
 \hline
-2021-02-25 & 1509124 & 1514405 & (1252187.79-1827338) & -5281.281\\
+2021-02-25 & 1509124 & 1514405 & (1252187.89-1827338.87) & -5281.398\\
 \hline
-2021-02-26 & 1510778 & 1516115 & (1252833.96-1831165.11) & -5337.043\\
+2021-02-26 & 1510778 & 1516115 & (1252834.07-1831165.97) & -5337.154\\
 \hline
-2021-02-27 & 1512225 & 1517842 & (1253397.04-1835399.46) & -5616.515\\
+2021-02-27 & 1512225 & 1517842 & (1253397.14-1835400.29) & -5616.621\\
 \hline
 \end{tabular}
 \end{table}
@@ -455,10 +455,25 @@ Precision for time & 0.036 & 0.014 & 0.016 & 0.070\\
 \hline
 AR1 & 5278.871 & 5286.902\\
 \hline
-RW1 & 5447.398 & 5460.805\\
+RW1 & 5447.398 & 5460.804\\
 \hline
 \end{tabular}
 \end{table}
+
+\newpage
+
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
+
+\setcounter{table}{0} \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
+
+\begin{figure}[H]
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-12-1} \caption{Fitted and observed data AR(2) model}\label{fig:unnamed-chunk-12}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1} \caption{Fitted and observed data RW(1) model}\label{fig:unnamed-chunk-13}
+\end{figure}
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
