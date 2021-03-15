@@ -349,8 +349,10 @@ COVID-19
 cases}\label{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}}
 
 We fit the four models models described in the previous section to the daily
-reported new COVID-19 cases. The parameter estimates for the two models
-are presented in Supplementary Table 1. As depicted in Figure 3, two
+reported new COVID-19 cases. The parameter estimates for each of the fitted models
+are presented in Supplementary Table 1. Our main interest to estimate the rate of change of daily conformed COVID-19 cases and produce a short term forecast for number of reported cases.  
+
+As depicted in Figure 3, two
 models fitted to the data appear to fit the observed data (within the
 estimation period) well with a narrow confidence interval obtained for
 the \(RW(2)\) model. The two models provides similar predictions over
@@ -421,48 +423,41 @@ the 7-day ahead period.
 
 \caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the rw2 model. Estimation period 12/03/2020-20/02/2021}
 \centering
-\begin{tabular}[t]{l|r|r|l|r}
+\begin{tabular}[t]{l|l|r|r|l|r}
 \hline
-Date & Total & Prediction & Prediction Interval & Total - Prediction\\
+Model&Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
-2021-02-21 & 1503796 & 1507571 & (1248627.38-1814985.53) & -3774.603\\
+RW1&2021-02-21 & 1503796 & 1504037 & (1179288.4-1906832.48) & -241.2192\\
+&2021-02-22 & 1504588 & 1505956 & (1180039.06-1910889.23) & -1367.7046\\
+&2021-02-23 & 1505586 & 1507956 & (1180669.91-1915712.14) & -2370.0667\\
+&2021-02-24 & 1507448 & 1510042 & (1181213.73-1921302.31) & -2593.7729\\
+&2021-02-25 & 1509124 & 1512217 & (1181690.53-1927674.02) & -3092.5479\\
+&2021-02-26 & 1510778 & 1514484 & (1182113.69-1934850.96) & -3706.3254\\
+&2021-02-27 & 1512225 & 1516849 & (1182492.77-1942862.03) & -4624.2376\\
 \hline
-2021-02-22 & 1504588 & 1509293 & (1249674.84-1817725.91) & -4704.805\\
+RW2&2021-02-21 & 1503796 & 1507571 & (1248627.38-1814985.53) & -3774.603\\
+&2021-02-22 & 1504588 & 1509293 & (1249674.84-1817725.91) & -4704.805\\
+&2021-02-23 & 1505586 & 1511002 & (1250614.44-1820669.35) & -5415.664\\
+&2021-02-24 & 1507448 & 1512704 & (1251450.03-1823858.23) & -5255.522\\
+&2021-02-25 & 1509124 & 1514405 & (1252187.39-1827339.44) & -5281.407\\
+&2021-02-26 & 1510778 & 1516115 & (1252833.56-1831166.58) & -5337.172\\
+&2021-02-27 & 1512225 & 1517842 & (1253396.63-1835400.97) & -5616.650\\
 \hline
-2021-02-23 & 1505586 & 1511002 & (1250614.44-1820669.35) & -5415.664\\
+AR1&2021-02-21 & 1503796 & 1505071 & (1124486.84-1998035.3) & -1274.995\\
+&2021-02-22 & 1504588 & 1506982 & (1125286.9-2001911.8) & -2393.764\\
+&2021-02-23 & 1505586 & 1508942 & (1125972.18-2006363.99) & -3356.174\\
+&2021-02-24 & 1507448 & 1510953 & (1126572.19-2011372.04) & -3504.598\\
+&2021-02-25 & 1509124 & 1513014 & (1127105.33-2016924.89) & -3889.609\\
+&2021-02-26 & 1510778 & 1515126 & (1127584.21-2023016.99) & -4347.854\\
+&2021-02-27 & 1512225 & 1517290 & (1128017.98-2029646.04) & -5065.020\\
 \hline
-2021-02-24 & 1507448 & 1512704 & (1251450.03-1823858.23) & -5255.522\\
-\hline
-2021-02-25 & 1509124 & 1514405 & (1252187.39-1827339.44) & -5281.407\\
-\hline
-2021-02-26 & 1510778 & 1516115 & (1252833.56-1831166.58) & -5337.172\\
-\hline
-2021-02-27 & 1512225 & 1517842 & (1253396.63-1835400.97) & -5616.650\\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!h]
-
-\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-20/02/2021}
-\centering
-\begin{tabular}[t]{l|r|r|l|r}
-\hline
-Date & Total & Prediction & Prediction Interval & Total - Prediction\\
-\hline
-2021-02-21 & 1503796 & 1505071 & (1124486.84-1998035.3) & -1274.995\\
-\hline
-2021-02-22 & 1504588 & 1506982 & (1125286.9-2001911.8) & -2393.764\\
-\hline
-2021-02-23 & 1505586 & 1508942 & (1125972.18-2006363.99) & -3356.174\\
-\hline
-2021-02-24 & 1507448 & 1510953 & (1126572.19-2011372.04) & -3504.598\\
-\hline
-2021-02-25 & 1509124 & 1513014 & (1127105.33-2016924.89) & -3889.609\\
-\hline
-2021-02-26 & 1510778 & 1515126 & (1127584.21-2023016.99) & -4347.854\\
-\hline
-2021-02-27 & 1512225 & 1517290 & (1128017.98-2029646.04) & -5065.020\\
+AR2&2021-02-21 & 1503796 & 1504897 & (1123980.48-1998091.99) & -1101.411\\
+&2021-02-22 & 1504588 & 1506802 & (1124788.11-2001923.68) & -2213.521\\
+&2021-02-23 & 1505586 & 1508752 & (1125480.87-2006309.88) & -3165.515\\
+&2021-02-24 & 1507448 & 1510747 & (1126088.3-2011227) & -3299.344\\
+&2021-02-25 & 1509124 & 1512789 & (1126628.81-2016661.08) & -3665.250\\
+&2021-02-26 & 1510778 & 1514878 & (1127115.05-2022603.28) & -4099.507\\
+&2021-02-27 & 1512225 & 1517012 & (1127556.18-2029047.89) & -4787.420\\
 \hline
 \end{tabular}
 \end{table}
