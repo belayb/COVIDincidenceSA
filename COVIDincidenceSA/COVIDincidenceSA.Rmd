@@ -327,7 +327,7 @@ sa_cov_dat$Dialy_cases7<-sa_cov_dat$Dialy_cases
 
 sa_cov_dat$Dialy_cases3[sa_cov_dat$time>339]<-NA
 sa_cov_dat$Dialy_cases5[sa_cov_dat$time>337]<-NA
-sa_cov_dat$Dialy_cases7[sa_cov_dat$time>345]<-NA
+sa_cov_dat$Dialy_cases7[sa_cov_dat$time>342]<-NA
 
 
 fomula_ar1_7<-Dialy_cases7 ~ 1 + f(time, model = "ar1",
@@ -411,51 +411,64 @@ We fit the two models described in the previous section to the daily reported ne
 
 ```{r message = FALSE, warning = FALSE}
 forcast_cum<-Day7_pred%>%
+  mutate(total=total/100000,Cum_pred_rw2=Cum_pred_rw2/100000,Cum_pred_ar1=Cum_pred_ar1/100000, Cum_pred_ar2=Cum_pred_ar2/100000,Cum_pred_rw1=Cum_pred_rw1/100000,
+         Cum_pred_ar1_lower=Cum_pred_ar1_lower/100000,Cum_pred_ar1_upper=Cum_pred_ar1_upper/100000,Cum_pred_rw1_lower=Cum_pred_rw1_lower/100000,
+         Cum_pred_rw1_upper=Cum_pred_rw1_upper/100000,Cum_pred_ar2_lower=Cum_pred_ar2_lower/100000,Cum_pred_ar2_upper=Cum_pred_ar2_upper/100000,
+         Cum_pred_rw2_lower=Cum_pred_rw2_lower/100000,Cum_pred_rw2_upper=Cum_pred_rw2_upper/100000)%>%
   ggplot(aes(y=total, x=date2)) +
   geom_blank()+
   geom_point(aes(y=total, x=date2)) +
   geom_line(aes(y=Cum_pred_rw2, x=date2),linetype = "dashed", color="red") +
-  geom_line(aes(y=Cum_pred_ar1, x=date2),color="blue") +
-    geom_line(aes(y=Cum_pred_ar2, x=date2),linetype = "twodash",color="black") +
-    geom_line(aes(y=Cum_pred_rw1, x=date2),linetype = "dotted",color="#E69F00") +
-    geom_ribbon(aes(ymin=Cum_pred_rw2_lower, ymax=Cum_pred_rw2_upper), fill="#FF00007F", alpha=0.4) +
-    geom_ribbon(aes(ymin=Cum_pred_ar1_lower, ymax=Cum_pred_ar1_upper), fill='#0000FF7F', alpha=0.4) +
-    geom_ribbon(aes(ymin=Cum_pred_ar2_lower, ymax=Cum_pred_ar2_upper), fill='#0000FF7F', alpha=0.4) +
-    geom_ribbon(aes(ymin=Cum_pred_rw1_lower, ymax=Cum_pred_rw1_upper), fill='#0000FF7F', alpha=0.4) +
+  geom_line(aes(y=Cum_pred_ar1, x=date2),color="green") +
+    geom_line(aes(y=Cum_pred_ar2, x=date2),linetype = "twodash",color="blue") +
+    geom_line(aes(y=Cum_pred_rw1, x=date2),linetype = "dotted",color="yellow") +
+    geom_ribbon(aes(ymin=Cum_pred_ar1_lower, ymax=Cum_pred_ar1_upper), fill='green', alpha=0.09) +
+    geom_ribbon(aes(ymin=Cum_pred_rw1_lower, ymax=Cum_pred_rw1_upper), fill='yellow', alpha=0.09) +
+  geom_ribbon(aes(ymin=Cum_pred_ar2_lower, ymax=Cum_pred_ar2_upper), fill='blue', alpha=0.09) +
+  geom_ribbon(aes(ymin=Cum_pred_rw2_lower, ymax=Cum_pred_rw2_upper), fill="red", alpha=0.09) +
   xlab("Date")+
   ylab("Cummulative observed and fitted cases")+
   #labs(title = "Negative-Binomial model - 7 days a head forcasting")+
   theme_bw()
 
-forcast_cum<-forcast_cum+annotate("segment", x = as.Date("2020-10-06","%Y-%m-%d"), xend = as.Date("2021-02-06","%Y-%m-%d"), y = 1500000, yend = 1500000,
+#00FF000C, #FFC0CB0C, #0000FF0C, #FF00000C
+
+forcast_cum<-forcast_cum+annotate("segment", x = as.Date("2020-10-06","%Y-%m-%d"), xend = as.Date("2021-02-06","%Y-%m-%d"), y = 1500000/100000, yend = 1500000/100000,
          colour = "black", size = 1, arrow = arrow())
 
 forcast_cum_zoom<-Day7_pred[Day7_pred$time>336,]%>%
+   mutate(total=total/100000,Cum_pred_rw2=Cum_pred_rw2/100000,Cum_pred_ar1=Cum_pred_ar1/100000, Cum_pred_ar2=Cum_pred_ar2/100000,Cum_pred_rw1=Cum_pred_rw1/100000,
+         Cum_pred_ar1_lower=Cum_pred_ar1_lower/100000,Cum_pred_ar1_upper=Cum_pred_ar1_upper/100000,Cum_pred_rw1_lower=Cum_pred_rw1_lower/100000,
+         Cum_pred_rw1_upper=Cum_pred_rw1_upper/100000,Cum_pred_ar2_lower=Cum_pred_ar2_lower/100000,Cum_pred_ar2_upper=Cum_pred_ar2_upper/100000,
+         Cum_pred_rw2_lower=Cum_pred_rw2_lower/100000,Cum_pred_rw2_upper=Cum_pred_rw2_upper/100000)%>%
   ggplot(aes(y=total, x=date2)) +
   geom_blank()+
   geom_point(aes(y=total, x=date2)) +
-  geom_line(aes(y=Cum_pred_rw2, x=date2),linetype = "dashed", color="red") +
-  geom_line(aes(y=Cum_pred_ar1, x=date2),color="blue") +
-  geom_line(aes(y=Cum_pred_ar2, x=date2),linetype = "twodash",color="black") +
-    geom_line(aes(y=Cum_pred_rw1, x=date2),linetype = "dotted",color="#E69F00") +
+  geom_line(aes(y=Cum_pred_rw2, x=date2), color="red") +
+  geom_line(aes(y=Cum_pred_ar1, x=date2),color="green",size=1) +
+    geom_line(aes(y=Cum_pred_ar2, x=date2),color="blue",size=1) +
+    geom_line(aes(y=Cum_pred_rw1, x=date2),color="yellow",size=1) +
   ylab(" ")+
   xlab("Date")+
-  theme_bw()
+  theme(axis.text.y=element_blank())
 
 forcast_cum_all<-forcast_cum + inset_element(forcast_cum_zoom, left =0.1, right =0.7, bottom = 0.5, top =0.99)
+
 
 ```
 
 ```{r predd,out.width = "99%", fig.cap = "Predicted cummulative COVID-19 cases in South Africa under the RW(1) and AR(1) model. Estimation period 12/03/2020-20/02/2021. The black dots are the observed cummulative cases. The red dashed lines are for RW(2) and the blue line for AR(1).The shaded bands are the prediction intervals. "}
 
 forcast_cum_all
+ggsave(filename = "forcast_cum_all.png", forcast_cum_all,width = 4, height = 4, dpi = 300, units = "in", device='png')
+
 
 ```
 
 
 ```{r message = FALSE, warning = FALSE}
 # table 
-Frocasting7<-Day7_pred[Day7_pred$time>345,c("date2","total","Cum_pred_rw2", "Cum_pred_rw2_lower", "Cum_pred_rw2_upper"
+Frocasting7<-Day7_pred[Day7_pred$time>342,c("date2","total","Cum_pred_rw2", "Cum_pred_rw2_lower", "Cum_pred_rw2_upper"
                                             ,"Cum_pred_ar1", "Cum_pred_ar1_lower", "Cum_pred_ar1_upper",
                                             "Cum_pred_ar2", "Cum_pred_ar2_lower", "Cum_pred_ar2_upper",
                                             "Cum_pred_rw1", "Cum_pred_rw1_lower", "Cum_pred_rw1_upper")]
@@ -541,7 +554,7 @@ kable_classic_2(full_width = F)%>%
 ```{r message = FALSE, warning = FALSE}
 # one day a head Forcasting - do this for rw1, ar1,ar2
 CV_data<-list()
-k=335
+k=332
 for(i in 1:10){
 sa_cov_dat$Dialy_cases1<-sa_cov_dat$Dialy_cases
 sa_cov_dat$Dialy_cases1[sa_cov_dat$time>(k+i)]<-NA
@@ -594,7 +607,7 @@ CV_pred<-CV_pred%>%
 CV_data[[i]]<-CV_pred
 
 }
-One_day_pred<-Two_day_pred<-Three_day_pred<-Four_day_pred<-Five_day_pred<-Six_day_pred<-Seven_day_pred<-NULL
+One_day_pred<-Two_day_pred<-Three_day_pred<-Four_day_pred<-Five_day_pred<-Six_day_pred<-Seven_day_pred<-Eight_day_pred<-Nine_day_pred<-Ten_day_pred<-NULL
 for(i in 1:10){
 One_day_pred<-rbind(One_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+1,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
 Two_day_pred<-rbind(Two_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+2,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
@@ -603,130 +616,243 @@ Four_day_pred<-rbind(Four_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+4,c("date
 Five_day_pred<-rbind(Five_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+5,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
 Six_day_pred<-rbind(Six_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+6,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
 Seven_day_pred<-rbind(Seven_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+7,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
+Eight_day_pred<-rbind(Seven_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+8,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
+Nine_day_pred<-rbind(Seven_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+9,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
+Ten_day_pred<-rbind(Seven_day_pred,CV_data[[i]][CV_data[[i]]$time==k+i+10,c("date2","time","total","Cum_pred_rw1","Cum_pred_rw2","Cum_pred_ar1","Cum_pred_ar2")])
+
 }
 
 One_day_pred<-One_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
                                     MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
                                     MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
                                     MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
                                     MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
                                     MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
                                     MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
-                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10)
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
   
 
 Two_day_pred<-Two_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
                                     MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
                                     MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
                                     MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
                                     MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
                                     MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
                                     MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
-                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10)
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
 
 Three_day_pred<-Three_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
                                     MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
                                     MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
                                     MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
                                     MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
                                     MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
                                     MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
-                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10)
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
 Four_day_pred<-Four_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
                                     MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
                                     MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
                                     MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
                                     MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
                                     MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
                                     MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
-                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10)
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
 Five_day_pred<-Five_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
                                     MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
                                     MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
                                     MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
                                     MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
                                     MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
                                     MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
-                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10)
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
 Six_day_pred<-Six_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
                                     MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
                                     MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
                                     MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
                                     MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
                                     MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
                                     MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
-                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10)
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
 Seven_day_pred<-Seven_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
                                     MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
                                     MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
                                     MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
                                     MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
                                     MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
                                     MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
-                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10)
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
+Eight_day_pred<-Eight_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
+                                    MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
+                                    MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
+                                    MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
+                                    MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
+                                    MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
+                                    MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
+Nine_day_pred<-Nine_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
+                                    MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
+                                    MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
+                                    MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
+                                    MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
+                                    MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
+                                    MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
+Ten_day_pred<-Ten_day_pred%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
+                                    MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
+                                    MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
+                                    MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
+                                    MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
+                                    MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
+                                    MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
 collist1<-c("MAE_rw1","MAE_rw2","MAE_ar1","MAE_ar2")
 collist2<-c("MAPE_rw1","MAPE_rw2","MAPE_ar1","MAPE_ar2")
+collist3<-c("chisq_rw1","chisq_rw2","chisq_ar1","chisq_ar2")
 
-Performance_tab1<-rbind(One_day_pred[1,collist1],Two_day_pred[1,collist1],Three_day_pred[1,collist1],Four_day_pred[1,collist1],Five_day_pred[1,collist1],Six_day_pred[1,collist1],Seven_day_pred[1,collist1])
+Performance_tab1<-rbind(One_day_pred[1,collist1],Two_day_pred[1,collist1],Three_day_pred[1,collist1],Four_day_pred[1,collist1],Five_day_pred[1,collist1],Six_day_pred[1,collist1],Seven_day_pred[1,collist1],Eight_day_pred[1,collist1],Nine_day_pred[1,collist1],Ten_day_pred[1,collist1])
 Performance_tab1<-data.frame(Performance_tab1)
-row.names(Performance_tab1)<-c("One day","Two day","Three day","Four day","Five day", "Six day", "Seven day")
+row.names(Performance_tab1)<-c("One day","Two day","Three day","Four day","Five day", "Six day", "Seven day","Eight day","Nine day", "Ten day")
 colnames(Performance_tab1)<-c("MAE RW1","MAE RW2","MAE AR1","MAE AR2")
 
-Performance_tab2<-rbind(One_day_pred[1,collist2],Two_day_pred[1,collist2],Three_day_pred[1,collist2],Four_day_pred[1,collist2],Five_day_pred[1,collist2],Six_day_pred[1,collist2],Seven_day_pred[1,collist2])
+Performance_tab2<-rbind(One_day_pred[1,collist2],Two_day_pred[1,collist2],Three_day_pred[1,collist2],Four_day_pred[1,collist2],Five_day_pred[1,collist2],Six_day_pred[1,collist2],Seven_day_pred[1,collist2],Eight_day_pred[1,collist2],Nine_day_pred[1,collist2],Ten_day_pred[1,collist2])
 Performance_tab2<-data.frame(Performance_tab2)
-row.names(Performance_tab2)<-c("One day","Two day","Three day","Four day","Five day", "Six day", "Seven day")
+row.names(Performance_tab2)<-c("One day","Two day","Three day","Four day","Five day", "Six day", "Seven day","Eight day","Nine day", "Ten day")
 colnames(Performance_tab2)<-c("MAPE RW1","MAPE RW2","MAPE AR1","MAPE AR2")
 
+Performance_tab3<-rbind(One_day_pred[1,collist3],Two_day_pred[1,collist3],Three_day_pred[1,collist3],Four_day_pred[1,collist3],Five_day_pred[1,collist3],Six_day_pred[1,collist3],Seven_day_pred[1,collist3],Eight_day_pred[1,collist3],Nine_day_pred[1,collist3],Ten_day_pred[1,collist3])
+Performance_tab3<-data.frame(Performance_tab3)
+row.names(Performance_tab3)<-c("One day","Two day","Three day","Four day","Five day", "Six day", "Seven day","Eight day","Nine day", "Ten day")
+colnames(Performance_tab3)<-c("Chisq RW1","Chisq RW2","Chisq AR1","Chisq AR2")
 
 Performance_tab1%>%
-kable(caption = "Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-7 days forcasting.") %>%
+kable(caption = "Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-10 days forcasting.") %>%
 kable_classic_2(full_width = F)%>%
   kableExtra::kable_styling(latex_options = "hold_position")
 Performance_tab2%>%
-kable(caption = "Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-7 days forcasting.") %>%
+kable(caption = "Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-10 days forcasting.") %>%
 kable_classic_2(full_width = F)%>%
   kableExtra::kable_styling(latex_options = "hold_position")
 
-
+Performance_tab3%>%
+kable(caption = "Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-10 days forcasting.") %>%
+kable_classic_2(full_width = F)%>%
+  kableExtra::kable_styling(latex_options = "hold_position")
 
 ```
 
 ```{r accuracy,out.width = "99%", fig.cap = "Predicted vs observed cummulative COVID-19 cases in South Africa under the RW(2) model. Base estimation period 12/03/2020-10/02/2021. The estimation period was expanded by 1 day until 20/02/2021"}
+One_day_pred<-One_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Two_day_pred<-Two_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Three_day_pred<-Three_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Four_day_pred<-Four_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Five_day_pred<-Five_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Six_day_pred<-Six_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Seven_day_pred<-Seven_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Eight_day_pred<-Eight_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Nine_day_pred<-Nine_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+Ten_day_pred<-Ten_day_pred%>%mutate(total=total/100000, Cum_pred_rw2=Cum_pred_rw2/100000)
+
+
 p1<-ggplot(One_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
   xlab("Observed (t+1)")+ylab("Predicted (t+1)")+
-  geom_abline(intercept = 0) + xlim(min(c( One_day_pred$total, One_day_pred$Cum_pred_rw2))-1500, max(c( One_day_pred$total,   One_day_pred$Cum_pred_rw2))+1500)+
-  ylim(min(c( One_day_pred$total, One_day_pred$Cum_pred_rw2))-1500, max(c( One_day_pred$total, One_day_pred$Cum_pred_rw2))+1500)
+  geom_abline(intercept = 0) + xlim(min(c( One_day_pred$total, One_day_pred$Cum_pred_rw2))-0.015, max(c( One_day_pred$total,   One_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( One_day_pred$total, One_day_pred$Cum_pred_rw2))-0.015, max(c( One_day_pred$total, One_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
 
 p2<-ggplot(Two_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
   xlab("Observed (t+2)")+ylab("Predicted (t+2)")+
-  geom_abline(intercept = 0) + xlim(min(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))-1500, max(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))+1500)+
-  ylim(min(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))-1500, max(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))+1500)
+  geom_abline(intercept = 0) + xlim(min(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))-0.015, max(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))-0.015, max(c( Two_day_pred$total, Two_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
 p3<-ggplot(Three_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
   xlab("Observed (t+3)")+ylab("Predicted (t+3)")+
-  geom_abline(intercept = 0) + xlim(min(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))-1500, max(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))+1500)+
-  ylim(min(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))-1500, max(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))+1500)
+  geom_abline(intercept = 0) + xlim(min(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))-0.015, max(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))-0.015, max(c( Three_day_pred$total, Three_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
 
 p4<-ggplot(Four_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
   xlab("Observed (t+4)")+ylab("Predicted (t+4)")+
-  geom_abline(intercept = 0) + xlim(min(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))-1500, max(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))+1500)+
-  ylim(min(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))-1500, max(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))+1500)
+  geom_abline(intercept = 0) + xlim(min(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))-0.015, max(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))-0.015, max(c( Four_day_pred$total, Four_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
 
 p5<-ggplot(Five_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
   xlab("Observed (t+5)")+ylab("Predicted (t+5)")+
-  geom_abline(intercept = 0) + xlim(min(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))-1500, max(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))+1500)+
-  ylim(min(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))-1500, max(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))+1500)
+  geom_abline(intercept = 0) + xlim(min(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))-0.015, max(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))-0.015, max(c( Five_day_pred$total, Five_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
 
 p6<-ggplot(Six_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
   xlab("Observed (t+6)")+ylab("Predicted (t+6)")+
-  geom_abline(intercept = 0) + xlim(min(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))-1500, max(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))+1500)+
-  ylim(min(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))-1500, max(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))+1500)
+  geom_abline(intercept = 0) + xlim(min(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))-0.015, max(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))-0.015, max(c( Six_day_pred$total, Six_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
 
 p7<-ggplot(Seven_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
   xlab("Observed (t+7)")+ylab("Predicted (t+7)")+
-  geom_abline(intercept = 0) + xlim(min(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))-1500, max(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))+1500)+
-  ylim(min(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))-1500, max(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))+1500)
+  geom_abline(intercept = 0) + xlim(min(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))-0.015, max(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))-0.015, max(c( Seven_day_pred$total, Seven_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
 
-(p1+p3)/(p5+p7)
+p8<-ggplot(Eight_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
+  xlab("Observed (t+8)")+ylab("Predicted (t+8)")+
+  geom_abline(intercept = 0) + xlim(min(c( Eight_day_pred$total, Eight_day_pred$Cum_pred_rw2))-0.015, max(c( Eight_day_pred$total, Eight_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Eight_day_pred$total, Eight_day_pred$Cum_pred_rw2))-0.015, max(c( Eight_day_pred$total, Eight_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
+
+p9<-ggplot(Nine_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
+  xlab("Observed (t+9)")+ylab("Predicted (t+9)")+
+  geom_abline(intercept = 0) + xlim(min(c( Nine_day_pred$total, Nine_day_pred$Cum_pred_rw2))-0.015, max(c( Nine_day_pred$total, Nine_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Nine_day_pred$total, Nine_day_pred$Cum_pred_rw2))-0.015, max(c( Nine_day_pred$total, Nine_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
+
+p10<-ggplot(Ten_day_pred, aes(x=total, y=Cum_pred_rw2))+geom_point()+
+  xlab("Observed (t+10)")+ylab("Predicted (t+10)")+
+  geom_abline(intercept = 0) + xlim(min(c( Ten_day_pred$total, Ten_day_pred$Cum_pred_rw2))-0.015, max(c( Ten_day_pred$total, Ten_day_pred$Cum_pred_rw2))+0.015)+
+  ylim(min(c( Ten_day_pred$total, Ten_day_pred$Cum_pred_rw2))-0.015, max(c( Ten_day_pred$total, Ten_day_pred$Cum_pred_rw2))+0.015)+ stat_cor(method = "pearson")
+
+
+ggsave(filename = "day1.png", p1,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day2.png", p2,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day3.png", p3,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day4.png", p4,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day5.png", p5,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day6.png", p6,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day7.png", p7,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day8.png", p8,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day9.png", p9,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "day10.png", p10,width = 4, height = 4, dpi = 300, units = "in", device='png')
 
 
 

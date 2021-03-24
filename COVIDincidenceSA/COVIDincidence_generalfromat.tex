@@ -241,14 +241,14 @@ To be updated.
 % Use "Eq" instead of "Equation" for equation citations.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
+Coronaviruses (COVID-19) is an infectious disease that may cause respiratory infections ranging from the common cold to more severe diseases. The novel COVID-19 outbreak was first detected in December 2019 in Wuhan, China. The outbreak later spread to every province of mainland China and 188 other countries, with more than 118 million confirmed cases and more than 2.63 million deaths as of March 8, 2021 [ref]. The first COVID-19 case was reported in South Africa
+on 5 March 2020. As of March 8, 2021, the number of confirmed COVID-19 cases in Africa represents around 3\% of the infection worldwide. South Africa had the highest burden of COVID-19 cases in the African region, with 1.5 million reported cases and 50,678 confirmed COVID-19 related deaths.
 
-In this paper we present (1) South Africa's COVID trajectory to the
-first 100,000 (22 June 2020) cases and (2) fit a series of non-linear
-growth models, calibrated to COVID-19 cumulative number of reported case
-data from 5 March 2020 to 22 June 2020. The models are used to produce
-short term predictions of the number of reported cases expected for a
-period of 30 days ahead. These forecasts are generated at the national
-level
+During this period, countries, including South Africa, have adopted various measures to control the virus's spread, including border closure, mandatory use of fabric masks, contact tracing, and stay-at-home measures. Due to the uncertainties about the disease and the need to make informed policy decisions, modelling has taken centre stage in supporting critical policy discussions surrounding COVID-19. COVID-19 modelling studies generally follow one of two general approaches—the phenomenological and mechanistic models. Phenomenological models are statistical models that use generic strategies such as regression to provide quantitative projections that policymakers may need to allocate resources or plan interventions in the short term. On the other hand, mechanistic models use parameters and functional forms to represent our knowledge and assumptions on transmission, disease, and immunity to produce a long-term forecast. 
+
+Several authors implemented phenomenological and mechanistic models to describe the early course of COVID-19 in South Africa and produce short-term and long-term forecasts using the data from the early phase of the epidemic. In this paper we present (1) South Africa's one year COVID trajectory and (2) fit a series of temporal models to produce produce short term predictions of the number of reported cases expected for a period of 7 days ahead. 
+%Building on popular temporal models, this part of the thesis aims to develop statistical approaches to characterize the course of the COVID-19 outbreak and produce short term forecasts using daily reports of tests and confirmed COVID-19 cases. 
+
 
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
@@ -277,8 +277,8 @@ overdispersion. That is, \(Y(t) \sim NB(\mu(t), \delta)\), where
 \(\delta\) is the overdispersion parameter. We considered two temporal
 models to capture the trend over time: a random walk of order two
 (\(RW(2)\)) and an autoregressive model of order one (\(AR(1)\))
-{[}1{]}. We also considerd a \(RW(1)\) model, but the model overfits the
-data (See the supplemntary appendix). Similarly, we considerd an \(AR\)
+{[}1{]}. We also considered a \(RW(1)\) model, but the model overfits the
+data (See the supplementary appendix). Similarly, we considered an \(AR\)
 model order \(p=2\) but the result is similar to \(AR1\) model and we
 prefer the simpler \(AR1\) model.
 
@@ -303,15 +303,15 @@ Similarly, the \(RW(2)\) model {[}1{]} is given by, \[
  u_t-2u_{t+1}+u_{t+2} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
 \end{aligned}
 \] where \(\alpha\) is the intercept term as before and \(\tau_u\) is
-the precison parameter.
+the precision parameter.
 
-The two models were fitted within the Bayesian framework using
+Each models were fitted within the Bayesian framework using
 \emph{inla} {[}2{]}. To complete the specification of both models, we
 assume the following priors. For the \(AR(1)\) model, we denote
 \(\theta_1=log(\tau_u(1-\rho^2))\) where \(\Gamma(10,100)\) prior is
 specified for \(\theta_1\), and we denote
 \(\theta_2=log\frac{1+\rho}{1-\rho}\) and assume a \(N(0, 0.15)\) prior
-for \(\theta\). Similarly, we represent the precison parameter of
+for \(\theta\). Similarly, we represent the precision parameter of
 \(RW(1)\), \(\tau_u\), as \(\theta=log(\tau_u)\) and assume a
 \(\Gamma (10,100)\) prior for \(\theta\).
 
@@ -326,12 +326,12 @@ https://github.com/belayb/COVIDincidenceSA/tree/master/COVIDincidenceSA.
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-Figure 1 presents the daily number of reported COVID-19 cases from 12
-March 2020 to 27 February 2021. Similar to elsewhere in the world, South
-Africa pass through a two-wave pandemic. The pandemic's first peak was
+The daily number of reported COVID-19 cases from 12
+March 2020 to 27 February 2021 is presented in Figure \ref{fig:daily-cases}. Similar to elsewhere in the world, South
+Africa pass through a two-wave pandemic. The pandemic first peak was
 on 07 July 2020, where up to 13944 new COVID-19 cases reported, followed
 by a second peak in January 2021, where more than 21,000 daily cases
-reported. Figure 2 presents the cumulative number of new reported
+reported. Figure \ref{fig:cummulative} presents the cumulative number of reported
 COVID-19 cases and tests performed. To date, 8,838,937 tests have been
 conducted, and a total of 1,500,677 cases reported.
 
@@ -343,301 +343,163 @@ conducted, and a total of 1,500,677 cases reported.
 \includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/cummulative-1} \caption{The cummulative number of COVID-19 cases and Cummulative number of tests in South Africa from 12/03/2020-27/02/2021. Red-line denote the number of cases and blue-line denotes the number of tests.}\label{fig:cummulative}
 \end{figure}
 
-\begin{figure}[H]
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{Fitted and observed data AR(1) model}\label{fig:unnamed-chunk-6}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1} \caption{Fitted and observed data RW(2) model}\label{fig:unnamed-chunk-7}
-\end{figure}
-
 \hypertarget{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}{%
 \subsection{Short-term prediction of the total number of reported
 COVID-19
 cases}\label{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}}
 
-We fit the two models described in the previous section to the daily
-reported new COVID-19 cases. The parameter estimates for the two models
-are presented in Supplementary Table 1. As depicted in Figure 3, two
-models fitted to the data appear to fit the observed data (within the
-estimation period) well with a narrow confidence interval obtained for
-the \(RW(2)\) model. The two models provides similar predictions over
-the 7-day ahead period.
+We fit the four models models described in the previous section to the daily
+reported new COVID-19 cases. The parameter estimates for each of the fitted models
+are presented in Supplementary Table 1. Our main interest to estimate the rate of change of daily conformed COVID-19 cases and produce a short term forecast for number of reported cases.  Figure \ref{fig:unnamed-chunk-7} presents the fitted model to the observed data (panel A) and the first order derivative of the fitted curve for the RW2 model. Similar plot for RW1, AR1 and AR2 is presented in supplementary append --. All models considered appear to fit the observed data (within the estimation period) well.
+
+
+
+\begin{table}[!h]
+	
+	\caption{\label{tab:Accuracy}Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models.}
+	\centering
+	\begin{tabular}[t]{lrrrr}
+		\hline
+		Days ahead point forecasts & \multicolumn{4}{c}{Mean Absolute Error}\\
+		\cline{2-5}
+		& RW1 & RW2 & AR1 & AR2\\
+		\hline
+	One day & 567.1704 & 3403.052 & 1100.229 & 975.1169\\
+	\hline
+	Two day & 1395.0619 & 3048.159 & 1503.359 & 1412.4527\\
+	\hline
+	Three day & 2309.8792 & 2756.448 & 2273.296 & 2200.8456\\
+	\hline
+	Four day & 3223.8908 & 2668.973 & 3057.519 & 2971.4183\\
+	\hline
+	Five day & 4076.6772 & 2722.319 & 3756.599 & 3653.5679\\
+	\hline
+	Six day & 4677.8180 & 2760.561 & 4178.428 & 4055.0046\\
+	\hline
+	Seven day & 5121.6867 & 2691.375 & 4415.616 & 4268.1508\\
+	\hline
+	Eight day & 5897.6715 & 2928.744 & 5036.350 & 4844.4758\\
+	\hline
+	Nine day & 6041.0341 & 2896.269 & 5119.785 & 4921.4926\\
+	\hline
+	Ten day & 6218.5109 & 2884.603 & 5229.782 & 5024.2168\\
+	\hline
+		& \multicolumn{4}{c}{Mean Absolute Percentage Error}\\
+		\cline{2-5}\\
+		& RW1 & RW2 & AR1 & AR2\\
+		\hline\\
+	One day & 0.0003807 & 0.0022844 & 0.0007385 & 0.0006546\\
+	\hline
+	Two day & 0.0009354 & 0.0020427 & 0.0010073 & 0.0009465\\
+	\hline
+	Three day & 0.0015467 & 0.0018446 & 0.0015218 & 0.0014734\\
+	\hline
+	Four day & 0.0021564 & 0.0017840 & 0.0020448 & 0.0019873\\
+	\hline
+	Five day & 0.0027235 & 0.0018176 & 0.0025094 & 0.0024406\\
+	\hline
+	Six day & 0.0031213 & 0.0018410 & 0.0027877 & 0.0027055\\
+	\hline
+	Seven day & 0.0034128 & 0.0017925 & 0.0029418 & 0.0028437\\
+	\hline
+	Eight day & 0.0039270 & 0.0019498 & 0.0033531 & 0.0032256\\
+	\hline
+	Nine day & 0.0040213 & 0.0019282 & 0.0034079 & 0.0032762\\
+	\hline
+	Ten day & 0.0041381 & 0.0019203 & 0.0034802 & 0.0033437\\
+	\hline
+	& \multicolumn{4}{c}{Chi Square}\\
+	\cline{2-5}\\
+	& RW1 & RW2 & AR1 & AR2\\
+	\hline
+	One day & 3.526026 & 80.43788 & 10.14578 & 7.642623\\
+	\hline
+	Two day & 16.552333 & 71.66942 & 22.21648 & 19.346128\\
+	\hline
+	Three day & 41.883130 & 70.78339 & 46.44967 & 42.301887\\
+	\hline
+	Four day & 79.235781 & 71.27488 & 79.45425 & 72.947524\\
+	\hline
+	Five day & 128.010230 & 72.74404 & 119.51466 & 109.013108\\
+	\hline
+	Six day & 185.934034 & 72.11017 & 162.88745 & 146.770096\\
+	\hline
+	Seven day & 254.268157 & 71.58625 & 210.31240 & 187.416759\\
+	\hline
+	Eight day & 293.981286 & 75.31508 & 235.73996 & 209.342520\\
+	\hline
+	Nine day & 309.899980 & 74.36227 & 242.98123 & 215.549116\\
+	\hline
+	Ten day & 333.287057 & 74.05306 & 253.91151 & 225.029683\\
+	\hline
+		\hline\\
+		& \multicolumn{4}{c}{Information Criteria}\\
+		\hline\\
+		DIC & 5059.06 & 5447.40 & 5278.87 & 5284.00\\
+		WAIC & 5123.56 & 5460.81 & 5286.90 & 5294.74\\
+		\hline\\
+	\end{tabular}
+\end{table}
 
 \begin{figure}[H]
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/predd-1} \caption{Predicted cummulative COVID-19 cases in South Africa under the RW(1) and AR(1) model. Estimation period 12/03/2020-20/02/2021. The black dots are the observed cummulative cases. The red dashed lines are for RW(2) and the blue line for AR(1).The shaded bands are the prediction intervals. }\label{fig:predd}
+	\includegraphics[width=0.95\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1} \caption{RW2 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+
+\begin{figure}[H]
+\includegraphics[width=0.95\linewidth]{COVIDincidenceSA_files/figure-latex/predd-1} \caption{Seven days a head predicted cumulative COVID-19 cases in South Africa under the RW1 (pink line), RW2 (red line), AR1 (green line), and AR2 (blue line) model. Estimation period 12/03/2020-20/02/2021. The black dots are the observed cumulative cases.The shaded bands are the prediction intervals. }\label{fig:predd}
 \end{figure}
 
 \begin{table}[!h]
 
 \caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the rw2 model. Estimation period 12/03/2020-20/02/2021}
 \centering
-\begin{tabular}[t]{l|r|r|l|r}
+\begin{tabular}[t]{l|l|r|r|l|r}
 \hline
-Date & Total & Prediction & Prediction Interval & Total - Prediction\\
+Model&Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
-2021-02-18 & 1498766 & 1501550 & (1243364.14-1808126.44) & -2784.084\\
+RW1&2021-02-21 & 1503796 & 1504037 & (1179288.4-1906832.48) & -241.2192\\
+&2021-02-22 & 1504588 & 1505956 & (1180039.06-1910889.23) & -1367.7046\\
+&2021-02-23 & 1505586 & 1507956 & (1180669.91-1915712.14) & -2370.0667\\
+&2021-02-24 & 1507448 & 1510042 & (1181213.73-1921302.31) & -2593.7729\\
+&2021-02-25 & 1509124 & 1512217 & (1181690.53-1927674.02) & -3092.5479\\
+&2021-02-26 & 1510778 & 1514484 & (1182113.69-1934850.96) & -3706.3254\\
+&2021-02-27 & 1512225 & 1516849 & (1182492.77-1942862.03) & -4624.2376\\
 \hline
-2021-02-19 & 1500677 & 1503091 & (1244303.4-1810572.89) & -2414.449\\
+RW2&2021-02-21 & 1503796 & 1507571 & (1248627.38-1814985.53) & -3774.603\\
+&2021-02-22 & 1504588 & 1509293 & (1249674.84-1817725.91) & -4704.805\\
+&2021-02-23 & 1505586 & 1511002 & (1250614.44-1820669.35) & -5415.664\\
+&2021-02-24 & 1507448 & 1512704 & (1251450.03-1823858.23) & -5255.522\\
+&2021-02-25 & 1509124 & 1514405 & (1252187.39-1827339.44) & -5281.407\\
+&2021-02-26 & 1510778 & 1516115 & (1252833.56-1831166.58) & -5337.172\\
+&2021-02-27 & 1512225 & 1517842 & (1253396.63-1835400.97) & -5616.650\\
 \hline
-2021-02-20 & 1502367 & 1504581 & (1245125.49-1813126.02) & -2213.984\\
+AR1&2021-02-21 & 1503796 & 1505071 & (1124486.84-1998035.3) & -1274.995\\
+&2021-02-22 & 1504588 & 1506982 & (1125286.9-2001911.8) & -2393.764\\
+&2021-02-23 & 1505586 & 1508942 & (1125972.18-2006363.99) & -3356.174\\
+&2021-02-24 & 1507448 & 1510953 & (1126572.19-2011372.04) & -3504.598\\
+&2021-02-25 & 1509124 & 1513014 & (1127105.33-2016924.89) & -3889.609\\
+&2021-02-26 & 1510778 & 1515126 & (1127584.21-2023016.99) & -4347.854\\
+&2021-02-27 & 1512225 & 1517290 & (1128017.98-2029646.04) & -5065.020\\
 \hline
-2021-02-21 & 1503796 & 1506026 & (1245838.81-1815814.63) & -2229.618\\
-\hline
-2021-02-22 & 1504588 & 1507432 & (1246452.98-1818667.83) & -2844.351\\
-\hline
-2021-02-23 & 1505586 & 1508808 & (1246978.01-1821716.68) & -3222.321\\
-\hline
-2021-02-24 & 1507448 & 1510161 & (1247424.13-1824995.35) & -2712.894\\
-\hline
-2021-02-25 & 1509124 & 1511498 & (1247800.94-1828542.17) & -2373.747\\
-\hline
-2021-02-26 & 1510778 & 1512827 & (1248117.46-1832400.55) & -2048.995\\
-\hline
-2021-02-27 & 1512225 & 1514157 & (1248381.83-1836620.02) & -1932.342\\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!h]
-
-\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the AR1 model. Estimation period 12/03/2020-20/02/2021}
-\centering
-\begin{tabular}[t]{l|r|r|l|r}
-\hline
-Date & Total & Prediction & Prediction Interval & Total - Prediction\\
-\hline
-2021-02-18 & 1498766 & 1499490 & (1118111.85-1994222.05) & -723.8101\\
-\hline
-2021-02-19 & 1500677 & 1501589 & (1119005.83-1998492.97) & -911.8181\\
-\hline
-2021-02-20 & 1502367 & 1503742 & (1119771.48-2003403.42) & -1374.5498\\
-\hline
-2021-02-21 & 1503796 & 1505948 & (1120441.58-2008928.37) & -2152.4467\\
-\hline
-2021-02-22 & 1504588 & 1508210 & (1121036.44-2015054.48) & -3622.1451\\
-\hline
-2021-02-23 & 1505586 & 1510527 & (1121570.32-2021775.18) & -4941.3574\\
-\hline
-2021-02-24 & 1507448 & 1512901 & (1122053.58-2029087.04) & -5452.8340\\
-\hline
-2021-02-25 & 1509124 & 1515331 & (1122494.04-2036989.06) & -6207.3481\\
-\hline
-2021-02-26 & 1510778 & 1517820 & (1122897.79-2045481.78) & -7041.6895\\
-\hline
-2021-02-27 & 1512225 & 1520367 & (1123269.68-2054566.81) & -8141.6604\\
+AR2&2021-02-21 & 1503796 & 1504897 & (1123980.48-1998091.99) & -1101.411\\
+&2021-02-22 & 1504588 & 1506802 & (1124788.11-2001923.68) & -2213.521\\
+&2021-02-23 & 1505586 & 1508752 & (1125480.87-2006309.88) & -3165.515\\
+&2021-02-24 & 1507448 & 1510747 & (1126088.3-2011227) & -3299.344\\
+&2021-02-25 & 1509124 & 1512789 & (1126628.81-2016661.08) & -3665.250\\
+&2021-02-26 & 1510778 & 1514878 & (1127115.05-2022603.28) & -4099.507\\
+&2021-02-27 & 1512225 & 1517012 & (1127556.18-2029047.89) & -4787.420\\
 \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the RW1 model. Estimation period 12/03/2020-20/02/2021}
-\centering
-\begin{tabular}[t]{l|r|r|l|r}
-\hline
-Date & Total & Prediction & Prediction Interval & Total - Prediction\\
-\hline
-2021-02-18 & 1498766 & 1498569 & (1171371.01-1905725.92) & 197.3859\\
-\hline
-2021-02-19 & 1500677 & 1500866 & (1172282.33-1910642.87) & -188.6823\\
-\hline
-2021-02-20 & 1502367 & 1503262 & (1173049.22-1916495.57) & -894.6407\\
-\hline
-2021-02-21 & 1503796 & 1505761 & (1173711.18-1923283.63) & -1964.7423\\
-\hline
-2021-02-22 & 1504588 & 1508368 & (1174292.27-1931023.86) & -3779.5408\\
-\hline
-2021-02-23 & 1505586 & 1511087 & (1174808.38-1939743.02) & -5500.8398\\
-\hline
-2021-02-24 & 1507448 & 1513924 & (1175270.86-1949474.01) & -6475.6849\\
-\hline
-2021-02-25 & 1509124 & 1516883 & (1175688.37-1960253.97) & -7759.3666\\
-\hline
-2021-02-26 & 1510778 & 1519971 & (1176067.58-1972123.43) & -9193.4282\\
-\hline
-2021-02-27 & 1512225 & 1523194 & (1176413.76-1985125.8) & -10968.6766\\
-\hline
-\end{tabular}
-\end{table}
 
-\begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the AR2 model. Estimation period 12/03/2020-20/02/2021}
-\centering
-\begin{tabular}[t]{l|r|r|l|r}
-\hline
-Date & Total & Prediction & Prediction Interval & Total - Prediction\\
-\hline
-2021-02-18 & 1498766 & 1499297 & (1117410.1-1994516.93) & -530.9910\\
-\hline
-2021-02-19 & 1500677 & 1501378 & (1118308.28-1998709.43) & -701.0323\\
-\hline
-2021-02-20 & 1502367 & 1503507 & (1119078.99-2003512.61) & -1140.4836\\
-\hline
-2021-02-21 & 1503796 & 1505686 & (1119754.71-2008896.75) & -1889.5478\\
-\hline
-2021-02-22 & 1504588 & 1507912 & (1120355.57-2014844.05) & -3324.2951\\
-\hline
-2021-02-23 & 1505586 & 1510188 & (1120895.7-2021343.34) & -4601.9776\\
-\hline
-2021-02-24 & 1507448 & 1512513 & (1121385.41-2028386.98) & -5064.8673\\
-\hline
-2021-02-25 & 1509124 & 1514887 & (1121832.47-2035969.53) & -5763.2504\\
-\hline
-2021-02-26 & 1510778 & 1517311 & (1122242.95-2044087.07) & -6533.4176\\
-\hline
-2021-02-27 & 1512225 & 1519786 & (1122621.69-2052736.67) & -7560.6602\\
-\hline
-\end{tabular}
-\end{table}
 
-\begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-11}Parameter estimates AR1 model}
-\centering
-\begin{tabular}[t]{l|r|r|r|r}
-\hline
-  & mean & sd & 0.025quant & 0.975quant\\
-\hline
-(Intercept) & 6.109 & 2.441 & 0.145 & 10.569\\
-\hline
-Size & 28.955 & 8.389 & 16.805 & 49.397\\
-\hline
-Precision for time & 0.158 & 0.112 & 0.023 & 0.438\\
-\hline
-Rho for time & 0.995 & 0.004 & 0.985 & 0.999\\
-\hline
-\end{tabular}
-\end{table}
 
-\begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-11}Parameter estimates RW2 model}
-\centering
-\begin{tabular}[t]{l|r|r|r|r}
-\hline
-  & mean & sd & 0.025quant & 0.975quant\\
-\hline
-(Intercept) & 7.603 & 0.017 & 7.570 & 7.637\\
-\hline
-Size & 10.422 & 0.911 & 8.734 & 12.319\\
-\hline
-Precision for time & 0.036 & 0.014 & 0.016 & 0.070\\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!h]
-
-\caption{\label{tab:unnamed-chunk-11}Information Creteria for AR1 and RW2 models}
-\centering
-\begin{tabular}[t]{l|r|r}
-\hline
-  & DIC & WAIC\\
-\hline
-AR1 & 5278.871 & 5286.902\\
-\hline
-RW1 & 5447.397 & 5460.804\\
-\hline
-\end{tabular}
-\end{table}
-
-\hypertarget{internal-validation}{%
-\subsection{Internal validation}\label{internal-validation}}
-
-\begin{table}[!h]
-
-\caption{\label{tab:unnamed-chunk-12}Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-10 days forcasting.}
-\centering
-\begin{tabular}[t]{l|r|r|r|r}
-\hline
-  & MAE RW1 & MAE RW2 & MAE AR1 & MAE AR2\\
-\hline
-One day & 566.3424 & 3403.057 & 1100.229 & 975.1169\\
-\hline
-Two day & 1395.5437 & 3048.163 & 1503.359 & 1412.4527\\
-\hline
-Three day & 2310.3943 & 2756.451 & 2273.296 & 2200.8456\\
-\hline
-Four day & 3224.4373 & 2669.102 & 3057.519 & 2971.4183\\
-\hline
-Five day & 4077.2533 & 2722.422 & 3756.599 & 3653.5679\\
-\hline
-Six day & 4678.4217 & 2760.629 & 4178.428 & 4055.0046\\
-\hline
-Seven day & 5122.3159 & 2691.440 & 4415.616 & 4268.1508\\
-\hline
-Eight day & 5898.4226 & 2928.807 & 5036.350 & 4844.4758\\
-\hline
-Nine day & 6041.7974 & 2896.331 & 5119.785 & 4921.4926\\
-\hline
-Ten day & 6219.2886 & 2884.664 & 5229.782 & 5024.2168\\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!h]
-
-\caption{\label{tab:unnamed-chunk-12}Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-10 days forcasting.}
-\centering
-\begin{tabular}[t]{l|r|r|r|r}
-\hline
-  & MAPE RW1 & MAPE RW2 & MAPE AR1 & MAPE AR2\\
-\hline
-One day & 0.0003802 & 0.0022844 & 0.0007385 & 0.0006546\\
-\hline
-Two day & 0.0009357 & 0.0020427 & 0.0010073 & 0.0009465\\
-\hline
-Three day & 0.0015471 & 0.0018446 & 0.0015218 & 0.0014734\\
-\hline
-Four day & 0.0021567 & 0.0017841 & 0.0020448 & 0.0019873\\
-\hline
-Five day & 0.0027239 & 0.0018177 & 0.0025094 & 0.0024406\\
-\hline
-Six day & 0.0031217 & 0.0018410 & 0.0027877 & 0.0027055\\
-\hline
-Seven day & 0.0034132 & 0.0017926 & 0.0029418 & 0.0028437\\
-\hline
-Eight day & 0.0039274 & 0.0019499 & 0.0033531 & 0.0032256\\
-\hline
-Nine day & 0.0040218 & 0.0019282 & 0.0034079 & 0.0032762\\
-\hline
-Ten day & 0.0041386 & 0.0019204 & 0.0034802 & 0.0033437\\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!h]
-
-\caption{\label{tab:unnamed-chunk-12}Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models for 1-10 days forcasting.}
-\centering
-\begin{tabular}[t]{l|r|r|r|r}
-\hline
-  & Chisq RW1 & Chisq RW2 & Chisq AR1 & Chisq AR2\\
-\hline
-One day & 3.519941 & 80.43338 & 10.14578 & 7.642623\\
-\hline
-Two day & 16.537758 & 71.66416 & 22.21648 & 19.346128\\
-\hline
-Three day & 41.855697 & 70.77741 & 46.44967 & 42.301887\\
-\hline
-Four day & 79.209191 & 71.26839 & 79.45425 & 72.947524\\
-\hline
-Five day & 127.990433 & 72.73753 & 119.51466 & 109.013108\\
-\hline
-Six day & 185.907637 & 72.10287 & 162.88745 & 146.770096\\
-\hline
-Seven day & 254.232830 & 71.57873 & 210.31240 & 187.416759\\
-\hline
-Eight day & 293.941945 & 75.30636 & 235.73996 & 209.342520\\
-\hline
-Nine day & 309.855289 & 74.35368 & 242.98123 & 215.549116\\
-\hline
-Ten day & 333.234490 & 74.04449 & 253.91151 & 225.029683\\
-\hline
-\end{tabular}
-\end{table}
 
 \newpage
 
@@ -647,11 +509,66 @@ Ten day & 333.234490 & 74.04449 & 253.91151 & 225.029683\\
 \setcounter{table}{0} \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
 
 \begin{figure}[H]
+	\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{Fitted and observed data AR(1) model}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+\begin{figure}[H]
 \includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1} \caption{Fitted and observed data AR(2) model}\label{fig:unnamed-chunk-13}
 \end{figure}
 
 \begin{figure}[H]
 \includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1} \caption{Fitted and observed data RW(1) model}\label{fig:unnamed-chunk-14}
+\end{figure}
+
+\begin{table}[!h]
+	
+	\caption{\label{tab:unnamed-chunk-11}Parameter estimates for each model}
+	\centering
+	\begin{tabular}[t]{l|l|r|r|r|r}
+		\hline
+		Model& & mean & sd & 0.025quant & 0.975quant\\
+		\hline
+		AR1&(Intercept) & 6.109 & 2.441 & 0.145 & 10.569\\
+		&Size & 28.955 & 8.389 & 16.805 & 49.397\\
+		&Precision for time & 0.158 & 0.112 & 0.023 & 0.438\\
+		&Rho for time & 0.995 & 0.004 & 0.985 & 0.999\\
+		\hline
+		& &  &  &  & \\
+		AR2&(Intercept) & 6.307 & 1.659 & 2.475 & 9.299\\
+		&Size & 28.399 & 8.492 & 15.999 & 49.001\\
+		&Precision for time & 0.236 & 0.126 & 0.066 & 0.547\\
+		&PACF1 for time & 0.992 & 0.005 & 0.980 & 0.998\\
+		&PACF2 for time & 0.007 & 0.085 & 0.006 & 0.177\\
+		\hline
+		& &  &  &  & \\
+		RW1 & (Intercept) & 7.565 & 0.001 & 7.564 & 7.587\\
+		& Size & 53.685 & 24.186 & 24.47 & 116.45\\
+		& Precision for time & 0.231 & 0.044 & 0.15 & 0.23\\
+		\hline
+		& &  &  &  & \\
+		RW2 & (Intercept) & 7.603 & 0.017 & 7.570 & 7.637\\
+		& Size & 10.422 & 0.911 & 8.734 & 12.319\\
+		& Precision for time & 0.036 & 0.014 & 0.016 & 0.070\\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/accuracy-1} \caption{Predicted vs observed cummulative COVID-19 cases in South Africa under the RW(2) model. Base estimation period 12/03/2020-10/02/2021. The estimation period was expanded until 20/02/2021 one day at a time}\label{fig:accuracy}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=0.3\linewidth]{day1} 
+		\includegraphics[width=0.3\linewidth]{day2} 
+			\includegraphics[width=0.3\linewidth]{day3} 
+				\includegraphics[width=0.3\linewidth]{day4} 
+					\includegraphics[width=0.3\linewidth]{day5} 
+						\includegraphics[width=0.3\linewidth]{day6} 
+							\includegraphics[width=0.3\linewidth]{day7} 
+								\includegraphics[width=0.3\linewidth]{day8}
+									\includegraphics[width=0.3\linewidth]{day9}
+										\includegraphics[width=0.3\linewidth]{day10}   
+	\caption{Predicted vs observed cummulative COVID-19 cases in South Africa under the RW(2) model. Base estimation period 12/03/2020-10/02/2021. The estimation period was expanded until 20/02/2021 one day at a time}\label{fig:accuracy2}
 \end{figure}
 
 \hypertarget{references}{%
