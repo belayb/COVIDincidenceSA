@@ -306,25 +306,25 @@ models to capture the trend over time: a random walk of order one (\(RW(2)\)), a
 		\hline
 		Model& & \\
 		\hline
-		AR1& & $\begin{aligned}[t]
+		\(AR(1)\)& & $\begin{aligned}[t]
 		log(\mu(t)) &= \alpha+u_t,\\
 		u_1 &\sim N(0, \tau_u(1-\rho^2)^{-1}),\\
 		u_t &=\rho u_{t-1} +\epsilon_t, \ \ t=2, \dots, n,\\
 		\epsilon_t & \sim N(0, \tau_{\epsilon}),
 		\end{aligned}$\\
 		& & \\
-		AR2& &$\begin{aligned}[t]
+		\(AR(2)\)& &$\begin{aligned}[t]
 		log(\mu(t)) &= \alpha+u_t,\\
 		u_t &=\rho_1 u_{t-1}+\rho_2 u_{t-2} +\epsilon_t, \ \ t=2, \dots, n,\\
 		\epsilon_t & \sim N(0, \tau_{\epsilon}),
 		\end{aligned}$\\
 		& & \\
-		RW1& &  $\begin{aligned}[t]
+		\(RW(1)\)& &  $\begin{aligned}[t]
 		log(\mu(t)) &= \alpha+u_t, \\
 		u_t-u_{t-1} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
 		\end{aligned}$\\
 		& & \\
-		RW2& &  $\begin{aligned}[t]
+		\(RW(2)\)& &  $\begin{aligned}[t]
 		log(\mu(t)) &= \alpha+u_t, \\
 		u_t-2u_{t+1}+u_{t+2} &\sim N(0, \tau_u), \ \ t=2, \dots, n,
 		\end{aligned}$\\
@@ -342,12 +342,7 @@ for \(\theta\). For both the \(RW(1)\) and \(RW(2)\), we represent the precision
 \(\tau_u\) as \(\theta=log(\tau_u)\) and assume a
 \(\Gamma (10,100)\) prior for \(\theta\).
 
-To assess the models' accuracy in predicting COVID-19 cases, we present
-the forecast period's actual observed values and the predicted values.
-Additionally, the model fits were evaluated by using DIC (Deviance
-information criteria).
-
-The R-code that we used for our analyses is avaliable at
+The short-term prediction performance of all these models were evaluated using mean absolute error (MAE), mean absolute percentage error (MAPE), and chi-squared value. Additionally, the model fits were evaluated by using Deviance information criteria (DIC, ref) and Watanabe–Akaike information criterion(WAIC,ref). The R-codes that we used for our analyses are available at
 https://github.com/belayb/COVIDincidenceSA.
 
 
@@ -377,11 +372,13 @@ conducted, and a total of 1,500,677 cases reported.
 COVID-19
 cases}\label{short-term-prediction-of-the-total-number-of-reported-covid-19-cases}}
 
-We fit the four models models described in the previous section to the daily
-reported new COVID-19 cases. The parameter estimates for each of the fitted models
-are presented in Supplementary Table 1. Our main interest to estimate the rate of change of daily conformed COVID-19 cases and produce a short term forecast for number of reported cases.  Figure \ref{fig:unnamed-chunk-7} presents the fitted model to the observed data (panel A) and the first order derivative of the fitted curve for the RW2 model. Similar plot for RW1, AR1 and AR2 is presented in supplementary append --. All models considered appear to fit the observed data (within the estimation period) well.
+We fit the four models described in the previous section to the daily
+reported new COVID-19 cases. The models were fitted to the data from 12/03/2020-07/02/2021 (estimation period). The parameter estimates for each of the fitted models
+are presented in Supplementary Table \ref{tab:parest}. Our main interest to produce a short-term forecast for the number of reported cases.  Figure \ref{fig:ar1fitted} - \ref{fig:rw2fitted} in the supplementary appendix presents the fitted model to the observed data (panel A) and the first-order derivative of the fitted curve for each model. All models considered appear to fit the observed data (within the estimation period) well. Nonetheless, the \(AR(1)\), \(AR(2)\), and \(RW(1)\) tend to overfit the data. 
 
+Figure \ref{fig:10daypred} and Table \ref{tab:10daypred} presents 10-days ahead forecasting of the cumulative COVID-19 cases for each model. The \(AR(1)\), \(AR(2)\), and \(RW(1)\) models performed well for the first three forecasting days and overestimated the cumulative cases from day three onward. The overestimation worsens for these models as we move further from the estimation period. On the other hand, the \(RW(2)\) performed well, showing a consistent prediction performance throughout the forecasting period.  The prediction error (\(observed - predicted\)) for \(RW(2)\) stays between 1932 and 3222 cases, whereas the prediction error linearly increase for the other models. 
 
+Table \ref{tab:Accuracy} presents the accuracy metrics for each model. 
 
 \begin{table}[!h]
 	
@@ -473,12 +470,12 @@ are presented in Supplementary Table 1. Our main interest to estimate the rate o
 
 
 \begin{figure}[h]
-\includegraphics[width=0.99\linewidth]{forcast_cum_all.png} \caption{Ten days a head predicted cumulative COVID-19 cases per 100, 000 in South Africa under the RW1 (yellow line), RW2 (red line), AR1 (green line), and AR2 (blue line) model. Estimation period 12/03/2020-20/02/2021. The black dots are the observed cumulative cases.The shaded bands are the prediction intervals. }\label{fig:predd}
+\includegraphics[width=0.99\linewidth]{forcast_cum_all.png} \caption{Ten days a head predicted cumulative COVID-19 cases (per 100, 000) in South Africa under the RW1 (yellow line), RW2 (red line), AR1 (green line), and AR2 (blue line) model. Estimation period 12/03/2020-17/02/2021. The black dots are the observed cumulative cases.The shaded bands are the prediction intervals. }\label{fig:10daypred}
 \end{figure}
 
 \begin{table}[!h]
 
-\caption{\label{tab:unnamed-chunk-10}Short-term predictions of total number of reported cases at the national level under the four models. Estimation period 12/03/2020-17/02/2021}
+\caption{\label{tab:10daypred}Short-term predictions of total number of reported cases at the national level under the four models. Estimation period 12/03/2020-17/02/2021}
 \centering
 \begin{tabular}[t]{l|l|r|r|l|r}
 \hline
@@ -531,8 +528,9 @@ AR2&2021-02-18 & 1498766 & 1499297 & (1117410.1-1994516.93) & -530.9910\\
 \end{tabular}
 \end{table}
 
-
-
+\newpage
+\hypertarget{results}{%
+\section{Discussion}\label{Discussion}}
 
 
 
@@ -547,24 +545,24 @@ AR2&2021-02-18 & 1498766 & 1499297 & (1117410.1-1994516.93) & -530.9910\\
 \setcounter{table}{0} \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
 
 \begin{figure}[h]
-	\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{AR1 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:unnamed-chunk-6}
+	\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1} \caption{AR1 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:ar1fitted}
 \end{figure}
 
 \begin{figure}[h]
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1} \caption{AR2 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:unnamed-chunk-13}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1} \caption{AR2 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:ar2fitted}
 \end{figure}
 
 \begin{figure}[h]
-\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1} \caption{RW1 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:unnamed-chunk-14}
+\includegraphics[width=0.99\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1} \caption{RW1 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:rw1fitted}
 \end{figure}
 
 \begin{figure}[h]
-	\includegraphics[width=0.95\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1} \caption{RW2 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:unnamed-chunk-7}
+	\includegraphics[width=0.95\linewidth]{COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1} \caption{RW2 model for the daily confirmed COVID-19 cases in South Africa 12/03/2020-27/02/2021.  Panel A-fitted and observed data. The balck dotes are the observed number of daily cases, the black solid line the fitted curve, and the blue shaded area is the 95\% credible interval. Panel B-first-order derivative of the fitted curve along with the 95\% credible interval.}\label{fig:rw2fitted}
 \end{figure}
 
 \begin{table}[h]
 	
-	\caption{\label{tab:unnamed-chunk-11}Parameter estimates for each model}
+	\caption{\label{tab:parest}Parameter estimates for each model}
 	\centering
 	\begin{tabular}[t]{l|l|r|r|r|r}
 		\hline
