@@ -241,12 +241,12 @@ To be updated.
 % Use "Eq" instead of "Equation" for equation citations.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
-Coronaviruses (COVID-19) is an infectious disease that may cause respiratory infections ranging from the common cold to more severe diseases. The novel COVID-19 outbreak was first detected in December 2019 in Wuhan, China. The outbreak later spread to every province of mainland China and 188 other countries, with more than 118 million confirmed cases and more than 2.63 million deaths as of March 8, 2021 [ref]. The first COVID-19 case was reported in South Africa
-on 5 March 2020. As of March 8, 2021, the number of confirmed COVID-19 cases in Africa represents around 3\% of the infection worldwide. South Africa had the highest burden of COVID-19 cases in the African region, with 1.5 million reported cases and 50,678 confirmed COVID-19 related deaths.
+Coronaviruses (COVID-19) is an infectious disease that may cause respiratory infections ranging from the common cold to more severe diseases. The novel COVID-19 outbreak was first detected in December 2019 in Wuhan, China. The outbreak later spread to every province of mainland China and 188 other countries, with more than 118 million confirmed cases and more than 2.63 million deaths as of March 8, 2021 [REF]. The first COVID-19 case was reported in South Africa
+on 5 March 2020 [REF]. As of March 8, 2021, the number of confirmed COVID-19 cases in Africa represents around 3\% of the infection worldwide. South Africa had the highest burden of COVID-19 cases in the African region, with 1.5 million reported cases and 50,678 confirmed COVID-19 related deaths[REF].
 
 During this period, countries, including South Africa, have adopted various measures to control the virus's spread, including border closure, mandatory use of fabric masks, contact tracing, and stay-at-home measures. Due to the uncertainties about the disease and the need to make informed policy decisions, modelling has taken centre stage in supporting critical policy discussions surrounding COVID-19. COVID-19 modelling studies generally follow one of two general approaches—the phenomenological and mechanistic models. Phenomenological models are statistical models that use generic strategies such as regression to provide quantitative projections that policymakers may need to allocate resources or plan interventions in the short term. On the other hand, mechanistic models use parameters and functional forms to represent our knowledge and assumptions on transmission, disease, and immunity to produce a long-term forecast. 
 
-Several authors implemented phenomenological and mechanistic models to describe the early course of COVID-19 in South Africa and produce short-term and long-term forecasts using the data from the early phase of the epidemic. In this paper we present (1) South Africa's one year COVID trajectory and (2) fit a series of temporal models to produce produce short term predictions of the number of reported cases expected for a period of 10 days ahead. 
+Several authors implemented phenomenological and mechanistic models to describe the early course of COVID-19 in South Africa and produce short-term and long-term forecasts using the data from the early phase of the epidemic{[}1{]}. In this paper we present (1) South Africa's one year COVID trajectory and (2) fit a series of temporal models to produce short term predictions of the number of reported cases expected for a period of 10 days ahead. 
 %Building on popular temporal models, this part of the thesis aims to develop statistical approaches to characterize the course of the COVID-19 outbreak and produce short term forecasts using daily reports of tests and confirmed COVID-19 cases. 
 
 
@@ -275,7 +275,7 @@ Negative binomial distribution for \(Y(t)\) to account for possible
 overdispersion. That is, \(Y(t) \sim NB(\mu(t), \delta)\), where
 \(\delta\) is the overdispersion parameter. We considered four temporal
 models to capture the trend over time: a random walk of order one (\(RW(2)\)), a random walk of order (\(RW(2)\)), an autoregressive model of order one (\(AR(1)\)), and an autoregressive model of order two (\(AR(2)\))
-{[}1{]} which are presented in Table \ref{tab:Models}. 
+{[}2{]} which are presented in Table \ref{tab:Models}. 
 
 %We also considered a \(RW(1)\) model, but the model overfits thedata (See the supplementary appendix). Similarly, we considered an \(AR\)model order \(p=2\) but the result is similar to \(AR1\) model and weprefer the simpler \(AR1\) model.The \(AR(1)\) model {[}1{]} is given by,
 %\[
@@ -333,16 +333,16 @@ models to capture the trend over time: a random walk of order one (\(RW(2)\)), a
 \end{table}
 
 Each models were fitted within the Bayesian framework using
-\emph{inla} {[}2{]}. To complete the specification of each models, we
-assume the following priors. For the \(AR(1)\) model, we denote
+\emph{inla} {[}3{]}. To complete the specification of each models, we
+assume the following priors. For both the \(RW(1)\) and \(RW(2)\), we represent the precision parameter of
+\(\tau_u\) as \(\theta=log(\tau_u)\) and assume a
+\(\Gamma (10,100)\) prior for \(\theta\).  For the \(AR(1)\) model, we denote
 \(\theta_1=log(\tau_u(1-\rho^2))\) where \(\Gamma(10,100)\) prior is
 specified for \(\theta_1\), and we denote
 \(\theta_2=log\frac{1+\rho}{1-\rho}\) and assume a \(N(0, 0.15)\) prior
-for \(\theta\). For both the \(RW(1)\) and \(RW(2)\), we represent the precision parameter of
-\(\tau_u\) as \(\theta=log(\tau_u)\) and assume a
-\(\Gamma (10,100)\) prior for \(\theta\).
+for \(\theta\). 
 
-The short-term prediction performance of all these models were evaluated using mean absolute error (MAE), mean absolute percentage error (MAPE), and chi-squared value. Additionally, the model fits were evaluated by using Deviance information criteria (DIC, ref) and Watanabe–Akaike information criterion(WAIC,ref). The R-codes that we used for our analyses are available at
+The short-term prediction performance of all these models were evaluated using mean absolute error (MAE), mean absolute percentage error (MAPE), and chi-squared value. Additionally, the model fits were evaluated by using Deviance information criteria (DIC) {[}5{]} and Watanabe–Akaike information criterion (WAIC){[}5{]}. The R-codes that we used for our analyses are available at
 https://github.com/belayb/COVIDincidenceSA.
 
 
@@ -378,98 +378,9 @@ are presented in Supplementary Table \ref{tab:parest}. Our main interest to prod
 
 Figure \ref{fig:10daypred} and Table \ref{tab:10daypred} presents 10-days ahead forecasting of the cumulative COVID-19 cases for each model. The \(AR(1)\), \(AR(2)\), and \(RW(1)\) models performed well for the first three forecasting days and overestimated the cumulative cases from day three onward. The overestimation worsens for these models as we move further from the estimation period. On the other hand, the \(RW(2)\) performed well, showing a consistent prediction performance throughout the forecasting period.  The prediction error (\(observed - predicted\)) for \(RW(2)\) stays between 1932 and 3222 cases, whereas the prediction error linearly increase for the other models. 
 
-Table \ref{tab:Accuracy} presents the accuracy metrics for each model. 
+Table \ref{tab:Accuracy} presents the accuracy metrics for each model. The mean absolute error, mean absolute percentage error and Chi-square statistic favours \(RW(2)\) as the best model predictive model. On the other hand, DIC and WAIC favours \(RW(1)\) model. This is expected given that the DIC and WAIC evaluate model performance within estimation period. 
 
-\begin{table}[!h]
-	
-	\caption{\label{tab:Accuracy}Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models.}
-	\centering
-	\begin{tabular}[t]{lrrrr}
-		\hline
-		Days ahead point forecasts & \multicolumn{4}{c}{Mean Absolute Error}\\
-		\cline{2-5}
-		& RW1 & RW2 & AR1 & AR2\\
-		\hline
-	One day & 567.1704 & 3403.052 & 1100.229 & 975.1169\\
-	\hline
-	Two day & 1395.0619 & 3048.159 & 1503.359 & 1412.4527\\
-	\hline
-	Three day & 2309.8792 & 2756.448 & 2273.296 & 2200.8456\\
-	\hline
-	Four day & 3223.8908 & 2668.973 & 3057.519 & 2971.4183\\
-	\hline
-	Five day & 4076.6772 & 2722.319 & 3756.599 & 3653.5679\\
-	\hline
-	Six day & 4677.8180 & 2760.561 & 4178.428 & 4055.0046\\
-	\hline
-	Seven day & 5121.6867 & 2691.375 & 4415.616 & 4268.1508\\
-	\hline
-	Eight day & 5897.6715 & 2928.744 & 5036.350 & 4844.4758\\
-	\hline
-	Nine day & 6041.0341 & 2896.269 & 5119.785 & 4921.4926\\
-	\hline
-	Ten day & 6218.5109 & 2884.603 & 5229.782 & 5024.2168\\
-	\hline
-		& \multicolumn{4}{c}{Mean Absolute Percentage Error}\\
-		\cline{2-5}\\
-		& RW1 & RW2 & AR1 & AR2\\
-		\hline\\
-	One day & 0.0003807 & 0.0022844 & 0.0007385 & 0.0006546\\
-	\hline
-	Two day & 0.0009354 & 0.0020427 & 0.0010073 & 0.0009465\\
-	\hline
-	Three day & 0.0015467 & 0.0018446 & 0.0015218 & 0.0014734\\
-	\hline
-	Four day & 0.0021564 & 0.0017840 & 0.0020448 & 0.0019873\\
-	\hline
-	Five day & 0.0027235 & 0.0018176 & 0.0025094 & 0.0024406\\
-	\hline
-	Six day & 0.0031213 & 0.0018410 & 0.0027877 & 0.0027055\\
-	\hline
-	Seven day & 0.0034128 & 0.0017925 & 0.0029418 & 0.0028437\\
-	\hline
-	Eight day & 0.0039270 & 0.0019498 & 0.0033531 & 0.0032256\\
-	\hline
-	Nine day & 0.0040213 & 0.0019282 & 0.0034079 & 0.0032762\\
-	\hline
-	Ten day & 0.0041381 & 0.0019203 & 0.0034802 & 0.0033437\\
-	\hline
-	& \multicolumn{4}{c}{Chi Square}\\
-	\cline{2-5}\\
-	& RW1 & RW2 & AR1 & AR2\\
-	\hline
-	One day & 3.526026 & 80.43788 & 10.14578 & 7.642623\\
-	\hline
-	Two day & 16.552333 & 71.66942 & 22.21648 & 19.346128\\
-	\hline
-	Three day & 41.883130 & 70.78339 & 46.44967 & 42.301887\\
-	\hline
-	Four day & 79.235781 & 71.27488 & 79.45425 & 72.947524\\
-	\hline
-	Five day & 128.010230 & 72.74404 & 119.51466 & 109.013108\\
-	\hline
-	Six day & 185.934034 & 72.11017 & 162.88745 & 146.770096\\
-	\hline
-	Seven day & 254.268157 & 71.58625 & 210.31240 & 187.416759\\
-	\hline
-	Eight day & 293.981286 & 75.31508 & 235.73996 & 209.342520\\
-	\hline
-	Nine day & 309.899980 & 74.36227 & 242.98123 & 215.549116\\
-	\hline
-	Ten day & 333.287057 & 74.05306 & 253.91151 & 225.029683\\
-	\hline
-		\hline\\
-		& \multicolumn{4}{c}{Information Criteria}\\
-		\hline\\
-		DIC & 5059.06 & 5447.40 & 5278.87 & 5284.00\\
-		WAIC & 5123.56 & 5460.81 & 5286.90 & 5294.74\\
-		\hline\\
-	\end{tabular}
-\end{table}
-
-
-
-\begin{figure}[h]
+\begin{figure}[!h]
 \includegraphics[width=0.99\linewidth]{forcast_cum_all.png} \caption{Ten days a head predicted cumulative COVID-19 cases (per 100, 000) in South Africa under the RW1 (yellow line), RW2 (red line), AR1 (green line), and AR2 (blue line) model. Estimation period 12/03/2020-17/02/2021. The black dots are the observed cumulative cases.The shaded bands are the prediction intervals. }\label{fig:10daypred}
 \end{figure}
 
@@ -477,7 +388,7 @@ Table \ref{tab:Accuracy} presents the accuracy metrics for each model.
 
 \caption{\label{tab:10daypred}Short-term predictions of total number of reported cases at the national level under the four models. Estimation period 12/03/2020-17/02/2021}
 \centering
-\begin{tabular}[t]{l|l|r|r|l|r}
+\resizebox{\textwidth}{!}{\begin{tabular}[t]{l|l|r|r|l|r}
 \hline
 Model&Date & Total & Prediction & Prediction Interval & Total - Prediction\\
 \hline
@@ -525,20 +436,126 @@ AR2&2021-02-18 & 1498766 & 1499297 & (1117410.1-1994516.93) & -530.9910\\
 &2021-02-26 & 1510778 & 1517311 & (1122242.95-2044087.07) & -6533.4176\\
 &2021-02-27 & 1512225 & 1519786 & (1122621.69-2052736.67) & -7560.6602\\
 \hline
-\end{tabular}
+\end{tabular}}
 \end{table}
+
+\begin{table}[!h]
+	
+	\caption{\label{tab:Accuracy}Accuracy metrics of forecasting for AR1, AR2, RW1, and RW2 models.}
+	\centering
+	\resizebox{\textwidth}{!}{\begin{tabular}[t]{lrrrr}
+		\hline
+		Days ahead point forecasts & \multicolumn{4}{c}{Mean Absolute Error}\\
+		\cline{2-5}
+		& RW1 & RW2 & AR1 & AR2\\
+		\hline
+		One day & 567.1704 & 3403.052 & 1100.229 & 975.1169\\
+		\hline
+		Two day & 1395.0619 & 3048.159 & 1503.359 & 1412.4527\\
+		\hline
+		Three day & 2309.8792 & 2756.448 & 2273.296 & 2200.8456\\
+		\hline
+		Four day & 3223.8908 & 2668.973 & 3057.519 & 2971.4183\\
+		\hline
+		Five day & 4076.6772 & 2722.319 & 3756.599 & 3653.5679\\
+		\hline
+		Six day & 4677.8180 & 2760.561 & 4178.428 & 4055.0046\\
+		\hline
+		Seven day & 5121.6867 & 2691.375 & 4415.616 & 4268.1508\\
+		\hline
+		Eight day & 5897.6715 & 2928.744 & 5036.350 & 4844.4758\\
+		\hline
+		Nine day & 6041.0341 & 2896.269 & 5119.785 & 4921.4926\\
+		\hline
+		Ten day & 6218.5109 & 2884.603 & 5229.782 & 5024.2168\\
+		\hline
+		& \multicolumn{4}{c}{Mean Absolute Percentage Error}\\
+		\cline{2-5}\\
+		& RW1 & RW2 & AR1 & AR2\\
+		\hline\\
+		One day & 0.0003807 & 0.0022844 & 0.0007385 & 0.0006546\\
+		\hline
+		Two day & 0.0009354 & 0.0020427 & 0.0010073 & 0.0009465\\
+		\hline
+		Three day & 0.0015467 & 0.0018446 & 0.0015218 & 0.0014734\\
+		\hline
+		Four day & 0.0021564 & 0.0017840 & 0.0020448 & 0.0019873\\
+		\hline
+		Five day & 0.0027235 & 0.0018176 & 0.0025094 & 0.0024406\\
+		\hline
+		Six day & 0.0031213 & 0.0018410 & 0.0027877 & 0.0027055\\
+		\hline
+		Seven day & 0.0034128 & 0.0017925 & 0.0029418 & 0.0028437\\
+		\hline
+		Eight day & 0.0039270 & 0.0019498 & 0.0033531 & 0.0032256\\
+		\hline
+		Nine day & 0.0040213 & 0.0019282 & 0.0034079 & 0.0032762\\
+		\hline
+		Ten day & 0.0041381 & 0.0019203 & 0.0034802 & 0.0033437\\
+		\hline
+		& \multicolumn{4}{c}{Chi Square}\\
+		\cline{2-5}\\
+		& RW1 & RW2 & AR1 & AR2\\
+		\hline
+		One day & 3.526026 & 80.43788 & 10.14578 & 7.642623\\
+		\hline
+		Two day & 16.552333 & 71.66942 & 22.21648 & 19.346128\\
+		\hline
+		Three day & 41.883130 & 70.78339 & 46.44967 & 42.301887\\
+		\hline
+		Four day & 79.235781 & 71.27488 & 79.45425 & 72.947524\\
+		\hline
+		Five day & 128.010230 & 72.74404 & 119.51466 & 109.013108\\
+		\hline
+		Six day & 185.934034 & 72.11017 & 162.88745 & 146.770096\\
+		\hline
+		Seven day & 254.268157 & 71.58625 & 210.31240 & 187.416759\\
+		\hline
+		Eight day & 293.981286 & 75.31508 & 235.73996 & 209.342520\\
+		\hline
+		Nine day & 309.899980 & 74.36227 & 242.98123 & 215.549116\\
+		\hline
+		Ten day & 333.287057 & 74.05306 & 253.91151 & 225.029683\\
+		\hline
+		\hline\\
+		& \multicolumn{4}{c}{Information Criteria}\\
+		\hline\\
+		DIC & 5059.06 & 5447.40 & 5278.87 & 5284.00\\
+		WAIC & 5123.56 & 5460.81 & 5286.90 & 5294.74\\
+		\hline\\
+	\end{tabular}}
+\end{table}
+
 
 \newpage
 \hypertarget{results}{%
 \section{Discussion}\label{Discussion}}
 
+Reliable and accurate short-term forecasts of COVID-19 cases are critical to understand the progress of the pandemic in a country and to evaluate the impact of intervention measures in controlling the pandemic. This study modelled COVID-19 cases in South Africa at the national level using publicly available data from 12 March 2020 to 17 February 2021. We have evaluated four widely used temporal models for forecasting confirmed cases of COVID-19 for South Africa. Our study showed that these established temporal models could provide robust and accurate short-term forecasts for a period ten days ahead. The random-walk model of order two was superior to the random-walk of order one and autoregressive models in forecasting performance.  
 
+This study's strength is that the analysis was based on readily accessible, publicly available data that is updated in real-time. The statistical methods applied are relatively simple, implemented using off-the-shelf open-source software, and are not dependent on any assumptions regarding COVID-19 transmission dynamics. 
 
-
-
+In summary, we have shown the usefulness of established temporal models to provide short term forecasts of the cumulative COVID-19 cases. Such models could help in decision-making when knowledge regarding factors affecting transmission-dynamics of the disease is limited.  
 
 \newpage
+\hypertarget{references}{%
+	\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
 
+\begin{itemize}
+	\item[1.] Reddy T, Shkedy Z, van Rensburg CJ, Mwambi H, Debba P, Zuma K, Manda S. Short-term real-time prediction of total number of reported COVID-19 cases and deaths in South Africa: a data driven approach. BMC medical research methodology. 2021 Dec;21(1):1-1.
+	
+	\item[2.] Gómez-Rubio V. Bayesian inference with INLA. CRC Press; 2020 Feb 20.
+	
+	\item[3.] Martins TG, Simpson D, Lindgren F, Rue H. Bayesian computing with
+	inla: New features. Computational Statistics \& Data Analysis. Elsevier;
+	2013;67: 68--83.
+	\item[4.] Spiegelhalter DJ, Best NG, Carlin BP, Van der Linde A. The deviance information criterion: 12 years on. Journal of the Royal Statistical Society: Series B: Statistical Methodology. 2014 Jun 1:485-93.
+	\item[5.] Watanabe S, Opper M. Asymptotic equivalence of Bayes cross validation and widely applicable information criterion in singular learning theory. Journal of machine learning research. 2010 Dec 1;11(12).
+	
+\end{itemize}
+\nolinenumbers
+\newpage
 \hypertarget{appendix}{%
 \section{Appendix}\label{appendix}}
 
@@ -606,21 +623,6 @@ AR2&2021-02-18 & 1498766 & 1499297 & (1117410.1-1994516.93) & -530.9910\\
 										\includegraphics[width=0.3\linewidth]{day10}   
 	\caption{Predicted vs observed cumulative COVID-19 cases per 100, 000 in South Africa under the RW(2) model. Base estimation period day 0 - 12/03/2020 to day t - 07/02/2021. The estimation period was expanded until 17/02/2021 one day at a time}\label{fig:accuracy2}
 \end{figure}
-
-\hypertarget{references}{%
-\section*{References}\label{references}}
-\addcontentsline{toc}{section}{References}
-
-\hypertarget{refs}{}
-\leavevmode\hypertarget{ref-gomez2020bayesian}{}%
-1. Gómez-Rubio V. Bayesian inference with inla. CRC Press; 2020.
-
-\leavevmode\hypertarget{ref-martins2013bayesian}{}%
-2. Martins TG, Simpson D, Lindgren F, Rue H. Bayesian computing with
-inla: New features. Computational Statistics \& Data Analysis. Elsevier;
-2013;67: 68--83.
-
-\nolinenumbers
 
 
 \end{document}

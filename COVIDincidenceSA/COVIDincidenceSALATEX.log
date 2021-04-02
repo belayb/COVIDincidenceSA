@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.4.25)  30 MAR 2021 00:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.4.25)  31 MAR 2021 14:23
 entering extended mode
 **./COVIDincidenceSALATEX.tex
 (COVIDincidenceSALATEX.tex
@@ -798,21 +798,17 @@ Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/cummulative-1.pdf
 (pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
 
 [3 <./COVIDincidenceSA_files/figure-latex/daily-cases-1.pdf>]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
 <forcast_cum_all.png, id=93, 289.08pt x 289.08pt>
 File: forcast_cum_all.png Graphic file (type png)
 <use forcast_cum_all.png>
-Package pdftex.def Info: forcast_cum_all.png  used on input line 473.
+Package pdftex.def Info: forcast_cum_all.png  used on input line 384.
 (pdftex.def)             Requested size: 375.6254pt x 375.64514pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Overfull \hbox (33.52774pt too wide) in paragraph at lines 480--529
- [][] 
- []
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -822,49 +818,53 @@ t4): destination with the same identifier (name{results}) has been already used
 , duplicate ignored
 <to be read again> 
                    \relax 
-l.533 \section{Discussion}\label{Discussion}}
-                                              [5]
-<COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf, id=116, 469.755pt x
+l.532 \section{Discussion}\label{Discussion}}
+                                              [5 <./forcast_cum_all.png>]
+[6]
+
+LaTeX Warning: Text page 7 contains only floats.
+
+[7] ("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex/latex/ucs\uni-0.def"
+File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
+) [8]
+<COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf, id=134, 469.755pt x
  325.215pt>
 File: COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (t
 ype pdf)
 <use COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.
-pdf  used on input line 548.
+pdf  used on input line 565.
 (pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1.pdf, id=117, 469.755pt 
+<COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1.pdf, id=135, 469.755pt 
 x 325.215pt>
 File: COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (
 type pdf)
 <use COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1.pdf>
 Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1
-.pdf  used on input line 552.
+.pdf  used on input line 569.
 (pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1.pdf, id=118, 469.755pt 
+<COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1.pdf, id=136, 469.755pt 
 x 325.215pt>
 File: COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (
 type pdf)
 <use COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1.pdf>
 Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1
-.pdf  used on input line 556.
+.pdf  used on input line 573.
 (pdftex.def)             Requested size: 375.6254pt x 260.0483pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf, id=119, 469.755pt x
+<COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf, id=137, 469.755pt x
  325.215pt>
 File: COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (t
 ype pdf)
 <use COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf>
 Package pdftex.def Info: COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.
-pdf  used on input line 560.
+pdf  used on input line 577.
 (pdftex.def)             Requested size: 360.44545pt x 249.53798pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -872,102 +872,99 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<day1.png, id=120, 289.08pt x 289.08pt>
+<day1.png, id=138, 289.08pt x 289.08pt>
 File: day1.png Graphic file (type png)
 <use day1.png>
-Package pdftex.def Info: day1.png  used on input line 597.
+Package pdftex.def Info: day1.png  used on input line 614.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day2.png, id=121, 289.08pt x 289.08pt>
+<day2.png, id=139, 289.08pt x 289.08pt>
 File: day2.png Graphic file (type png)
 <use day2.png>
-Package pdftex.def Info: day2.png  used on input line 598.
+Package pdftex.def Info: day2.png  used on input line 615.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day3.png, id=122, 289.08pt x 289.08pt>
+<day3.png, id=140, 289.08pt x 289.08pt>
 File: day3.png Graphic file (type png)
 <use day3.png>
-Package pdftex.def Info: day3.png  used on input line 599.
+Package pdftex.def Info: day3.png  used on input line 616.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day4.png, id=123, 289.08pt x 289.08pt>
+<day4.png, id=141, 289.08pt x 289.08pt>
 File: day4.png Graphic file (type png)
 <use day4.png>
-Package pdftex.def Info: day4.png  used on input line 600.
+Package pdftex.def Info: day4.png  used on input line 617.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day5.png, id=124, 289.08pt x 289.08pt>
+<day5.png, id=142, 289.08pt x 289.08pt>
 File: day5.png Graphic file (type png)
 <use day5.png>
-Package pdftex.def Info: day5.png  used on input line 601.
+Package pdftex.def Info: day5.png  used on input line 618.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day6.png, id=125, 289.08pt x 289.08pt>
+<day6.png, id=143, 289.08pt x 289.08pt>
 File: day6.png Graphic file (type png)
 <use day6.png>
-Package pdftex.def Info: day6.png  used on input line 602.
+Package pdftex.def Info: day6.png  used on input line 619.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day7.png, id=126, 289.08pt x 289.08pt>
+<day7.png, id=144, 289.08pt x 289.08pt>
 File: day7.png Graphic file (type png)
 <use day7.png>
-Package pdftex.def Info: day7.png  used on input line 603.
+Package pdftex.def Info: day7.png  used on input line 620.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day8.png, id=127, 289.08pt x 289.08pt>
+<day8.png, id=145, 289.08pt x 289.08pt>
 File: day8.png Graphic file (type png)
 <use day8.png>
-Package pdftex.def Info: day8.png  used on input line 604.
+Package pdftex.def Info: day8.png  used on input line 621.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day9.png, id=128, 289.08pt x 289.08pt>
+<day9.png, id=146, 289.08pt x 289.08pt>
 File: day9.png Graphic file (type png)
 <use day9.png>
-Package pdftex.def Info: day9.png  used on input line 605.
+Package pdftex.def Info: day9.png  used on input line 622.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
-<day10.png, id=129, 289.08pt x 289.08pt>
+<day10.png, id=147, 289.08pt x 289.08pt>
 File: day10.png Graphic file (type png)
 <use day10.png>
-Package pdftex.def Info: day10.png  used on input line 606.
+Package pdftex.def Info: day10.png  used on input line 623.
 (pdftex.def)             Requested size: 113.8264pt x 113.82584pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 597--607
+Underfull \hbox (badness 10000) in paragraph at lines 614--624
 [][] [] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 597--607
+Underfull \hbox (badness 10000) in paragraph at lines 614--624
 [] [] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 597--607
+Underfull \hbox (badness 10000) in paragraph at lines 614--624
 [] [] []
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex/latex/ucs\uni-0.def"
-File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
-)
 
 AED: lastpage setting LastPage
-[6 <./forcast_cum_all.png>] [7] [8 <./COVIDincidenceSA_files/figure-latex/unnam
-ed-chunk-6-1.pdf>] [9 <./COVIDincidenceSA_files/figure-latex/unnamed-chunk-13-1
-.pdf>] [10 <./COVIDincidenceSA_files/figure-latex/unnamed-chunk-14-1.pdf>]
-[11 <./COVIDincidenceSA_files/figure-latex/unnamed-chunk-7-1.pdf>] [12 <./day1.
-png> <./day2.png> <./day3.png> <./day4.png> <./day5.png> <./day6.png> <./day7.p
-ng> <./day8.png> <./day9.png> <./day10.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 626.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 626.
+[9 <./COVIDincidenceSA_files/figure-latex/unnamed-chunk-6-1.pdf>] [10 <./COVIDi
+ncidenceSA_files/figure-latex/unnamed-chunk-13-1.pdf>] [11 <./COVIDincidenceSA_
+files/figure-latex/unnamed-chunk-14-1.pdf>] [12 <./COVIDincidenceSA_files/figur
+e-latex/unnamed-chunk-7-1.pdf>] [13 <./day1.png> <./day2.png> <./day3.png> <./d
+ay4.png> <./day5.png> <./day6.png> <./day7.png> <./day8.png> <./day9.png> <./da
+y10.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 628.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 628.
  (COVIDincidenceSALATEX.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 626.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 626.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 628.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 628.
 Package rerunfilecheck Info: File `COVIDincidenceSALATEX.out' has not changed.
-(rerunfilecheck)             Checksum: BAA114F2477B383AD94A26094F967547;504.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 626.
+(rerunfilecheck)             Checksum: C3930BE87A0C0719BB6A334C7526EF55;504.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 628.
  ) 
 Here is how much of TeX's memory you used:
- 13694 strings out of 480930
- 210730 string characters out of 2900230
- 552695 words of memory out of 3000000
+ 13696 strings out of 480930
+ 210715 string characters out of 2900230
+ 560697 words of memory out of 3000000
  29202 multiletter control sequences out of 15000+200000
- 537494 words of font info for 60 fonts, out of 3000000 for 9000
+ 537596 words of font info for 62 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,17n,45p,1089b,479s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,17n,45p,1089b,544s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/
 cm/cmbx10.pfb><C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publ
 ic/amsfonts/cm/cmbx12.pfb><C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/font
@@ -981,9 +978,9 @@ cm/cmss8.pfb><C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
 c/amsfonts/cm/cmsy10.pfb><C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/fonts
 /type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/user/AppData/Local/Programs/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on COVIDincidenceSALATEX.pdf (12 pages, 590022 bytes).
+Output written on COVIDincidenceSALATEX.pdf (13 pages, 593066 bytes).
 PDF statistics:
- 264 PDF objects out of 1000 (max. 8388607)
- 47 named destinations out of 1000 (max. 500000)
+ 267 PDF objects out of 1000 (max. 8388607)
+ 45 named destinations out of 1000 (max. 500000)
  9886 words of extra memory for PDF output out of 10000 (max. 10000000)
 
