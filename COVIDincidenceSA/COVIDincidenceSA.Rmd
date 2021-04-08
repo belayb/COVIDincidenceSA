@@ -36,7 +36,12 @@ knitr::opts_chunk$set(echo = TRUE,fig.pos = 'H', tab.pos = 'H')
 
 # Introduction
 
-In this paper we present (1) South Africa’s COVID trajectory to the first 100,000 (22 June 2020) cases and (2) fit a series of non-linear growth models, calibrated to COVID-19 cumulative number of reported case data from 5 March 2020 to 22 June 2020. The models are used to produce short term predictions of the number of reported cases expected for a period of 30 days ahead. These forecasts are generated at the national level
+Coronaviruses (COVID-19) is an infectious disease that may cause respiratory infections ranging from the common cold to more severe diseases. The novel COVID-19 outbreak was first detected in December 2019 in Wuhan, China. The outbreak later spread to every province of mainland China and 188 other countries, with more than 118 million confirmed cases and more than 2.63 million deaths as of March 8, 2021 [REF]. The first COVID-19 case was reported in South Africa
+on 5 March 2020 [REF]. As of March 8, 2021, the number of confirmed COVID-19 cases in Africa represents around 3\% of the infection worldwide. South Africa had the highest burden of COVID-19 cases in the African region, with 1.5 million reported cases and 50,678 confirmed COVID-19 related deaths[REF].
+
+During this period, countries, including South Africa, have adopted various measures to control the virus's spread, including border closure, mandatory use of fabric masks, contact tracing, and stay-at-home measures. Due to the uncertainties about the disease and the need to make informed policy decisions, modelling has taken centre stage in supporting critical policy discussions surrounding COVID-19. COVID-19 modelling studies generally follow one of two general approaches—the phenomenological and mechanistic models. Phenomenological models are statistical models that use generic strategies such as regression to provide quantitative projections that policymakers may need to allocate resources or plan interventions in the short term. On the other hand, mechanistic models use parameters and functional forms to represent our knowledge and assumptions on transmission, disease, and immunity to produce a long-term forecast. 
+
+Several authors implemented phenomenological and mechanistic models to describe the early course of COVID-19 in South Africa and produce short-term and long-term forecasts using the data from the early phase of the epidemic{[}1{]}. In this paper we present (1) South Africa's one year COVID trajectory and (2) fit a series of temporal models to produce short term predictions of the number of reported cases expected for a period of 10 days ahead. 
 
 # Methods 
 
