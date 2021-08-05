@@ -169,6 +169,10 @@ p2
 ```
 
 
+```{r message = FALSE, warning = FALSE}
+p1+p2
+
+```
 
 ```{r message = FALSE, warning = FALSE}
 # Modeling Daily Cases - Negaive Binomial - AR1 and rw2 model - INLA
@@ -241,7 +245,7 @@ p_ar2_inc<-ggplot(newdata_ar2,
                   geom_ribbon(aes(ymin=lower, ymax=upper), fill='blue', alpha=0.6) +
                   geom_line(aes(y=mean, x=date2)) +xlab("Date")+
                   ylab("Observed and fitted cases")+
-                  labs(title = "A" )+
+                  labs(title = "B" )+
                   theme_bw()
 
 p_rw1_inc<-ggplot(newdata_rw1, aes(y=mean, x=date2)) +
@@ -249,7 +253,7 @@ p_rw1_inc<-ggplot(newdata_rw1, aes(y=mean, x=date2)) +
   geom_point(aes(y=Dialy_cases, x=date2)) +
   geom_ribbon(aes(ymin=lower, ymax=upper), fill='blue', alpha=0.6) +
   geom_line(aes(y=mean, x=date2)) +xlab("Date")+ylab("Observed and fitted cases")+
-  labs(title = "A" )+
+  labs(title = "C" )+
   theme_bw()
 
 p_rw2_inc<-ggplot(newdata_rw2, aes(y=mean, x=date2)) +
@@ -257,7 +261,7 @@ p_rw2_inc<-ggplot(newdata_rw2, aes(y=mean, x=date2)) +
   geom_point(aes(y=Dialy_cases, x=date2)) +
   geom_ribbon(aes(ymin=lower, ymax=upper), fill='blue', alpha=0.6) +
   geom_line(aes(y=mean, x=date2)) +xlab("Date")+ylab("Observed and fitted cases")+
-  labs(title = "A" )+
+  labs(title = "D" )+
   theme_bw()
 
 p_ar1_cum<-newdata_ar1%>%
@@ -285,7 +289,12 @@ p_rw2_cum<-newdata_rw2%>%
 
 ```
 
+```{r ,fig.height = 8,out.width = "99%",fig.cap = "Fitted and observed data AR1 model"}
 
+pp_thesis<-(p_ar1_inc+p_ar2_inc)/(p_rw1_inc+p_rw2_inc)
+ggsave("C:/Users/user/Dropbox (The University of Manchester)/Thesis_Belay/Fig_Fold/incidenceplotall.png",pp_thesis)
+pp_thesis
+```
 
 ```{r ,out.width = "99%",fig.cap = "Fitted and observed data AR(1) model"}
 newdata_ar1$deriv<-D1ss(x=newdata_ar1$time,y=newdata_ar1$mean, spar.off=0.0)
@@ -332,7 +341,7 @@ sa_cov_dat$Dialy_cases7<-sa_cov_dat$Dialy_cases
 
 sa_cov_dat$Dialy_cases3[sa_cov_dat$time>339]<-NA
 sa_cov_dat$Dialy_cases5[sa_cov_dat$time>337]<-NA
-sa_cov_dat$Dialy_cases7[sa_cov_dat$time>342]<-NA
+sa_cov_dat$Dialy_cases7[sa_cov_dat$time>332]<-NA
 
 
 fomula_ar1_7<-Dialy_cases7 ~ 1 + f(time, model = "ar1",
@@ -415,7 +424,7 @@ We fit the two models described in the previous section to the daily reported ne
 
 
 ```{r message = FALSE, warning = FALSE}
-forcast_cum<-Day7_pred%>%
+forcast_cum<-Day7_pred[Day7_pred$time<343,]%>%
   mutate(total=total/100000,Cum_pred_rw2=Cum_pred_rw2/100000,Cum_pred_ar1=Cum_pred_ar1/100000, Cum_pred_ar2=Cum_pred_ar2/100000,Cum_pred_rw1=Cum_pred_rw1/100000,
          Cum_pred_ar1_lower=Cum_pred_ar1_lower/100000,Cum_pred_ar1_upper=Cum_pred_ar1_upper/100000,Cum_pred_rw1_lower=Cum_pred_rw1_lower/100000,
          Cum_pred_rw1_upper=Cum_pred_rw1_upper/100000,Cum_pred_ar2_lower=Cum_pred_ar2_lower/100000,Cum_pred_ar2_upper=Cum_pred_ar2_upper/100000,
@@ -441,7 +450,7 @@ forcast_cum<-Day7_pred%>%
 forcast_cum<-forcast_cum+annotate("segment", x = as.Date("2020-10-06","%Y-%m-%d"), xend = as.Date("2021-02-06","%Y-%m-%d"), y = 1500000/100000, yend = 1500000/100000,
          colour = "black", size = 1, arrow = arrow())
 
-forcast_cum_zoom<-Day7_pred[Day7_pred$time>336,]%>%
+forcast_cum_zoom<-Day7_pred[Day7_pred$time>334&Day7_pred$time<343,]%>%
    mutate(total=total/100000,Cum_pred_rw2=Cum_pred_rw2/100000,Cum_pred_ar1=Cum_pred_ar1/100000, Cum_pred_ar2=Cum_pred_ar2/100000,Cum_pred_rw1=Cum_pred_rw1/100000,
          Cum_pred_ar1_lower=Cum_pred_ar1_lower/100000,Cum_pred_ar1_upper=Cum_pred_ar1_upper/100000,Cum_pred_rw1_lower=Cum_pred_rw1_lower/100000,
          Cum_pred_rw1_upper=Cum_pred_rw1_upper/100000,Cum_pred_ar2_lower=Cum_pred_ar2_lower/100000,Cum_pred_ar2_upper=Cum_pred_ar2_upper/100000,
@@ -465,7 +474,7 @@ forcast_cum_all<-forcast_cum + inset_element(forcast_cum_zoom, left =0.1, right 
 ```{r predd,out.width = "99%", fig.cap = "Predicted cummulative COVID-19 cases in South Africa under the RW(1) and AR(1) model. Estimation period 12/03/2020-20/02/2021. The black dots are the observed cummulative cases. The red dashed lines are for RW(2) and the blue line for AR(1).The shaded bands are the prediction intervals. "}
 
 forcast_cum_all
-ggsave(filename = "forcast_cum_all.png", forcast_cum_all,width = 4, height = 4, dpi = 300, units = "in", device='png')
+ggsave(filename = "C:/Users/user/Dropbox (The University of Manchester)/Thesis_Belay/Fig_Fold/forcast_cum_all.png", forcast_cum_all,width = 4, height = 4, dpi = 300, units = "in", device='png')
 
 
 ```
@@ -473,7 +482,7 @@ ggsave(filename = "forcast_cum_all.png", forcast_cum_all,width = 4, height = 4, 
 
 ```{r message = FALSE, warning = FALSE}
 # table 
-Frocasting7<-Day7_pred[Day7_pred$time>342,c("date2","total","Cum_pred_rw2", "Cum_pred_rw2_lower", "Cum_pred_rw2_upper"
+Frocasting7<-Day7_pred[Day7_pred$time>332&Day7_pred$time<343,c("date2","total","Cum_pred_rw2", "Cum_pred_rw2_lower", "Cum_pred_rw2_upper"
                                             ,"Cum_pred_ar1", "Cum_pred_ar1_lower", "Cum_pred_ar1_upper",
                                             "Cum_pred_ar2", "Cum_pred_ar2_lower", "Cum_pred_ar2_upper",
                                             "Cum_pred_rw1", "Cum_pred_rw1_lower", "Cum_pred_rw1_upper")]
@@ -907,5 +916,115 @@ p_rw1_inc/p_rw1_inc_deriv_new
 # plot of cummulative overtime
 #p_ar1_cum/p_rw2_cum
 ```
+
+## Model aelection 
+
+```{r message = FALSE, warning = FALSE}
+# one day a head Forcasting - do this for rw1, ar1,ar2
+CV_data<-list()
+IC<-list()
+k=331
+for(i in 1:11){
+  
+sa_cov_dat$Dialy_cases1<-sa_cov_dat$Dialy_cases
+sa_cov_dat$Dialy_cases1[sa_cov_dat$time>(k+i)]<-NA
+
+sa_cov_dat_cv<-sa_cov_dat[sa_cov_dat$time<(k+12+(i-1)),]
+
+
+fomula_rw2_cv<-Dialy_cases1 ~ 1 + f(time, model = "rw2", scale.model = TRUE, 
+                              hyper = hyper.prec)
+fomula_rw1_cv<-Dialy_cases1 ~ 1 + f(time, model = "rw1", scale.model = TRUE, 
+                              hyper = hyper.prec)
+fomula_ar1_cv<-Dialy_cases1 ~ 1 + f(time, model = "ar1",
+                                 hyper = list(prec = list(param = c(0.1, 0.1))))
+fomula_ar2_cv<-Dialy_cases1 ~ 1 + f(time, model = "ar",order=2)
+
+nb.rw1_cv <- inla(fomula_rw1_cv,                   
+                 data = sa_cov_dat_cv,
+                 family = "nbinomial",
+                 control.predictor = list(compute = TRUE, link = 1),
+                 control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+
+nb.rw2_cv <- inla(fomula_rw2_cv,                   
+                 data = sa_cov_dat_cv,
+                 family = "nbinomial",
+                 control.predictor = list(compute = TRUE, link = 1),
+                 control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+nb.ar1_cv <- inla(fomula_ar1_cv,                   
+                 data = sa_cov_dat_cv,
+                 family = "nbinomial",
+                 control.predictor = list(compute = TRUE, link = 1),
+                 control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+nb.ar2_cv <- inla(fomula_ar2_cv,                   
+                 data = sa_cov_dat_cv,
+                 family = "nbinomial",
+                 control.predictor = list(compute = TRUE, link = 1),
+                 control.compute=list(cpo=TRUE,waic=TRUE,dic=TRUE))
+
+nb.rw1_cv_pred<-nb.rw1_cv$summary.fitted.values[,c(1,3,5)]
+nb.rw1_cv_pred <- reshape:::rename(nb.rw1_cv_pred, c("0.025quant"="rw1_lower", "0.975quant"="rw1_upper","mean"="rw1_mean"))
+nb.rw2_cv_pred<-nb.rw2_cv$summary.fitted.values[,c(1,3,5)]
+nb.rw2_cv_pred <- reshape:::rename(nb.rw2_cv_pred, c("0.025quant"="rw2_lower", "0.975quant"="rw2_upper","mean"="rw2_mean"))
+nb.ar1_cv_pred<-nb.ar1_cv$summary.fitted.values[,c(1,3,5)]
+nb.ar1_cv_pred <- reshape:::rename(nb.ar1_cv_pred, c("0.025quant"="ar1_lower", "0.975quant"="ar1_upper","mean"="ar1_mean"))
+nb.ar2_cv_pred<-nb.ar2_cv$summary.fitted.values[,c(1,3,5)]
+nb.ar2_cv_pred <- reshape:::rename(nb.ar2_cv_pred, c("0.025quant"="ar2_lower", "0.975quant"="ar2_upper","mean"="ar2_mean"))
+CV_pred<-cbind(sa_cov_dat_cv,nb.rw1_cv_pred,nb.rw2_cv_pred,nb.ar1_cv_pred,nb.ar2_cv_pred)
+
+
+#----Present the result as a table as well as plot 
+CV_pred<-CV_pred%>%
+  mutate(Cum_pred_rw1=cumsum(rw1_mean),Cum_pred_rw2=cumsum(rw2_mean),Cum_pred_ar1=cumsum(ar1_mean),Cum_pred_ar2=cumsum(ar2_mean))
+
+CV_data[[i]]<-CV_pred
+
+IC[[i]]<-cbind(rbind(nb.ar1_cv$dic$dic, nb.ar1_cv$waic$waic),
+          rbind(nb.ar2_cv$dic$dic, nb.ar2_cv$waic$waic),
+          rbind(nb.rw1_cv$dic$dic, nb.rw1_cv$waic$waic),
+          rbind(nb.rw2_cv$dic$dic, nb.rw2_cv$waic$waic))
+IC[[i]]<-data.frame(IC[[i]])
+row.names(IC[[i]])<-c("DIC","WAIC")
+colnames(IC[[i]])<-c("AR1","AR2","RW1","RW2")
+
+}
+
+```
+
+```{r message = FALSE, warning = FALSE}
+# Model selction summary 
+summary_res<-list()
+for(i in 1:11){
+dat_selected<-CV_data[[i]][CV_data[[i]]$time>(k+i)&CV_data[[i]]$time<(k+12+(i-1)),]
+
+dat_selected<-dat_selected%>%mutate(MAE_rw1=sum(abs(total-Cum_pred_rw1))/10,
+                                    MAPE_rw1=sum(abs((total-Cum_pred_rw1)/total))/10,
+                                    chisq_rw1=sum((total-Cum_pred_rw1)^2/Cum_pred_rw1),
+                                    MAE_rw2=sum(abs(total-Cum_pred_rw2))/10,
+                                    MAPE_rw2=sum(abs((total-Cum_pred_rw2)/total))/10,
+                                    chisq_rw2=sum((total-Cum_pred_rw2)^2/Cum_pred_rw2),
+                                    MAE_ar1=sum(abs(total-Cum_pred_ar1))/10,
+                                    MAPE_ar1=sum(abs((total-Cum_pred_ar1)/total))/10,
+                                    chisq_ar1=sum((total-Cum_pred_ar1)^2/Cum_pred_ar1),
+                                    MAE_ar2=sum(abs(total-Cum_pred_ar2))/10,
+                                    MAPE_ar2=sum(abs((total-Cum_pred_ar2)/total))/10,
+                                    chisq_ar2=sum((total-Cum_pred_ar2)^2/Cum_pred_ar2))
+dat_selected<-round(dat_selected[1,c("MAE_rw1","MAPE_rw1","chisq_rw1","MAE_rw2","MAPE_rw2","chisq_rw2",
+                 "MAE_ar1","MAPE_ar1","chisq_ar1","MAE_ar2","MAPE_ar2","chisq_ar2")], digits=3)
+
+summary_res[[i]]<-cbind(rbind(dat_selected$MAE_ar1,dat_selected$MAPE_ar1, dat_selected$chisq_ar1),
+                   rbind(dat_selected$MAE_ar2,dat_selected$MAPE_ar2, dat_selected$chisq_ar2),
+                   rbind(dat_selected$MAE_rw1,dat_selected$MAPE_rw1, dat_selected$chisq_rw1),
+                   rbind(dat_selected$MAE_rw2,dat_selected$MAPE_rw2, dat_selected$chisq_rw2))
+rownames(summary_res[[i]])<-c("MAE","MAPE","Chi Square")
+colnames(summary_res[[i]])<-c("AR1","AR2","RW1","RW2")
+}
+
+summary_res[[1]]
+
+IC[[1]]
+
+```
+
 
 # References {#references .unnumbered}
